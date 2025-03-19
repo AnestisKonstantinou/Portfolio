@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hamburgerBtn.addEventListener('click', () => {
       mobileNav.classList.toggle('open');
     });
+    console.log("JavaScript loaded, event listener attached!");
   }
 
   // Mobile submenu toggle logic
