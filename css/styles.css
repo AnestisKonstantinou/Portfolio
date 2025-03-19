@@ -1,0 +1,247 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: sans-serif;
+}
+
+body {
+  /* Use flex layout so the footer can be pinned at the bottom */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+background-color:#F1F7F7;  /* Ensure body spans full viewport height */
+}
+
+/* The container that holds sidebar + main content should be 90% of the viewport height */
+.page-wrapper {
+  display: flex;
+  flex: 1;          /* Takes up remaining vertical space before footer */
+  height: 90vh;     /* 90% of viewport height for main area */
+}
+
+/* Sidebar (left nav) styling */
+.sidebar {
+	background-color:rgb(221, 211, 211, 0.6);
+	border-radius:0 30px  30px 0 ;
+  width: 30%;
+  max-width: 350px;          /* You can adjust this max as you like */
+   /* Light gray background */
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-y: auto;          /* Scroll if content exceeds sidebar height */
+}
+
+.icon{
+	max-width: 2vw;
+height:auto;
+}
+.footer-text{
+	position:absolute;
+right:20px;}
+/* Artist Name link */
+.artist-name {
+  margin-bottom: 1rem;
+  display:flex;
+  align-items: center;   /* Vertically center the footer text */
+  justify-content: center;
+  
+}
+.artist-name a {
+  text-decoration: none;
+  color: #000;
+}
+
+/* Navigation list styles */
+.sidebar nav ul {
+  list-style: none; /* Remove bullets for top-level items */
+  margin: 0;
+  padding: 0;
+
+}
+
+.sidebar nav li {
+  margin-bottom: 2rem;
+  font-size: 30px;
+}
+
+/* Submenu hidden by default */
+.submenu {
+  display: none;
+  margin-left: 1rem;   /* Slight indentation for sub-items */
+  list-style: disc;    /* Use a bullet for sub-items */
+  padding-left: 1rem;  /* So bullets don't overlap text */
+}
+
+.has-submenu:hover + .submenu,
+.submenu:hover {
+  display: block;
+}
+.has-submenu::after {
+  content: &#11167;    /* space + arrow glyph */
+  font-size: 0.8em;
+  margin-left: 0.3em;
+  transition: transform 0.2s ease;
+}
+
+/* Rotate the arrow when hovering the link (optional nice touch) */
+.has-submenu:hover::after {
+  transform: rotate(180deg);
+}
+/* Show submenu on hover (optional, can be replaced with a click toggle) */
+.sidebar nav li:hover > .submenu {
+  display: block;
+}
+
+/* Navigation links */
+.sidebar nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* Main content area */
+main {
+  flex: 1;               /* Fill remaining width to the right of sidebar */
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-y: auto;      /* Scroll if content is very tall */
+}
+
+.container{
+	position:relative;
+	width:100%;
+	height:auto;
+	overflow:hidden;
+	text-align:center;
+align-items:center;
+justify-content: center;
+}
+/* Footer (10% viewport height) pinned at bottom */
+footer {
+  height: 10vh;
+	background-color:  rgb(213, 229,229, 0.5);
+	border-radius:0 30px 0 0;
+  color: black;
+  display: flex;
+  align-items: center;   /* Vertically center the footer text */
+  justify-content: left; /* Horizontally center it */
+}
+.row{
+	display:flex;
+	align-items: center;   /* Vertically center the footer text */
+  justify-content: left;
+margin-left: 20px;
+}
+	.carousel-container {
+  position: relative;      /* So the arrows can be absolutely positioned */
+  width: 60vw; 
+ height: 80vh; /* Set a max width for the slideshow */
+  margin: 0 auto;          /* Center it horizontally */
+    overflow: hidden;     /* Hide slides that are out of view */
+	background:#F1F7F7;
+	}
+
+/* Each individual slide (image + caption) */
+.carousel-slide {
+  display: none;     
+ width: 100%;
+  height: 100%;  /* All slides hidden by default */
+  text-align: center;      /* Center the image and caption */
+  position: relative;      /* For the caption positioning if needed */
+}
+
+.carousel-slide img {
+	width: 100%;
+  height: 90%;
+  object-fit: contain;   /* or "contain", see below */
+  /* center the image if it’s cropped */
+  display: block; 
+  margin: 0 auto;
+}
+
+.caption {      /* or just remove position entirely */
+  margin-top: 0.5rem;     /* space above the caption */
+  text-align: center;     /* center the text */
+  color: black;            /* any text color */
+  background-color: transparent; /* or whichever background you prefer */
+  /* padding: 0.5rem;  (optional) */
+}
+
+/************************************
+  Arrows
+************************************/
+.carousel-prev,
+.carousel-next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;                 /* Center vertically */
+  width: auto;
+  padding: 0.5rem;
+  color: black;
+  font-weight: bold;
+  font-size: 1.5rem;
+  transition: 0.3s;
+  border-radius: 50%;
+  text-decoration: none;
+  user-select: none;
+  
+  transform: translateY(-50%);
+}
+
+/* Position the "next" arrow on the right */
+.carousel-next {
+  right: 10px;
+}
+
+/* Position the "prev" arrow on the left */
+.carousel-prev {
+  left: 10px;
+}
+
+
+
+/************************************
+  Active Slide
+************************************/
+.active-slide {
+  display: block;  /* Only the "active" slide is displayed */
+}
+.gallery-container{
+	max-width:60vw;
+height:auto;}
+.text-block {
+  text-align: center;   /* center the heading + paragraph */
+  max-width: 600px;     /* optional, to limit text width */
+  margin: 0 auto 2rem;  /* center horizontally and add bottom margin */
+}
+
+.gallery {
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 1rem; /* space between columns/rows */
+  /* you could also use grid-gap if older browsers, 
+     but gap is standard in modern browsers */
+  margin-top: 2rem; /* add spacing above the gallery if you like */
+  align-items: start; /* ensures each item lines up at the top row */
+}
+
+.gallery-item {
+  background: #fff; /* optional background color for each item */
+  padding: 0.5rem;  /* optional padding */
+  box-sizing: border-box;
+  text-align: center; /* center caption if you like */
+}
+
+.gallery-item img {
+  width: 100%;      /* make the image fill its .gallery-item width */
+  height: auto;     /* maintain aspect ratio */
+  display: block;   /* remove inline spacing gap */
+  margin: 0 auto;   /* center horizontally if narrower than container */
+}
+
+.caption {
+  margin-top: 0.5rem; /* spacing above/below text */
+  font-size: 0.9rem;
+  color: #555;        /* or your preferred text color */
+}
