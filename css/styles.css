@@ -73,10 +73,10 @@ right:20px;}
   padding-left: 1rem;  /* So bullets don't overlap text */
 }
 
-.has-submenu:hover + .submenu,
+/*.has-submenu:hover + .submenu,
 .submenu:hover {
   display: block;
-}
+} */
 .has-submenu::after {
   content: &#11167;    /* space + arrow glyph */
   font-size: 0.8em;
@@ -89,9 +89,9 @@ right:20px;}
   transform: rotate(180deg);
 }
 /* Show submenu on hover (optional, can be replaced with a click toggle) */
-.sidebar nav li:hover > .submenu {
+/*.sidebar nav li:hover > .submenu {
   display: block;
-}
+} */
 
 /* Navigation links */
 .sidebar nav a {
@@ -244,4 +244,63 @@ height:auto;}
   margin-top: 0.5rem; /* spacing above/below text */
   font-size: 0.9rem;
   color: #555;        /* or your preferred text color */
+}
+/* Adjust layout for screens narrower than 768px (typical tablet/phone break) */
+@media (max-width: 768px) {
+  
+  /* Let the sidebar become full width on small screens */
+  .page-wrapper {
+    flex-direction: column; /* stack sidebar above main content */
+    height: auto; /* let content grow, rather than 90vh */
+  }
+  
+  .sidebar {
+    width: 100%;
+    max-width: none;
+    border-radius: 0;   /* remove or tweak the corner rounding if you want */
+    padding: 1rem;
+    margin-bottom: 1rem; /* space between sidebar and main content */
+  }
+  
+  /* Make nav items smaller so they fit more comfortably */
+  .sidebar nav li {
+    font-size: 20px; /* or 18px, depending on your preference */
+    margin-bottom: 1rem;
+  }
+
+  /* If you want the submenus to remain visible or togglable, 
+     remove or tweak the margin to make them more condensed. */
+  
+  /* The main container now automatically fills the rest */
+  main {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Footer might be too short at 10vh on small screens. 
+     Use min-height so text + icons don’t get squashed. */
+  footer {
+    height: auto;
+    min-height: 10vh;
+    padding: 1rem;
+  }
+  
+  /* The icons in the footer are sized by 'max-width: 2vw', 
+     which on a small phone might be extremely tiny. 
+     Use a different approach on small screens: */
+  .icon {
+    max-width: 30px;  /* A pixel-based fallback for small screens */
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  
+  /* The footer text is quite large (if it inherits 30px).
+     If you want to scale it down: */
+  .row b, .footer-text {
+    font-size: 16px;
+  }
+  
+  /* If you want submenus to always appear or appear differently, 
+     you can handle that in JS or do something like: */
+  /* .submenu { display: block; } if you want them always open on mobile. */
 }
