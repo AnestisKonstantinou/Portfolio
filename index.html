@@ -40,6 +40,12 @@
 
     <!-- Main content area -->
     <main>
+	<div class="mobile-logo">
+	<img src="images/logo.png" style="display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  height:100%;"></div>
       <div class="container">
 	  <img src="images/rooster.jpg">
 	  <br>
@@ -47,15 +53,29 @@
 	  </div>
     </main>
   </div>
+
 <div class="mobile-nav" id="mobileNav">
-    <nav>
-      <ul>
-        <li><a href="#">Selected works</a></li>
-        <li><a href="#">Exhibitions</a></li>
-        <li><a href="#">CV / Press</a></li>
-      </ul>
-    </nav>
-  </div>
+  <nav>
+    <ul>
+      <li>
+        <a href="#" class="has-submenu">Selected works &#11167;</a>
+        <ul class="submenu">
+          <li><a href="textile.html">Textile</a></li>
+          <li><a href="paintings.html">Paintings</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#" class="has-submenu" style="white-space: nowrap;">Exhibitions &#11167;</a>
+        <ul class="submenu">
+          <li><a href="biennale.html">Biennale</a></li>
+          <li><a href="dowry.html">Dowry</a></li>
+          <li><a href="nemo.html">Nemophilist</a></li>
+        </ul>
+      </li>
+      <li><a href="cv.html">CV / Press</a></li>
+    </ul>
+  </nav>
+</div>
 
   <!-- HAMBURGER BUTTON -->
   <button class="hamburger" id="hamburgerBtn">
