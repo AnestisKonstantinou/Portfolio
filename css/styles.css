@@ -109,15 +109,44 @@ main {
   overflow-y: auto;      /* Scroll if content is very tall */
 }
 
-.container{
-	position:relative;
-	width:100%;
-	height:auto;
-	overflow:hidden;
-	text-align:center;
-align-items:center;
-justify-content: center;
+.container {
+  position: relative;
+  width: 70vw;
+  height: 90vh; /* Ensure it takes full viewport height */
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  background-color: #F1F7F7;
+  overflow: hidden;
 }
+
+.image-wrapper {
+  display: flex;
+  flex-direction: column; /* Stack image + caption */
+  align-items: center;
+  justify-content: center; /* Center everything */
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.image-wrapper img {
+  width: auto;
+  max-width: 100%; /* Ensures it never exceeds container width */
+  max-height: 80vh; /* Adjusts to viewport height */
+  object-fit: contain;
+}
+
+.caption {
+  position: relative; /* No absolute positioning */
+  text-align: center;
+  font-size: clamp(12px, 2vw, 22px); /* Makes font size responsive */
+  background: rgba(0, 0, 0, 0.5); /* Optional readability background */
+  color: white; /* Text color */
+  padding: 5px 10px;
+  box-sizing: border-box;
+  margin-top: 10px; /* Creates space between image & caption */
+}
+
 /* Footer (10% viewport height) pinned at bottom */
 footer {
   height: 10vh;
@@ -308,12 +337,51 @@ height:auto;}
 /* Media query: on narrower screens, hide sidebar; show hamburger */
 @media (max-width: 768px) {
 	
+.container {
+    height: 70vh; /* Reduce height on smaller screens */
+  }
+
+  .container img {
+    max-width:100%; /* Slight padding on the sides */
+    max-height: 100%; /* Allow more breathing space */
+  }
+  .image-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack image and caption */
+  align-items: center;
+  /*justify-content: flex-end; /* Ensures text stays at bottom */
+  height: 100%; /* Takes full container height */
+}
+
+.image-wrapper img {
+  width: auto;       /* Ensures the image maintains aspect ratio */
+  max-height: 90%;      /* Forces the image to fit the container height */
+  max-width: 100%;  /* Ensures it doesn't overflow horizontally */
+  object-fit: contain; /* Ensures the entire image is visible */
+  position: relative; /* Positions it correctly inside the container */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centers the image */
+}
+.caption {
+  position: absolute;
+  margin:0px;
+  bottom: 0px; /* Keeps text at the bottom of the image */
+  width: 100%;
+  text-align: center;
+  font-size: clamp(12px, 2vw, 22px); /* Makes font size responsive */
+  background: rgba(0, 0, 0, 0.5); /* Optional: Adds readability */
+  color: black; /* Text color */
+  
+}
   .sidebar  {
     display: none;
   }
    .mobile-nav {
     display: block;
 	width:15vw;
+	height:50vh;
 	
   }
   .mobile-nav nav{
