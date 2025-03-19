@@ -7,7 +7,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show the first slide initially
   showSlide(slideIndex);
 });
-
+ const hasSubmenus = document.querySelectorAll('.has-submenu');
+  hasSubmenus.forEach(link => {
+    link.addEventListener('click', (event) => {
+      // prevent default if it’s an <a> with no real link
+      event.preventDefault();
+      // find the submenu (the next sibling <ul class="submenu">)
+      const submenu = link.nextElementSibling;
+      if (submenu) {
+        // toggle display
+        if (submenu.style.display === 'block') {
+          submenu.style.display = 'none';
+        } else {
+          submenu.style.display = 'block';
+        }
+      }
+    });
+  });
+});
 function showSlide(index) {
   // Hide all slides first
   slides.forEach(slide => {
