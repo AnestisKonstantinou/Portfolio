@@ -2,29 +2,24 @@ let slideIndex = 0;
 let slides = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Grab all slides
+  // Grab all carousel slides
   slides = document.querySelectorAll('.carousel-slide');
-  // Show the first slide initially
-  showSlide(slideIndex);
-});
- const hasSubmenus = document.querySelectorAll('.has-submenu');
-  hasSubmenus.forEach(link => {
-    link.addEventListener('click', (event) => {
-      // prevent default if it’s an <a> with no real link
-      event.preventDefault();
-      // find the submenu (the next sibling <ul class="submenu">)
-      const submenu = link.nextElementSibling;
-      if (submenu) {
-        // toggle display
-        if (submenu.style.display === 'block') {
-          submenu.style.display = 'none';
-        } else {
-          submenu.style.display = 'block';
-        }
-      }
+  // Only call showSlide if there are slides present
+  if (slides.length > 0) {
+    showSlide(slideIndex);
+  }
+  
+  // Hamburger menu toggle code
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  
+  if (hamburgerBtn && mobileNav) {
+    hamburgerBtn.addEventListener('click', () => {
+      mobileNav.classList.toggle('open');
     });
-  });
+  }
 });
+
 function showSlide(index) {
   // Hide all slides first
   slides.forEach(slide => {
@@ -46,20 +41,6 @@ function nextSlide() {
   slideIndex++;
   showSlide(slideIndex);
 }
-document.addEventListener('DOMContentLoaded', () => {
-  // existing carousel code, etc.
-  slides = document.querySelectorAll('.carousel-slide');
-  showSlide(slideIndex);
-
-  // Mobile nav toggle
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const mobileNav = document.getElementById('mobileNav');
-
-  hamburgerBtn.addEventListener('click', () => {
-    // Toggle the "open" class on the mobileNav
-    mobileNav.classList.toggle('open');
-  });
-});
 
 function prevSlide() {
   slideIndex--;
