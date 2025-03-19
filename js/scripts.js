@@ -46,6 +46,20 @@ function nextSlide() {
   slideIndex++;
   showSlide(slideIndex);
 }
+document.addEventListener('DOMContentLoaded', () => {
+  // existing carousel code, etc.
+  slides = document.querySelectorAll('.carousel-slide');
+  showSlide(slideIndex);
+
+  // Mobile nav toggle
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+
+  hamburgerBtn.addEventListener('click', () => {
+    // Toggle the "open" class on the mobileNav
+    mobileNav.classList.toggle('open');
+  });
+});
 
 function prevSlide() {
   slideIndex--;
