@@ -2,24 +2,37 @@ let slideIndex = 0;
 let slides = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Grab all carousel slides
-  slides = document.querySelectorAll('.carousel-slide');
-  // Only call showSlide if there are slides present
-  if (slides.length > 0) {
-    showSlide(slideIndex);
-  }
-  
-  // Hamburger menu toggle code
+  // Existing code (carousel, hamburger menu toggle)
   const hamburgerBtn = document.getElementById('hamburgerBtn');
   const mobileNav = document.getElementById('mobileNav');
-  
+
   if (hamburgerBtn && mobileNav) {
     hamburgerBtn.addEventListener('click', () => {
       mobileNav.classList.toggle('open');
     });
   }
-});
 
+  // Mobile submenu toggle logic
+  const submenuLinks = document.querySelectorAll('.has-submenu');
+
+  submenuLinks.forEach(link => {
+  link.addEventListener('click', (event) => {
+    event.preventDefault();
+    
+    const submenu = link.nextElementSibling;
+    
+    // Close all other submenus before opening a new one
+    document.querySelectorAll('.submenu').forEach(otherSubmenu => {
+      if (otherSubmenu !== submenu) {
+        otherSubmenu.classList.remove('open-submenu');
+      }
+    });
+
+    // Toggle the clicked submenu
+    submenu.classList.toggle('open-submenu');
+  });
+});
+});
 function showSlide(index) {
   // Hide all slides first
   slides.forEach(slide => {
