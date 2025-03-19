@@ -261,7 +261,7 @@ height:auto;}
     padding: 1rem;
     margin-bottom: 1rem; /* space between sidebar and main content */
   }
-  
+  .submenu { display: block !important; }
   /* Make nav items smaller so they fit more comfortably */
   .sidebar nav li {
     font-size: 20px; /* or 18px, depending on your preference */
@@ -303,4 +303,69 @@ height:auto;}
   /* If you want submenus to always appear or appear differently, 
      you can handle that in JS or do something like: */
   /* .submenu { display: block; } if you want them always open on mobile. */
+}
+.mobile-nav {
+  display: none; 
+  position: absolute; /* or fixed if you want it floating over content */
+  top: 0;
+  left: 0;
+  width: 60%;
+  max-width: 300px;
+  height: 100vh;
+  background-color: rgba(221, 211, 211, 0.9);
+  box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+  padding: 1rem;
+  /* transform or transitions for slide-in if you like */
+  transition: transform 0.3s ease;
+  transform: translateX(-100%); /* keep it off-screen initially */
+}
+
+.mobile-nav.open {
+  transform: translateX(0); /* Slide in from the left */
+}
+
+.mobile-nav nav ul {
+  list-style: none;
+  margin: 0; 
+  padding: 0;
+}
+
+.mobile-nav nav li {
+  margin-bottom: 1rem;
+  font-size: 18px; /* adjust size for mobile */
+}
+
+.mobile-nav nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* Hamburger button styling */
+.hamburger {
+  display: none; /* hidden by default on desktop */
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 9999; /* so it’s above other elements if overlaying */
+}
+
+/* Media query: on narrower screens, hide sidebar; show hamburger */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .hamburger {
+    display: block; 
+  }
+  
+  /* If you want the main content to span full width on mobile 
+     without that sidebar space: */
+  .page-wrapper {
+    flex-direction: column;
+    height: auto;
+  }
 }
