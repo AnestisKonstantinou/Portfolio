@@ -1,62 +1,90 @@
+
+// Define global variables
 let slideIndex = 0;
 let slides = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Existing code (carousel, hamburger menu toggle)
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const mobileNav = document.getElementById('mobileNav');
+// Function to show a slide
+function showSlide(index) {
+  if (!slides || slides.length === 0) return; // Prevent errors if slides are not found
 
-  if (hamburgerBtn && mobileNav) {
-    hamburgerBtn.addEventListener('click', () => {
-      mobileNav.classList.toggle('open');
-    });
-    console.log("JavaScript loaded, event listener attached!");
+  // Ensure index is always within range
+  if (index < 0) {
+    slideIndex = slides.length - 1; // Wrap to last slide
+  } else if (index >= slides.length) {
+    slideIndex = 0; // Wrap to first slide
+  } else {
+    slideIndex = index; // Set index normally
   }
 
-  // Mobile submenu toggle logic
-  const submenuLinks = document.querySelectorAll('.has-submenu');
+  console.log("Showing Slide:", slideIndex); // Debugging test
+
+  // Hide all slides
+  slides.forEach((slide) => {
+    slide.classList.remove("active-slide");
+    slide.style.display = "none";
+  });
+
+  // Show the correct slide
+  slides[slideIndex].style.display = "block";
+  slides[slideIndex].classList.add("active-slide");
+}
+
+// Next slide function
+function nextSlide() {
+  showSlide(slideIndex + 1);
+}
+
+// Previous slide function
+function prevSlide() {
+  showSlide(slideIndex - 1);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("JavaScript Loaded ✅");
+
+  // Get all slides
+  slides = document.querySelectorAll(".carousel-slide");
+
+  if (slides.length > 0) {
+    console.log("Slides Found:", slides.length);
+    
+    // ✅ Show first slide only if it's not already displayed
+    slides.forEach((slide) => (slide.style.display = "none")); // Hide all slides
+    slides[slideIndex].style.display = "block"; // Show only the first one
+    slides[slideIndex].classList.add("active-slide");
+   } else {
+    console.warn("No slides found. Skipping slideshow setup.");
+  }
+ const submenuLinks = document.querySelectorAll(".has-submenu");
 
   submenuLinks.forEach(link => {
-  link.addEventListener('click', (event) => {
-    event.preventDefault();
-    
-    const submenu = link.nextElementSibling;
-    
-    // Close all other submenus before opening a new one
-    document.querySelectorAll('.submenu').forEach(otherSubmenu => {
-      if (otherSubmenu !== submenu) {
-        otherSubmenu.classList.remove('open-submenu');
-      }
+    link.addEventListener("click", (event) => {
+      event.preventDefault(); // ✅ Prevents page reload
+      
+      const submenu = link.nextElementSibling; // ✅ Get the submenu `<ul>`
+
+       document.querySelectorAll(".submenu").forEach(otherSubmenu => {
+        if (otherSubmenu !== submenu) {
+          otherSubmenu.classList.remove("open-submenu");
+        }
+      });
+
+      // ✅ Toggle the clicked submenu
+      submenu.classList.toggle("open-submenu");
+
+      console.log("Submenu Toggled:", submenu); // Debugging log
     });
-
-    // Toggle the clicked submenu
-    submenu.classList.toggle('open-submenu');
   });
-});
-});
-function showSlide(index) {
-  // Hide all slides first
-  slides.forEach(slide => {
-    slide.classList.remove('active-slide');
-  });
+  // Mobile Menu Toggle
+  const hamburgerBtn = document.getElementById("hamburgerBtn");
+  const mobileNav = document.getElementById("mobileNav");
 
-  // Wrap around if index is out of range
-  if (index < 0) { 
-    slideIndex = slides.length - 1;
-  } else if (index >= slides.length) {
-    slideIndex = 0;
+  if (hamburgerBtn && mobileNav) {
+    hamburgerBtn.addEventListener("click", () => {
+      console.log("Hamburger Clicked 🍔");
+      mobileNav.classList.toggle("open");
+    });
+  } else {
+    console.warn("Hamburger menu or mobile nav not found.");
   }
-
-  // Show the new slide
-  slides[slideIndex].classList.add('active-slide');
-}
-
-function nextSlide() {
-  slideIndex++;
-  showSlide(slideIndex);
-}
-
-function prevSlide() {
-  slideIndex--;
-  showSlide(slideIndex);
-}
+});
