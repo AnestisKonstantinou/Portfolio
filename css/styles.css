@@ -22,7 +22,7 @@ background-color:#F1F7F7;  /* Ensure body spans full viewport height */
 
 /* Sidebar (left nav) styling */
 .sidebar {
-	background-color:rgb(221, 211, 211, 0.6);
+	background-color:rgb(221, 211, 211, 0.4);
 	border-radius:0 30px  30px 0 ;
   width: 30%;
   max-width: 350px;          /* You can adjust this max as you like */
@@ -32,13 +32,7 @@ background-color:#F1F7F7;  /* Ensure body spans full viewport height */
   overflow-y: auto;          /* Scroll if content exceeds sidebar height */
 }
 
-.icon{
-	max-width: 2vw;
-height:auto;
-}
-.footer-text{
-	position:absolute;
-right:20px;}
+
 /* Artist Name link */
 .artist-name {
   margin-bottom: 1rem;
@@ -74,6 +68,7 @@ right:20px;}
 }
 .submenu.open-submenu {
   display: block;
+  
 }
 .has-submenu:hover + .submenu,
 .submenu:hover {
@@ -81,7 +76,7 @@ right:20px;}
 }
 .has-submenu::after {
   content: &#11167;    /* space + arrow glyph */
-  font-size: 0.8em;
+  font-size: 1.0em;
   margin-left: 0.3em;
   transition: transform 0.2s ease;
 }
@@ -93,6 +88,7 @@ right:20px;}
 /* Show submenu on hover (optional, can be replaced with a click toggle) */
 .sidebar nav li:hover > .submenu {
   display: block;
+  margin-top:4vh;
 }
 
 /* Navigation links */
@@ -103,100 +99,113 @@ right:20px;}
 
 /* Main content area */
 main {
-  flex: 1;               /* Fill remaining width to the right of sidebar */
-  padding: 1rem;
+  flex: 1;
+  /*display: flex; */
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Ensure full width */
   box-sizing: border-box;
-  overflow-y: auto;      /* Scroll if content is very tall */
+  overflow: hidden; /* Prevents unwanted scrolling */
 }
 
 .container {
   position: relative;
-  width: 70vw;
-  height: 90vh; /* Ensure it takes full viewport height */
+  width: 70vw; /* Makes it responsive on all screen sizes */
+  height: 80vh; /* Adjusted to prevent scrollbars */
   display: flex;
-  justify-content: center; /* Centers horizontally */
-  align-items: center; /* Centers vertically */
-  background-color: #F1F7F7;
-  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevents extra scrolling */
+ 
 }
 
 .image-wrapper {
-  display: flex;
-  flex-direction: column; /* Stack image + caption */
-  align-items: center;
-  justify-content: center; /* Center everything */
-  max-width: 100%;
-  max-height: 100%;
+	width: 70%;
+  height: 80%;  /* All slides hidden by default */
+  text-align: center;      /* Center the image and caption */
+  position: relative; 
 }
 
 .image-wrapper img {
-  width: auto;
-  max-width: 100%; /* Ensures it never exceeds container width */
-  max-height: 80vh; /* Adjusts to viewport height */
+	 max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
+  display: block;
+  margin: auto;
 }
 
 .caption {
   position: relative; /* No absolute positioning */
   text-align: center;
   font-size: clamp(12px, 2vw, 22px); /* Makes font size responsive */
-  background: rgba(0, 0, 0, 0.5); /* Optional readability background */
-  color: white; /* Text color */
+  color: black; /* Text color */
   padding: 5px 10px;
   box-sizing: border-box;
-  margin-top: 10px; /* Creates space between image & caption */
+margin-top: 0.5rem;     /* space above the caption */
+/* Creates space between image & caption */
 }
 
 /* Footer (10% viewport height) pinned at bottom */
 footer {
-  height: 10vh;
+  max-height: 20vh;
 	background-color:  rgb(213, 229,229, 0.5);
 	border-radius:0 30px 0 0;
   color: black;
   display: flex;
   align-items: center;   /* Vertically center the footer text */
-  justify-content: left; /* Horizontally center it */
+  justify-content: left; 
+  overflow: hidden;
+  z-index:256;/* Horizontally center it */
 }
-.row{
-	display:flex;
-	align-items: center;   /* Vertically center the footer text */
-  justify-content: left;
-margin-left: 20px;
+.row {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping to a second row if needed */
+  justify-content: space-between; /* Ensures spacing between elements */
+  align-items: center;
+  width: 100%;
+  padding: 1vh;
+  min-height: 9vh; /* Adjust based on design */
 }
-	.carousel-container {
-  position: relative;      /* So the arrows can be absolutely positioned */
-  width: 60vw; 
- height: 80vh; /* Set a max width for the slideshow */
-  margin: 0 auto;          /* Center it horizontally */
-    overflow: hidden;     /* Hide slides that are out of view */
-	background:#F1F7F7;
-	}
+.icon{
+	max-width: 2vw;
+height:2vw;
+}
+.footer-text {
+  text-align: right;
+  font-size: clamp(12px, 3vw, 18px);
+  margin-left: auto; /* Pushes text to the right */
+  white-space: nowrap; /* Prevents unnecessary line breaks */
+}
+.carousel-container {
+  position: relative;
+  width: 70vw; /* Makes it responsive on all screen sizes */
+  height: 80vh; /* Adjusted to prevent scrollbars */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevents extra scrolling */
+ 
+}
 
 /* Each individual slide (image + caption) */
 .carousel-slide {
   display: none;     
- width: 100%;
-  height: 100%;  /* All slides hidden by default */
+ width: 70%;
+  height: 80%;  /* All slides hidden by default */
   text-align: center;      /* Center the image and caption */
   position: relative;      /* For the caption positioning if needed */
 }
 
 .carousel-slide img {
-	width: 100%;
-  height: 90%;
-  object-fit: contain;   /* or "contain", see below */
-  /* center the image if it’s cropped */
-  display: block; 
-  margin: 0 auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  margin: auto;
 }
 
-.caption {      /* or just remove position entirely */
-  margin-top: 0.5rem;     /* space above the caption */
-  text-align: center;     /* center the text */
-  color: black;            /* any text color */
-  background-color: transparent; /* or whichever background you prefer */
-  /* padding: 0.5rem;  (optional) */
-}
+
+
 
 /************************************
   Arrows
@@ -284,9 +293,10 @@ height:auto;}
   top: 0;
   left: 0;
   width: 60%;
+  border-radius:0 30px 0 0;
   max-width: 300px;
   height: 100vh;
-  background-color: rgba(221, 211, 211, 0.9);
+  background-color:rgb(221, 211, 211, 0.7);
   box-shadow: 2px 0 5px rgba(0,0,0,0.2);
   padding: 1rem;
   /* transform or transitions for slide-in if you like */
@@ -334,54 +344,99 @@ height:auto;}
   z-index: 9999; /* so it’s above other elements if overlaying */
 }
 
+.main1 {
+  flex: 1;
+  display: block; /* Stack text + gallery */
+  justify-content: flex-start; /* Align text at the top */
+  align-items: center;
+  width: 70vw;
+  height: auto; /* Allow content to dictate height */
+  box-sizing: border-box;
+  overflow-y: auto; /* Enable scrolling */
+  padding: 2rem 0;
+}
+
+.page-wrapper1 {
+  display: flex;/* Stack sidebar + main content */
+  flex-grow: 1;
+  height: 80vh; /* Allow content to expand */
+}
+.gallery-container1 {
+  width: 80vw; /* Adjust width */
+  max-width: 1000px; /* Optional: limit max width */
+  height: auto; /* Allow content to define height */
+  display: block;
+  align-items: center;
+}
+
+.gallery1 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.cv-main{
+	box-sizing:border-box;
+	width:100%;
+	padding:0rem 3rem 2rem 3rem;
+	height:auto;
+	text-align:center;
+}
+
+
+
+
 /* Media query: on narrower screens, hide sidebar; show hamburger */
 @media (max-width: 768px) {
-	
-.container {
-    height: 70vh; /* Reduce height on smaller screens */
+	main{ flex: 1;
+	height:90vh;
+  /*display: flex; */
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box;
+	overflow: hidden; 
+	}
+	.container{ width: 95vw; /* Full width for mobile */
+    height: 65vh; }
+.page-wrapper {
+    height: 70vh;
+	width:100%;
+display: flex;
+    align-items: center;
+    justify-content: center;
+	/* Reduce height on smaller screens */
   }
 
-  .container img {
+  .page-wrapper img {
     max-width:100%; /* Slight padding on the sides */
     max-height: 100%; /* Allow more breathing space */
   }
-  .image-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column; /* Stack image and caption */
-  align-items: center;
-  /*justify-content: flex-end; /* Ensures text stays at bottom */
-  height: 100%; /* Takes full container height */
+
+.caption {
+  position: relative; /* Ensures it follows the image */
+  margin-top: 10px; /* Creates space between image & caption */
+  text-align: center;
+  font-size: clamp(12px, 3vw, 20px); /* Makes font size responsive *//* Optional readability */
+  color: black;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.carousel-container {
+    width: 95vw; /* Full width for mobile */
+    height: 65vh; /* Adjusted height */
 }
 
-.image-wrapper img {
-  width: auto;       /* Ensures the image maintains aspect ratio */
-  max-height: 90%;      /* Forces the image to fit the container height */
-  max-width: 100%;  /* Ensures it doesn't overflow horizontally */
-  object-fit: contain; /* Ensures the entire image is visible */
-  position: relative; /* Positions it correctly inside the container */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* Centers the image */
-}
-.caption {
-  position: absolute;
-  margin:0px;
-  bottom: 0px; /* Keeps text at the bottom of the image */
-  width: 100%;
-  text-align: center;
-  font-size: clamp(12px, 2vw, 22px); /* Makes font size responsive */
-  background: rgba(0, 0, 0, 0.5); /* Optional: Adds readability */
-  color: black; /* Text color */
-  
-}
   .sidebar  {
     display: none;
   }
    .mobile-nav {
     display: block;
 	width:15vw;
-	height:50vh;
+	max-height:100vh;
 	
   }
   .mobile-nav nav{
@@ -390,6 +445,7 @@ height:auto;}
   }
   
  .submenu {
+	 display:none;
     max-height: 0;
 	font-size:1em;
     overflow: hidden;
@@ -397,26 +453,98 @@ height:auto;}
   }
 
   .submenu.open-submenu {
+	  display:block;
     max-height: 500px;
 margin-top:3vh;	
 /* Adjust depending on submenu height */
   }
   .hamburger {
-    display: block; 
+     display: block;
+    background: none;
+    border: none;
+    font-size: 24px; /* Adjust size if needed */
+    cursor: pointer;
+    padding: 5px;
+    margin: 0; /* Removes unnecessary margins */
+    align-self: center;
+	
   }
-  .mobile-logo{
-		display:block;
-		width:90%;
-		height:10%;
-		top:0px;
-		/*text-align:center;
-	justify-content:center;*/
-	}
-  /* If you want the main content to span full width on mobile 
-     without that sidebar space: */
-  .page-wrapper {
-    flex-direction: column;
-    height: auto;
+ .mobile-logo {
+    display:block; /* Use flexbox for better alignment */
+    align-items: center; /* Align items vertically */
+    justify-content: space-between; /* Space out hamburger & logo */
+    width: 100%;
+    height:10vh; /* Set a height for the navbar */
+    padding: 5px 15px;
+    overflow: hidden; /* Ensures nothing leaks out */
+}
+.mobile-logo img {
+    height: 100%; /* Ensure it fits the parent div */
+    width: auto; /* Maintain aspect ratio */
+    max-height: 50px; /* Prevents it from being too large */
+    margin: 0 auto; /* Centering */
+    display: block;
+	margin-top:1rem;
+}
+  .gallery1 {
+    grid-template-columns: repeat(1, 1fr); /* Single column on mobile */
   }
+
+  .gallery-container1 {
+    width: 95vw; /* Use more screen space */
+  }
+
+ 
   
+ 
+  .row {
+    text-align: center;
+	max-height:10vh;
+  }
+.row a
+{
+padding:0.1rem;
+}
+  .footer-text {
+    text-align: right;
+    margin-top: 2px; /* Reset margin so it centers */
+    width: 50%; /* Takes full width */
+    white-space: normal; /* Allows wrapping */
+  }
+.hidding{
+display:none !important;
+}
+  .icon {
+    max-width: 30px; /* Adjust icon size for small screens */
+    height: auto;
+	max-height:4vh;
+	padding:auto;
+    
+  }
+  .main1
+  { flex: 1;
+	height:90vh;
+	justify-content: center;
+	align-items: center;
+	width: 99vw; /* Ensure full width */
+	/*box-sizing: border-box;*/
+	overflow-y: auto; 
+	padding-top:0;
+	padding-left:1rem;
+	}
+	.page-wrapper1 {
+    height: 70vh;
+	width:100vw;
+	display: block;
+    align-items: center;
+    justify-content: center;
+	/* Reduce height on smaller screens */
+  }
+
+.cv-main{
+	width:100%;
+	height:auto;
+	text-align:center;
+	overflow-y:auto;
+}
 }
