@@ -10,7 +10,7 @@
 <body>
 
   <!-- The page-wrapper holds the sidebar + main content in a 90vh container -->
-  <div class="page-wrapper">
+  <div class="page-wrapper1">
     <!-- Sidebar / Navigation -->
     <aside class="sidebar">
       <div class="artist-name">
@@ -39,8 +39,13 @@
     </aside>
 
     <!-- Main content area -->
-    <main>
-	<div class="gallery-container">
+    <div class="main1">
+	<div class="mobile-logo">
+	<button class="hamburger" id="hamburgerBtn">
+    &#9776; <!-- This is the “three lines” icon in HTML -->
+  </button>
+	<a href="index.html'><img src="images/logo.png"></a></div>
+	<div class="gallery-container1">
 	<div class="text-block">
       <h2> Nemophilist </h2>
 	  <br>
@@ -48,7 +53,7 @@
 		
 	</div>
 	
-		<div class="gallery">
+		<div class="gallery1">
         <div class="gallery-item">
           <img src="images/rooster.jpg" alt="Painting 8">
           <p class="caption">Painting 1 Title / Size / Year</p>
@@ -93,19 +98,45 @@
       </div>
 </div>
       
-    </main>
+    </div>
   </div>
 
+<div class="mobile-nav" id="mobileNav">
+  <nav>
+    <ul>
+      <li>
+        <a href="#" class="has-submenu">Selected works &#11167;</a>
+        <ul class="submenu">
+          <li><a href="textile.html">Textile</a></li>
+          <li><a href="paintings.html">Paintings</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#" class="has-submenu" style="white-space: nowrap;">Exhibitions &#11167;</a>
+        <ul class="submenu">
+          <li><a href="biennale.html">Biennale</a></li>
+          <li><a href="dowry.html">Dowry</a></li>
+          <li><a href="nemo.html">Nemophilist</a></li>
+        </ul>
+      </li>
+      <li><a href="cv.html">CV / Press</a></li>
+    </ul>
+  </nav>
+</div>
+
+
+  
   <!-- Footer at 10% of viewport height, always at bottom -->
-  footer> 
-  <div class="row"> <b>Nikos Iosif</b> &nbsp; &nbsp; &nbsp; &nbsp; 
+  <footer> 
+  <div class="row"> <b>Nikos Iosif</b> &nbsp; &nbsp; 
   <a href="https://www.facebook.com/nikos.iosif.9" target="_blank"> <img src="images/facebook.png" class="icon"> </a>
-  &nbsp;  &nbsp; <a href="https://www.instagram.com/nickiosif_/" target="_blank"> <img src="images/instagram.png" class="icon"> </a> 
-  &nbsp;  &nbsp; Studio @ Paparigopoulou 15 <a href="https://maps.app.goo.gl/Te84Zco9Kd1Ju8987" target="_blank">  <img src="images/google.jpg" class="icon"></a>
+   <a href="https://www.instagram.com/nickiosif_/" target="_blank"> <img src="images/instagram.png" class="icon"> </a> 
+   <p class="hidding">Studio @ Paparigopoulou 15 </p><a href="https://maps.app.goo.gl/Te84Zco9Kd1Ju8987" target="_blank">  <img src="images/google.jpg" class="icon"></a>
    <p class="footer-text"> &nbsp;&nbsp;&nbsp; &#169; All rights reserved 2025</p>
    </div>
    </footer>
+   
   <!-- Link to your external JavaScript file -->
-  <script src="js/scripts.js"></script>
+  <script src="js/scripts.js?v=2"></script>
 </body>
 </html>
