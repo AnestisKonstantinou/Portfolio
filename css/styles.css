@@ -75,7 +75,7 @@ background-color:#F1F7F7;  /* Ensure body spans full viewport height */
   display: block;
 }
 .has-submenu::after {
-  content: &#11167;    /* space + arrow glyph */
+    /* space + arrow glyph */
   font-size: 1.0em;
   margin-left: 0.3em;
   transition: transform 0.2s ease;
@@ -611,7 +611,7 @@ display:none !important;
 	width: 99vw; /* Ensure full width */
 	/*box-sizing: border-box;*/
 	overflow-y: auto;            /* Reserve space for the fixed header */
-    height: calc(100vh - 10vh);     /* Adjust height if needed */
+    height: calc(100vh - 20vh);     /* Adjust height if needed */
     align-items: flex-start;  
 	padding-left:1rem;
 	}
