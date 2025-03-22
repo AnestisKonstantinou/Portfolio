@@ -631,10 +631,3 @@ display:none !important;
 	text-align:center;
 	overflow-y:auto;
 }
-}
-@media (hover: none) {
-  .has-submenu:hover + .submenu,
-  .submenu:hover {
-    display: none !important;
-  }
-}
