@@ -608,13 +608,14 @@ display:none !important;
   }
   .main1
   { flex: 1;
+   display:block;
 	height:auto;
 	justify-content: center;
 	align-items: center;
 	width: 99vw; /* Ensure full width */
 	/*box-sizing: border-box;*/
 	overflow-y: auto;            /* Reserve space for the fixed header */
-    height: calc(100vh - 20vh);     /* Adjust height if needed */
+    height: 100%;     /* Adjust height if needed */
     align-items: flex-start;  
 	padding-left:1rem;
 	}
