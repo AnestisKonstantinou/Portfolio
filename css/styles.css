@@ -535,6 +535,9 @@ display: flex;
 margin-top:3vh;	
 /* Adjust depending on submenu height */
   }
+	 .has-submenu:hover + .submenu {
+    display: none !important;
+  }
   .hamburger {
      display: block;
     background: none;
