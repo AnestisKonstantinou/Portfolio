@@ -3,81 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nikos Iosif</title>
-  <!-- Link to your external CSS file -->
+  <title>Nikos Iosif - Article</title>
   <link rel="stylesheet" href="css/styles.css" />
+  
 </head>
 <body>
 
-  <!-- The page-wrapper holds the sidebar + main content in a 90vh container -->
+
+  <!-- The page-wrapper holds the sidebar + main content -->
   <div class="page-wrapper1">
     <!-- Sidebar / Navigation -->
     <aside class="sidebar">
       <div class="artist-name">
-        <a href="index.html"> <img src="images/logo.png"></a>
+        <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
       </div>
       <nav>
         <ul>
           <li>
-            <a class="has-submenu">Selected works &nbsp; &#11167; </a>
+            <a class="has-submenu">Selected works &#11167;</a>
             <ul class="submenu">
-              <li><a href="textile.html">&nbsp; &nbsp; Textile</a></li>
-              <li><a href="paintings.html">&nbsp; &nbsp;Paintings</a></li>
+              <li><a href="textile.html">Textile</a></li>
+              <li><a href="paintings.html">Paintings</a></li>
             </ul>
           </li>
           <li>
-            <a class="has-submenu">Exhibitions &nbsp; &#11167; </a>
+            <a class="has-submenu">Exhibitions &#11167;</a>
             <ul class="submenu">
-              <li><a href="biennale.html">&nbsp; &nbsp;Biennale</a></li>
-              <li><a href="dowry.html">&nbsp; &nbsp;Dowry</a></li>
-              <li><a href="nemo.html">&nbsp; &nbsp;Nemophilist</a></li>
+              <li><a href="biennale.html">Biennale</a></li>
+              <li><a href="dowry.html">Dowry</a></li>
+              <li><a href="nemo.html">Nemophilist</a></li>
             </ul>
           </li>
-          <li><a href="cv.html"> cv &nbsp; / &nbsp; press </a></li>
+          <li><a href="cv.html">cv / press</a></li>
         </ul>
       </nav>
     </aside>
 
-    <!-- Main content area -->
-<div class="main1">
-	<div class="mobile-logo">
-	<button class="hamburger" id="hamburgerBtn">
-    &#9776; <!-- This is the “three lines” icon in HTML -->
-  </button>
-	<a href="index.html"><img src="images/logo.png"></a></div>
-	<div class="gallery-container1">
-	<div class="text-block">
-      <h2>Contextile Biennale 2024</h2>
-	  <br>
-	  <p> @ Guimaraes, Portugal</p>
-		<br>
-		<p> Official site: <a href="https://contextile.pt/en/"> contextile.pt </a> </p>
-	</div>
-	
-		<div class="gallery1">
-        <div class="gallery-item">
-          <img src="images/rooster.jpg" alt="Painting 8">
-          <p class="caption">Painting 1 Title / Size / Year</p>
-        </div>
-        <div class="gallery-item">
-          <img src="images/9.jpg" alt="Painting 2">
-          <p class="caption">Painting 2 Title / Size / Year</p>
-        </div>
-        <div class="gallery-item">
-          <img src="images/4.jpg" alt="Painting 3">
-          <p class="caption">Painting 3 Title / Size / Year</p>
-        </div>
-        <div class="gallery-item">
-          <img src="images/6.jpg" alt="Painting 4">
-          <p class="caption">Painting 4 Title / Size / Year</p>
-        </div>
-        <!-- Add more items as you like -->
-      </div>
-</div>
-      
-   </div>
-   </div>
+    <!-- Mobile logo + hamburger -->
+    <div class="mobile-logo">
+      <button class="hamburger" id="hamburgerBtn">&#9776;</button>
+      <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
+    </div>
 
+    <!-- Main content area for article -->
+    <div class="main1">
+      <!-- The title of the article -->
+      <div class="article-title"></div>
+      <!-- The blog post content -->
+      <div class="article"></div>
+      <!-- Gallery container for article images (will be populated via JS) -->
+      <div class="article-gallery"></div>
+    </div>
+  </div>
 <div class="mobile-nav" id="mobileNav">
   <nav>
     <ul>
@@ -100,20 +77,24 @@
     </ul>
   </nav>
 </div>
-
-
-  
-  <!-- Footer at 10% of viewport height, always at bottom -->
-  <footer> 
-  <div class="row"> <b>Nikos Iosif</b> &nbsp; &nbsp; 
-  <a href="https://www.facebook.com/nikos.iosif.9" target="_blank"> <img src="images/facebook.png" class="icon"> </a>
-   <a href="https://www.instagram.com/nickiosif_/" target="_blank"> <img src="images/instagram.png" class="icon"> </a> 
-   <p class="hidding">Studio @ Paparigopoulou 15 </p><a href="https://maps.app.goo.gl/Te84Zco9Kd1Ju8987" target="_blank">  <img src="images/google.jpg" class="icon"></a>
-   <p class="footer-text"> &nbsp;&nbsp;&nbsp; &#169; All rights reserved 2025</p>
-   </div>
-   </footer>
-  
-  <!-- Link to your external JavaScript file -->
-  <script src="js/scripts.js?v=2"></script>
+  <!-- Footer -->
+  <footer>
+    <div class="row">
+      <b>Nikos Iosif</b> &nbsp; &nbsp; 
+      <a href="https://www.facebook.com/nikos.iosif.9" target="_blank">
+        <img src="images/facebook.png" class="icon" alt="Facebook">
+      </a>
+      <a href="https://www.instagram.com/nickiosif_/" target="_blank">
+        <img src="images/instagram.png" class="icon" alt="Instagram">
+      </a>
+      <p class="hidding">Studio @ Paparigopoulou 15</p>
+      <a href="https://maps.app.goo.gl/Te84Zco9Kd1Ju8987" target="_blank">
+        <img src="images/google.jpg" class="icon" alt="Google Maps">
+      </a>
+      <p class="footer-text">&#169; All rights reserved 2025</p>
+    </div>
+  </footer>
+<script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer/dist/rich-text-html-renderer.min.js"></script>
+  <script type="module" src="js/scripts.js?v=2"></script>
 </body>
 </html>
