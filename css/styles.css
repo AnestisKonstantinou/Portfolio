@@ -155,7 +155,7 @@ footer {
   align-items: center;   /* Vertically center the footer text */
   justify-content: left; 
   overflow: hidden;
-  z-index:256;/* Horizontally center it */
+  z-index:450;/* Horizontally center it */
 }
 .row {
   display: flex;
@@ -176,67 +176,7 @@ height:2vw;
   margin-left: auto; /* Pushes text to the right */
   white-space: nowrap; /* Prevents unnecessary line breaks */
 }
-.carousel-container {
-  position: relative;
-  width: 70vw; /* Makes it responsive on all screen sizes */
-  height: 80vh; /* Adjusted to prevent scrollbars */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden; /* Prevents extra scrolling */
- 
-}
 
-/* Each individual slide (image + caption) */
-.carousel-slide {
-  display: none;     
- width: 70%;
-  height: 80%;  /* All slides hidden by default */
-  text-align: center;      /* Center the image and caption */
-  position: relative;      /* For the caption positioning if needed */
-}
-
-.carousel-slide img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  display: block;
-  margin: auto;
-}
-
-
-
-
-/************************************
-  Arrows
-************************************/
-.carousel-prev,
-.carousel-next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;                 /* Center vertically */
-  width: auto;
-  padding: 0.5rem;
-  color: black;
-  font-weight: bold;
-  font-size: 1.5rem;
-  transition: 0.3s;
-  border-radius: 50%;
-  text-decoration: none;
-  user-select: none;
-  
-  transform: translateY(-50%);
-}
-
-/* Position the "next" arrow on the right */
-.carousel-next {
-  right: 10px;
-}
-
-/* Position the "prev" arrow on the left */
-.carousel-prev {
-  left: 10px;
-}
 .mobile-logo {
 	display:none;
 }
@@ -386,6 +326,141 @@ height:auto;}
 }
 
 
+/* Ensure the gallery title is centered and has some padding at the bottom */
+/* Center the gallery title with padding */
+#galleryTitle {
+  text-align: center;
+  padding-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Center the carousel container */
+/* Gallery title styling (unchanged) */
+#galleryTitle {
+  text-align: center;
+  padding-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Carousel container: remove fixed height and overflow so that captions and arrows are visible */
+#myGallery {
+  display: flex;
+  flex-direction: column;  /* allow title, slides and arrows to stack */
+  align-items: center;
+  margin: 0 auto;
+  position: relative;
+  /* Remove max-height and overflow hidden */
+}
+
+/* Dedicated container for slides */
+.carousel-slides {
+  width: 100%;
+  /* Let the height adjust automatically */
+  overflow: visible;
+  position: relative;
+}
+
+/* Each slide: remove fixed height so caption can display below */
+.carousel-slide {
+  display: none;
+  width: 70%;
+  margin: 0 auto;
+  /* height is auto so it wraps its contents */
+}
+
+/* Image container: fixed height so images are uniform */
+.carousel-image-container {
+  width: 100%;
+  height: 70vh; /* fixed image height */
+  overflow: hidden;
+}
+
+/* Ensure the image fits inside the container */
+.carousel-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* or 'cover' if you prefer cropping */
+  display: block;
+  margin: 0 auto;
+}
+
+/* Caption: now placed statically below the image container */
+.carousel-caption {
+  width: 100%;
+  color: black;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  margin-top: 0.5rem;
+  position: static;  /* no absolute positioning */
+}
+
+/* Arrow navigation: position relative to the image container height */
+.carousel-prev,
+.carousel-next {
+  position: absolute;
+  top: 35vh; /* Half of the 70vh image container */
+  transform: translateY(-50%);
+  font-size: 2rem;
+  color: black;
+  padding: 0.5rem;
+  border-radius: 50%;
+  text-decoration: none;
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* Place arrows at the sides of the image container */
+.carousel-prev {
+  left: 10px;
+}
+
+.carousel-next {
+  right: 10px;
+}
+
+/* Active slide is shown */
+.active-slide {
+  display: block;
+}
+
+/* Article Page Specific Styles */
+.article-title {
+  text-align: center;
+  margin: 2rem auto 1rem;
+  font-size: 2rem;
+  color: #333;
+}
+
+.article {
+  text-align: center;
+  margin: 0 auto 2rem;
+  max-width: 600px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  padding: 0 1rem;
+  color: #555;
+}
+
+.article-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  max-width: 80%;
+  margin: 0 auto 2rem;
+}
+
+.article-gallery img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+
+
 
 
 /* Media query: on narrower screens, hide sidebar; show hamburger */
@@ -413,6 +488,7 @@ display: flex;
   .page-wrapper img {
     max-width:100%; /* Slight padding on the sides */
     max-height: 100%; /* Allow more breathing space */
+	
   }
 
 .caption {
@@ -437,6 +513,7 @@ display: flex;
     display: block;
 	width:15vw;
 	max-height:100vh;
+	z-index:400;
 	
   }
   .mobile-nav nav{
@@ -469,14 +546,19 @@ margin-top:3vh;
     align-self: center;
 	
   }
- .mobile-logo {
-    display:block; /* Use flexbox for better alignment */
-    align-items: center; /* Align items vertically */
-    justify-content: space-between; /* Space out hamburger & logo */
-    width: 100%;
-    height:10vh; /* Set a height for the navbar */
-    padding: 5px 15px;
-    overflow: hidden; /* Ensures nothing leaks out */
+.mobile-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 300;
+  background-color: #F1F7F7;
+  height: 10vh; /* or your desired height */
+  padding: 5px 15px;
+  box-sizing: border-box;
 }
 .mobile-logo img {
     height: 100%; /* Ensure it fits the parent div */
@@ -523,13 +605,14 @@ display:none !important;
   }
   .main1
   { flex: 1;
-	height:90vh;
+	height:auto;
 	justify-content: center;
 	align-items: center;
 	width: 99vw; /* Ensure full width */
 	/*box-sizing: border-box;*/
-	overflow-y: auto; 
-	padding-top:0;
+	overflow-y: auto;            /* Reserve space for the fixed header */
+    height: calc(100vh - 10vh);     /* Adjust height if needed */
+    align-items: flex-start;  
 	padding-left:1rem;
 	}
 	.page-wrapper1 {
