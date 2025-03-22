@@ -608,8 +608,7 @@ display:none !important;
   }
   .main1
   { flex: 1;
-   display:block;
-	height:auto;
+	
 	justify-content: center;
 	align-items: center;
 	width: 99vw; /* Ensure full width */
