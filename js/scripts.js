@@ -1,24 +1,19 @@
 import { documentToHtmlString } from "https://cdn.skypack.dev/@contentful/rich-text-html-renderer";  // Existing submenu and mobile navigation code
-const submenuLinks = document.querySelectorAll(".has-submenu");
-
-submenuLinks.forEach(link => {
-  const toggleSubmenu = (event) => {
-    event.preventDefault();
-    const submenu = link.nextElementSibling;
-    // Close any other open submenus
-    document.querySelectorAll(".submenu").forEach(otherSubmenu => {
-      if (otherSubmenu !== submenu) {
-        otherSubmenu.classList.remove("open-submenu");
-      }
+ const submenuLinks = document.querySelectorAll(".has-submenu");
+  submenuLinks.forEach(link => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const submenu = link.nextElementSibling;
+      document.querySelectorAll(".submenu").forEach(otherSubmenu => {
+        if (otherSubmenu !== submenu) {
+          otherSubmenu.classList.remove("open-submenu");
+        }
+      });
+      submenu.classList.toggle("open-submenu");
+      console.log("Submenu Toggled:", submenu);
     });
-    submenu.classList.toggle("open-submenu");
-    console.log("Submenu toggled:", submenu);
-  };
-
-  // Add both click and touchstart listeners
-  link.addEventListener("click", toggleSubmenu);
-  link.addEventListener("touchstart", toggleSubmenu);
-});
+  });
+  
   
   const hamburgerBtn = document.getElementById("hamburgerBtn");
   const mobileNav = document.getElementById("mobileNav");
