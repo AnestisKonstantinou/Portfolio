@@ -58,7 +58,7 @@ import { documentToHtmlString } from "https://cdn.skypack.dev/@contentful/rich-t
   // Fetch gallery from Contentful
   
   const entryId = '522odF81XhwFTDolnZG48m'; // Your gallery entry ID
-  fetch(`/.netlify/functions/contentful-proxy?entryId=${galleryEntryId}`)
+  fetch(`/.netlify/functions/contentful-proxy?entryId=${EntryId}`)
   .then(response => response.json())
   .then(data => {
       console.log('Contentful Gallery Data:', data);
