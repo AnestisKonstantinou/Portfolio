@@ -118,7 +118,7 @@ if (document.querySelector('.article-title') && document.querySelector('.article
   // Replace with your actual article entry ID
   const articleEntryId = 'NI4BpqTDyJM05KsGh6SgF';
 
-  fetch(`/.netlify/functions/contentful-proxy?entryId=${articleEntryId}`)
+  fetch(`/.netlify/functions/contentful-article-proxy?entryId=${articleEntryId}`)
     .then(response => response.json())
     .then(data => {
       if (data.sys && data.fields) {
