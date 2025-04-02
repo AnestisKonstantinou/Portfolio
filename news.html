@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nikos Iosif - News</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- The page-wrapper1 / sidebar / etc. can be identical to your other pages -->
+
+  <div class="page-wrapper1">
+    <aside class="sidebar">
+      <div class="artist-name">
+        <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
+      </div>
+      <nav>
+        <ul>
+          <li>
+            <a class="has-submenu">Selected works &#x25BE;</a>
+            <ul class="submenu">
+              <li><a href="textile.html">Textile</a></li>
+              <li><a href="paintings.html">Paintings</a></li>
+            </ul>
+          </li>
+          <li>
+            <a class="has-submenu">Exhibitions &#x25BE;</a>
+            <ul class="submenu">
+              <li><a href="biennale.html">Biennale</a></li>
+              <li><a href="dowry.html">Dowry</a></li>
+              <li><a href="nemo.html">Nemophilist</a></li>
+            </ul>
+          </li>
+          <!-- Add your new "News" link if you want it in the nav -->
+          <li><a href="news.html">News</a></li>
+          <li><a href="cv.html">cv / press</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main content area for your News listing -->
+    <div class="main1">
+      <h1 style="text-align:center;">News / Blog</h1>
+      <div id="newsContainer"></div>
+    </div>
+  </div>
+
+  <!-- Mobile nav, footer, etc. exactly like your other pages -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer/dist/rich-text-html-renderer.min.js"></script>
+  <script type="module" src="js/scripts-news.js"></script>
+</body>
+</html>
