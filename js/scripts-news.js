@@ -68,7 +68,7 @@ function renderNewsList(articles) {
     const titleEl = document.createElement('h3');
     titleEl.textContent = article.title;
     const excerptEl = document.createElement('p');
-    excerptEl.textContent = article.excerpt; // short excerpt
+    excerptEl.textContent = article.shortExcerpt; // short excerpt
     textDiv.appendChild(titleEl);
     textDiv.appendChild(excerptEl);
 
