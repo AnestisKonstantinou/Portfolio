@@ -1,0 +1,712 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: sans-serif;
+}
+
+body {
+  /* Use flex layout so the footer can be pinned at the bottom */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+background-color:#F1F7F7;  /* Ensure body spans full viewport height */
+}
+
+/* The container that holds sidebar + main content should be 90% of the viewport height */
+.page-wrapper {
+  display: flex;
+  flex: 1;          /* Takes up remaining vertical space before footer */
+  height: 90vh;     /* 90% of viewport height for main area */
+}
+
+/* Sidebar (left nav) styling */
+.sidebar {
+	background-color:rgb(221, 211, 211, 0.4);
+	border-radius:0 30px  30px 0 ;
+  width: 30%;
+  max-width: 350px;          /* You can adjust this max as you like */
+   /* Light gray background */
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-y: auto;          /* Scroll if content exceeds sidebar height */
+}
+
+
+/* Artist Name link */
+.artist-name {
+  margin-bottom: 1rem;
+  display:flex;
+  align-items: center;   /* Vertically center the footer text */
+  justify-content: center;
+  
+}
+.artist-name a {
+  text-decoration: none;
+  color: #000;
+}
+
+/* Navigation list styles */
+.sidebar nav ul {
+  list-style: none; /* Remove bullets for top-level items */
+  margin: 0;
+  padding: 0;
+
+}
+
+.sidebar nav li {
+  margin-bottom: 2rem;
+  font-size: 1em;
+}
+
+/* Submenu hidden by default */
+.submenu {
+  display: none;
+  margin-left: 1rem;   /* Slight indentation for sub-items */
+  list-style: none;    /* Use a bullet for sub-items */
+  padding-left: 1rem;  /* So bullets don't overlap text */
+}
+.submenu.open-submenu {
+  display: block;
+  
+}
+.has-submenu:hover + .submenu,
+.submenu:hover {
+  display: block;
+}
+.has-submenu::after {
+    /* space + arrow glyph */
+  font-size: 1.0em;
+  margin-left: 0.3em;
+  transition: transform 0.2s ease;
+}
+
+/* Rotate the arrow when hovering the link (optional nice touch) */
+.has-submenu:hover::after {
+  transform: rotate(180deg);
+}
+/* Show submenu on hover (optional, can be replaced with a click toggle) */
+.sidebar nav li:hover > .submenu {
+  display: block;
+  margin-top:4vh;
+}
+
+/* Navigation links */
+.sidebar nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* Main content area */
+main {
+  flex: 1;
+  /*display: flex; */
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box;
+  overflow: hidden; /* Prevents unwanted scrolling */
+}
+
+.container {
+  position: relative;
+  width: 70vw; /* Makes it responsive on all screen sizes */
+  height: 80vh; /* Adjusted to prevent scrollbars */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevents extra scrolling */
+ 
+}
+
+.image-wrapper {
+	width: 70%;
+  height: 80%;  /* All slides hidden by default */
+  text-align: center;      /* Center the image and caption */
+  position: relative; 
+}
+
+.image-wrapper img {
+	 max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+}
+
+.caption {
+  position: relative; /* No absolute positioning */
+  text-align: center;
+  font-size: clamp(12px, 2vw, 22px); /* Makes font size responsive */
+  color: black; /* Text color */
+  padding: 5px 10px;
+  box-sizing: border-box;
+margin-top: 0.5rem;     /* space above the caption */
+/* Creates space between image & caption */
+}
+
+/* Footer (10% viewport height) pinned at bottom */
+footer {
+  max-height: 20vh;
+	background-color:  rgb(213, 229,229, 0.5);
+	border-radius:0 30px 0 0;
+  color: black;
+  display: flex;
+  align-items: center;   /* Vertically center the footer text */
+  justify-content: left; 
+  overflow: hidden;
+  z-index:450;/* Horizontally center it */
+}
+.row {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping to a second row if needed */
+  justify-content: space-between; /* Ensures spacing between elements */
+  align-items: center;
+  width: 100%;
+  padding: 1vh;
+  min-height: 9vh; /* Adjust based on design */
+}
+.icon{
+	max-width: 2vw;
+height:2vw;
+}
+.footer-text {
+  text-align: right;
+  font-size: clamp(12px, 3vw, 18px);
+  margin-left: auto; /* Pushes text to the right */
+  white-space: nowrap; /* Prevents unnecessary line breaks */
+}
+
+.mobile-logo {
+	display:none;
+}
+
+/************************************
+  Active Slide
+************************************/
+.active-slide {
+  display: block;  /* Only the "active" slide is displayed */
+}
+.gallery-container{
+	max-width:60vw;
+height:auto;}
+.text-block {
+  text-align: center;   /* center the heading + paragraph */
+  max-width: 600px;     /* optional, to limit text width */
+  margin: 0 auto 2rem;  /* center horizontally and add bottom margin */
+}
+
+.gallery {
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 1rem; /* space between columns/rows */
+  /* you could also use grid-gap if older browsers, 
+     but gap is standard in modern browsers */
+  margin-top: 2rem; /* add spacing above the gallery if you like */
+  align-items: start; /* ensures each item lines up at the top row */
+}
+
+.gallery-item {
+  background: #fff; /* optional background color for each item */
+  padding: 0.5rem;  /* optional padding */
+  box-sizing: border-box;
+  text-align: center; /* center caption if you like */
+}
+
+.gallery-item img {
+  width: 100%;      /* make the image fill its .gallery-item width */
+  height: auto;     /* maintain aspect ratio */
+  display: block;   /* remove inline spacing gap */
+  margin: 0 auto;   /* center horizontally if narrower than container */
+}
+
+.caption {
+  margin-top: 0.5rem; /* spacing above/below text */
+  font-size: 0.9rem;
+  color: #555;        /* or your preferred text color */
+}
+
+.mobile-nav {
+  display: none; 
+  position: fixed; /* or fixed if you want it floating over content */
+  top: 0;
+  left: 0;
+  width: 60%;
+  border-radius:0 30px 0 0;
+  max-width: 300px;
+  height: 100vh;
+  background-color:rgb(221, 211, 211, 0.7);
+  box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+  padding: 1rem;
+  /* transform or transitions for slide-in if you like */
+  transition: transform 0.3s ease;
+  transform: translateX(-100%); /* keep it off-screen initially */
+}
+
+.mobile-nav.open {
+  transform: translateX(0); /* Slide in from the left */
+}
+
+.mobile-nav nav ul {
+  list-style: none;
+  margin: 0; 
+  padding: 0;
+  font-size: clamp(8px, 2.5vw, 22px); /* Adjusts between 12px and 22px based on screen width */
+  /*white-space: nowrap;  /* Prevents text from breaking into two lines */
+  /*overflow: hidden;      /* Ensures long text doesn’t overflow the menu width */
+  /*text-overflow: ellipsis; */
+}
+
+.mobile-nav nav li {
+  margin-bottom: 1rem;
+  font-size: clamp(8px, 2.5vw, 22px); /* Adjusts between 12px and 22px based on screen width */
+  /*white-space: nowrap;  /* Prevents text from breaking into two lines */
+  /*overflow: hidden;      /* Ensures long text doesn’t overflow the menu width */
+  /*text-overflow: ellipsis; /* adjust size for mobile */
+}
+
+.mobile-nav nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* Hamburger button styling */
+.hamburger {
+  display: none; /* hidden by default on desktop */
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 9999; /* so it’s above other elements if overlaying */
+}
+
+.main1 {
+  flex: 1;
+  display: block; /* Stack text + gallery */
+  justify-content: flex-start; /* Align text at the top */
+  align-items: center;
+  width: 70vw;
+  height: auto; /* Allow content to dictate height */
+  box-sizing: border-box;
+  overflow-y: auto; /* Enable scrolling */
+  padding: 2rem 0;
+}
+
+.page-wrapper1 {
+  display: flex;/* Stack sidebar + main content */
+  flex-grow: 1;
+  height: 80vh; /* Allow content to expand */
+}
+.gallery-container1 {
+  width: 80vw; /* Adjust width */
+  max-width: 1000px; /* Optional: limit max width */
+  height: auto; /* Allow content to define height */
+  display: block;
+  align-items: center;
+}
+
+.gallery1 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.cv-main{
+	box-sizing:border-box;
+	width:100%;
+	padding:0rem 3rem 2rem 3rem;
+	height:auto;
+	text-align:center;
+}
+
+
+/* Ensure the gallery title is centered and has some padding at the bottom */
+/* Center the gallery title with padding */
+#galleryTitle {
+  text-align: center;
+  padding-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Center the carousel container */
+/* Gallery title styling (unchanged) */
+#galleryTitle {
+  text-align: center;
+  padding-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Carousel container: remove fixed height and overflow so that captions and arrows are visible */
+#myGallery {
+  display: flex;
+  flex-direction: column;  /* allow title, slides and arrows to stack */
+  align-items: center;
+  margin: 0 auto;
+  position: relative;
+  /* Remove max-height and overflow hidden */
+}
+
+/* Dedicated container for slides */
+.carousel-slides {
+  width: 100%;
+  /* Let the height adjust automatically */
+  overflow: visible;
+  position: relative;
+}
+
+/* Each slide: remove fixed height so caption can display below */
+.carousel-slide {
+  display: none;
+  width: 70%;
+  margin: 0 auto;
+  /* height is auto so it wraps its contents */
+}
+
+/* Image container: fixed height so images are uniform */
+.carousel-image-container {
+  width: 100%;
+  height: 70vh; /* fixed image height */
+  overflow: hidden;
+}
+
+/* Ensure the image fits inside the container */
+.carousel-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* or 'cover' if you prefer cropping */
+  display: block;
+  margin: 0 auto;
+}
+
+/* Caption: now placed statically below the image container */
+.carousel-caption {
+  width: 100%;
+  color: black;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  margin-top: 0.5rem;
+  position: static;  /* no absolute positioning */
+}
+
+/* Arrow navigation: position relative to the image container height */
+.carousel-prev,
+.carousel-next {
+  position: absolute;
+  top: 35vh; /* Half of the 70vh image container */
+  transform: translateY(-50%);
+  font-size: 2rem;
+  color: black;
+  padding: 0.5rem;
+  border-radius: 50%;
+  text-decoration: none;
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* Place arrows at the sides of the image container */
+.carousel-prev {
+  left: 10px;
+}
+
+.carousel-next {
+  right: 10px;
+}
+
+/* Active slide is shown */
+.active-slide {
+  display: block;
+}
+
+/* Article Page Specific Styles */
+.article-title {
+  text-align: center;
+  margin: 2rem auto 1rem;
+  font-size: 2rem;
+  color: #333;
+}
+
+.article {
+  text-align: center;
+  margin: 0 auto 2rem;
+  max-width: 600px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  padding: 0 1rem;
+  color: #555;
+}
+
+.article-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  max-width: 80%;
+  margin: 0 auto 2rem;
+}
+
+.article-gallery img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns, so you see 9 images in 3 rows by default */
+  gap: 1rem;
+  width: 80%;
+  margin: 0 auto; /* center the grid if you like */
+  /* you can make it scrollable if you want to lock it to a certain height */
+}
+.gallery-grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: pointer; /* so user knows they can click */
+}
+
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.8);
+  display: none; /* hidden by default */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* on top of everything */
+}
+
+.lightbox-overlay.active {
+  display: flex; /* show overlay when active */
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column; /* image on top, caption below */
+  align-items: center;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 80vh; /* let the caption have room below */
+  object-fit: contain;
+}
+
+.lightbox-caption {
+  text-align: center;
+  margin-top: 1rem;
+  color: white; /* or a light color, so it’s visible on dark background */
+}
+
+/* Arrows (left & right) */
+.lightbox-arrows {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+}
+
+.arrow {
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  user-select: none;
+  margin: 0 1rem;
+}
+
+/* Close button in top-right corner */
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}
+/* Media query: on narrower screens, hide sidebar; show hamburger */
+@media (max-width: 768px) {
+	main{ flex: 1;
+	height:90vh;
+  /*display: flex; */
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box;
+	overflow: hidden; 
+	}
+	.container{ width: 95vw; /* Full width for mobile */
+    height: 65vh; }
+.page-wrapper {
+    height: 70vh;
+	width:100%;
+display: flex;
+    align-items: center;
+    justify-content: center;
+	/* Reduce height on smaller screens */
+  }
+
+  .page-wrapper img {
+    max-width:100%; /* Slight padding on the sides */
+    max-height: 100%; /* Allow more breathing space */
+	
+  }
+
+.caption {
+  position: relative; /* Ensures it follows the image */
+  margin-top: 10px; /* Creates space between image & caption */
+  text-align: center;
+  font-size: clamp(12px, 3vw, 20px); /* Makes font size responsive *//* Optional readability */
+  color: black;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.carousel-container {
+    width: 95vw; /* Full width for mobile */
+    height: 65vh; /* Adjusted height */
+}
+
+  .sidebar  {
+    display: none;
+  }
+   .mobile-nav {
+    display: block;
+	width:15vw;
+	max-height:100vh;
+	z-index:400;
+	
+  }
+  .mobile-nav nav{
+	  margin-top:10vh;
+	  
+  }
+  
+ .submenu {
+	 display:none;
+    max-height: 0;
+	font-size:1em;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+
+  .submenu.open-submenu {
+	  display:block;
+    max-height: 500px;
+margin-top:3vh;	
+/* Adjust depending on submenu height */
+  }
+  
+  .hamburger {
+     display: block;
+    background: none;
+    border: none;
+    font-size: 24px; /* Adjust size if needed */
+    cursor: pointer;
+    padding: 5px;
+    margin: 0; /* Removes unnecessary margins */
+    align-self: center;
+	
+  }
+.mobile-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 300;
+  background-color: #F1F7F7;
+  height: 10vh; /* or your desired height */
+  padding: 5px 15px;
+  box-sizing: border-box;
+}
+.mobile-logo img {
+    height: 100%; /* Ensure it fits the parent div */
+    width: auto; /* Maintain aspect ratio */
+    max-height: 50px; /* Prevents it from being too large */
+    margin: 0 auto; /* Centering */
+    display: block;
+	margin-top:1rem;
+}
+  .gallery1 {
+    grid-template-columns: repeat(1, 1fr); /* Single column on mobile */
+  }
+
+  .gallery-container1 {
+    width: 95vw; /* Use more screen space */
+  }
+
+ 
+  
+ 
+  .row {
+    text-align: center;
+	max-height:10vh;
+  }
+.row a
+{
+padding:0.1rem;
+}
+  .footer-text {
+    text-align: right;
+    margin-top: 2px; /* Reset margin so it centers */
+    width: 50%; /* Takes full width */
+    white-space: normal; /* Allows wrapping */
+  }
+.hidding{
+display:none !important;
+}
+  .icon {
+    max-width: 30px; /* Adjust icon size for small screens */
+    height: auto;
+	max-height:4vh;
+	padding:auto;
+    
+  }
+  .main1
+  { flex: 1;
+	height:auto;
+	justify-content: center;
+	align-items: center;
+	width: 99vw; /* Ensure full width */
+	/*box-sizing: border-box;*/
+	overflow-y: auto;            /* Reserve space for the fixed header */
+    height: calc(100vh - 20vh);     /* Adjust height if needed */
+    align-items: flex-start;  
+	padding-left:1rem;
+	}
+	.page-wrapper1 {
+    height: 70vh;
+	width:100vw;
+	display: block;
+    align-items: center;
+    justify-content: center;
+	/* Reduce height on smaller screens */
+  }
+
+.cv-main{
+	width:100%;
+	height:auto;
+	text-align:center;
+	overflow-y:auto;
+}
+}
