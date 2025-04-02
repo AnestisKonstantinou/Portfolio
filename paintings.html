@@ -49,11 +49,23 @@
       <!-- Navigation arrows -->
       
     <div class="gallery-title" id="galleryTitle"></div>
-  <div id="myGallery">
-  <div class="carousel-slides"></div>
- <a class="carousel-prev" onclick="prevSlide()">&#10094;</a>
-      <a class="carousel-next" onclick="nextSlide()">&#10095;</a>
+   <div class="gallery-grid" id="myGrid"></div>
+
+<!-- Fullscreen overlay (initially hidden) -->
+<div class="lightbox-overlay" id="lightboxOverlay">
+  <span class="close-button" id="closeButton">&times;</span>
+  <div class="lightbox-content">
+    <img id="lightboxImage" src="" alt="" />
+    <div class="lightbox-caption">
+      <h3 id="lightboxTitle"></h3>
+      <p id="lightboxDescription"></p>
     </div>
+    <div class="lightbox-arrows">
+      <span class="arrow left-arrow" id="prevButton">&#10094;</span>
+      <span class="arrow right-arrow" id="nextButton">&#10095;</span>
+    </div>
+  </div>
+</div>
  
 	</div>
   </div>
