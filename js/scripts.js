@@ -114,3 +114,45 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}`)
    3) (Optional) If you have an Article Page
    =========================== */
 // Check if this page is an article page by looking for .article-title and .article
+if (document.querySelector('.article-title') && document.querySelector('.article')) {
+  // Replace with your actual article entry ID
+  const articleEntryId = 'NI4BpqTDyJM05KsGh6SgF';
+
+  fetch(`/.netlify/functions/contentful-proxy?entryId=${articleEntryId}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.sys && data.fields) {
+        const title = data.fields.title || "Untitled Article";
+        const blogPost = data.fields.blogPost || "";
+        const galleryImages = data.fields.gallery || [];
+
+        // Update title and blog post text
+        const titleEl = document.querySelector('.article-title');
+        const blogPostEl = document.querySelector('.article');
+        if (titleEl) titleEl.textContent = title;
+        if (blogPostEl) blogPostEl.innerHTML = documentToHtmlString(blogPost);
+
+        // If you want to show article images in a gallery
+        const galleryContainer = document.querySelector('.article-gallery');
+        if (galleryContainer && galleryImages.length > 0) {
+          if (data.includes && data.includes.Asset) {
+            galleryImages.forEach(imageRef => {
+              const asset = data.includes.Asset.find(a => a.sys.id === imageRef.sys.id);
+              if (asset && asset.fields && asset.fields.file) {
+                const imgEl = document.createElement('img');
+                imgEl.src = "https:" + asset.fields.file.url;
+                imgEl.alt = asset.fields.title || "";
+                galleryContainer.appendChild(imgEl);
+              }
+            });
+          } else {
+            console.warn("No data.includes.Asset found for article images.");
+          }
+        }
+      } else {
+        console.warn("Invalid article entry data:", data);
+      }
+    })
+    .catch(err => console.error("Error fetching article:", err));
+}
+
