@@ -33,120 +33,83 @@ if (hamburgerBtn && mobileNav) {
 /* ===========================
    2) Fetch Gallery from Contentful & Build Grid
    =========================== */
-const entryId = '522odF81XhwFTDolnZG48m'; // Your gallery entry ID
+const entryId = '522odF81XhwFTDolnZG48m';
+
 fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}`)
   .then(response => response.json())
   .then(data => {
-    console.log('Contentful Gallery Data:', data);
+    console.log('Resolved Gallery Data:', data);
 
-    if (data.sys && data.sys.type === 'Entry' && data.fields) {
-      const galleryEntry = data;
-      const titleField = galleryEntry.fields.title || 'Untitled Gallery';
-      const imagesArray = galleryEntry.fields.galleryItem || [];
-
-      // Update any "galleryTitle" element if you wish
-      const galleryTitleEl = document.getElementById('galleryTitle');
-      if (galleryTitleEl) {
-        galleryTitleEl.textContent = titleField;
-      }
-
-      // Grab your new grid container
-      const gridContainer = document.getElementById('myGrid');
-      if (!gridContainer) {
-        console.warn("No element with id 'myGrid' found in the DOM!");
-        return;
-      }
-
-      if (imagesArray.length === 0) {
-        console.warn("Empty gallery array in fields.galleryItem");
-      } else {
-        // Build an array of image data for our lightbox
-        const allImages = [];
-
-        // Use the included assets to match each reference
-        if (data.includes && data.includes.Asset) {
-          imagesArray.forEach((imageRef, index) => {
-            const asset = data.includes.Asset.find(a => a.sys.id === imageRef.sys.id);
-            if (!asset || !asset.fields || !asset.fields.file) return;
-
-            const imageUrl = 'https:' + asset.fields.file.url;
-            const title = asset.fields.title || '';
-            const description = asset.fields.description || '';
-
-            allImages.push({ url: imageUrl, title, description });
-
-            // Create <img> and append to the grid
-            const imgEl = document.createElement('img');
-            imgEl.src = imageUrl;
-            imgEl.alt = title;
-            imgEl.style.cursor = 'pointer';
-            imgEl.addEventListener('click', () => {
-              openLightbox(index); // open overlay at this image
-            });
-            gridContainer.appendChild(imgEl);
-          });
-        } else {
-          console.warn("No data.includes.Asset found.");
-        }
-
-        // Now set up the lightbox overlay logic
-        let currentIndex = 0;
-        const overlay = document.getElementById('lightboxOverlay');
-        const lightboxImage = document.getElementById('lightboxImage');
-        const lightboxTitle = document.getElementById('lightboxTitle');
-        const lightboxDescription = document.getElementById('lightboxDescription');
-        const closeBtn = document.getElementById('closeButton');
-        const nextBtn = document.getElementById('nextButton');
-        const prevBtn = document.getElementById('prevButton');
-
-        function openLightbox(index) {
-          currentIndex = index;
-          if (!overlay) return;
-
-          // Populate the overlay
-          const { url, title, description } = allImages[currentIndex];
-          if (lightboxImage) lightboxImage.src = url;
-          if (lightboxTitle) lightboxTitle.textContent = title;
-          if (lightboxDescription) lightboxDescription.textContent = description;
-
-          // Show the overlay (assuming a "active" class triggers display)
-          overlay.classList.add('active');
-        }
-
-        function closeLightbox() {
-          if (overlay) {
-            overlay.classList.remove('active');
-          }
-        }
-
-        function showNext() {
-          currentIndex = (currentIndex + 1) % allImages.length;
-          openLightbox(currentIndex);
-        }
-
-        function showPrev() {
-          currentIndex = (currentIndex - 1 + allImages.length) % allImages.length;
-          openLightbox(currentIndex);
-        }
-
-        // Hook up buttons
-        if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
-        if (nextBtn) nextBtn.addEventListener('click', showNext);
-        if (prevBtn) prevBtn.addEventListener('click', showPrev);
-
-        // ESC key
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') {
-            closeLightbox();
-          }
-        });
-      }
-    } else {
-      console.warn('No valid entry found in the fetched data.');
+    // data should look like { title: "...", images: [...] }
+    const { title, images } = data;
+    if (!images || !Array.isArray(images) || images.length === 0) {
+      console.warn("No images returned from function.");
+      return;
     }
-  })
-  .catch(err => console.error('Error fetching gallery:', err));
 
+    // Optional: show the gallery title in the page
+    const galleryTitleEl = document.getElementById('galleryTitle');
+    if (galleryTitleEl) {
+      galleryTitleEl.textContent = title;
+    }
+
+    // 2.1) Build the grid of images
+    const gridContainer = document.getElementById('myGrid');
+    if (!gridContainer) {
+      console.warn("No #myGrid container found.");
+      return;
+    }
+    gridContainer.innerHTML = '';
+
+    let currentIndex = 0;
+    const overlay = document.getElementById('lightboxOverlay');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxDescription = document.getElementById('lightboxDescription');
+    const closeBtn = document.getElementById('closeButton');
+    const nextBtn = document.getElementById('nextButton');
+    const prevBtn = document.getElementById('prevButton');
+
+    // Lightbox functions
+    function openLightbox(index) {
+      currentIndex = index;
+      const { url, title, description } = images[currentIndex];
+      if (lightboxImage) lightboxImage.src = url;
+      if (lightboxTitle) lightboxTitle.textContent = title;
+      if (lightboxDescription) lightboxDescription.textContent = description;
+      if (overlay) overlay.classList.add('active');
+    }
+    function closeLightbox() {
+      if (overlay) overlay.classList.remove('active');
+    }
+    function showNext() {
+      currentIndex = (currentIndex + 1) % images.length;
+      openLightbox(currentIndex);
+    }
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      openLightbox(currentIndex);
+    }
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    if (nextBtn) nextBtn.addEventListener('click', showNext);
+    if (prevBtn) prevBtn.addEventListener('click', showPrev);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Create an <img> for each image in "images" array
+    images.forEach((imgObj, index) => {
+      const imgEl = document.createElement('img');
+      imgEl.src = imgObj.url;
+      imgEl.alt = imgObj.title || '';
+      imgEl.style.cursor = 'pointer';
+      imgEl.addEventListener('click', () => {
+        openLightbox(index);
+      });
+      gridContainer.appendChild(imgEl);
+    });
+  })
+  .catch(err => console.error('Error fetching final gallery data:', err));
 /* ===========================
    3) (Optional) If you have an Article Page
    =========================== */
