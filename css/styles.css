@@ -552,6 +552,7 @@ height:auto;}
 /* Each box in collapsed mode */
 .news-box {
   border: 1px solid #ccc;
+  border-radius:20px;
   padding: 1rem;
   display: flex; /* image on left, text on right */
   gap: 1rem;
