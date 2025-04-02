@@ -454,7 +454,7 @@ height:auto;}
 
 .article-gallery img {
   width: 100%;
-  height: auto;
+  aspect-ratio: 1 / 1;
   display: block;
   object-fit: cover;
 }
@@ -656,7 +656,9 @@ margin-top:3vh;
     width: 95vw; /* Use more screen space */
   }
 
- 
+  .article-gallery {
+    grid-template-columns: 2fr;
+  }
   
  
   .row {
@@ -724,6 +726,9 @@ display:none !important;
 /* On even smaller screens (phones), go to 1 column */
 @media (max-width: 480px) {
   .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+	 .article-gallery {
     grid-template-columns: 1fr;
   }
 }
