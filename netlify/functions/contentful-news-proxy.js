@@ -11,7 +11,7 @@ module.exports.handler = async (event, context) => {
     const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
     
     // Content type for your "News Article" (replace with your actual contentTypeId if needed)
-    const contentTypeId = 'NewsArticle'; 
+    const contentTypeId = 'newsFlash'; 
     // If you named it differently, check your Contentful “Content Model” → “API Identifier”.
 
     const baseUrl = `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${contentTypeId}&include=2`;
