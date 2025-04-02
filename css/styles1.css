@@ -470,9 +470,9 @@ height:auto;}
 }
 .gallery-grid img {
   width: 100%;
-  height: auto;
-  display: block;
-  cursor: pointer; /* so user knows they can click */
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+/* so user knows they can click */
 }
 
 .lightbox-overlay {
@@ -709,4 +709,16 @@ display:none !important;
 	text-align:center;
 	overflow-y:auto;
 }
+}
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* On even smaller screens (phones), go to 1 column */
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
 }
