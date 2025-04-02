@@ -542,6 +542,71 @@ height:auto;}
   font-size: 2rem;
   cursor: pointer;
 }
+#newsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* space between each news box */
+  margin-top: 2rem;
+}
+
+/* Each box in collapsed mode */
+.news-box {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  display: flex; /* image on left, text on right */
+  gap: 1rem;
+}
+
+/* Left side: 20% for the thumbnail */
+.news-thumbnail {
+  flex: 0 0 20%;
+}
+
+.news-thumbnail img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover; /* if you want cropping */
+}
+
+/* Right side: 80% for the excerpt */
+.news-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* The expanded portion is absolutely not in the same row layout.
+   We'll style it differently. We can do block layout so the image is on top,
+   or we can do a grid. We'll keep it simple. */
+.news-expanded img {
+  width: 200px; /* e.g. smallish top-left */
+  float: left;  /* or just keep it block if you prefer */
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  object-fit: cover;
+}
+
+/* If you want a certain style for the button: */
+.news-box button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-family: inherit; /* match your site font */
+}
+
+/* Mobile responsiveness:
+   On narrower screens, stack the thumbnail on top, excerpt below. */
+@media (max-width: 768px) {
+  .news-box {
+    flex-direction: column;
+  }
+  .news-thumbnail {
+    flex: 0 0 auto; /* no forced 20% */
+    width: 100%;
+  }
+}
 /* Media query: on narrower screens, hide sidebar; show hamburger */
 @media (max-width: 768px) {
 	main{ flex: 1;
