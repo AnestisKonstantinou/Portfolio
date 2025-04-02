@@ -1,6 +1,7 @@
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
-export async function handler(event, context) {
+module.exports.handler = async (event, context) => {
+
   const entryId = event.queryStringParameters.entryId;
 
   if (!entryId) {
@@ -24,7 +25,7 @@ export async function handler(event, context) {
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*', // Optional: if you're calling this from other domains
+        'Access-Control-Allow-Origin': '*', // Optional if needed
       },
     };
   } catch (error) {
@@ -34,4 +35,4 @@ export async function handler(event, context) {
       body: JSON.stringify({ error: "Internal server error" }),
     };
   }
-}
+};
