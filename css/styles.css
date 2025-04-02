@@ -545,6 +545,7 @@ height:auto;}
 #newsContainer {
   display: flex;
   flex-direction: column;
+	margin:auto;
   gap: 2rem; /* space between each news box */
   margin-top: 2rem;
 }
