@@ -37,19 +37,19 @@
         </ul>
       </nav>
     </aside>
-<div class="mobile-logo">
+
+    <!-- Main content area -->
+    <div class="main1">
+	<div class="mobile-logo">
 	<button class="hamburger" id="hamburgerBtn">
     &#9776; <!-- This is the “three lines” icon in HTML -->
   </button>
 	<a href="index.html"><img src="images/logo.png"></a></div>
-    <!-- Main content area -->
-    <div class="main1">
-	
       
       <!-- Navigation arrows -->
       
     <div class="gallery-title" id="galleryTitle"></div>
-   <div class="gallery-grid" id="myGrid"></div>
+  <div class="gallery-grid" id="myGrid"></div>
 
 <!-- Fullscreen overlay (initially hidden) -->
 <div class="lightbox-overlay" id="lightboxOverlay">
@@ -66,6 +66,7 @@
     </div>
   </div>
 </div>
+
  
 	</div>
   </div>
@@ -74,14 +75,14 @@
   <nav>
     <ul>
       <li>
-        <a href="#" class="has-submenu">Selected works &#11167;</a>
+        <a href="#" class="has-submenu">Selected works &#x25BE;</a>
         <ul class="submenu">
           <li><a href="textile.html">Textile</a></li>
           <li><a href="paintings.html">Paintings</a></li>
         </ul>
       </li>
       <li>
-        <a href="#" class="has-submenu" style="white-space: nowrap;">Exhibitions &#11167;</a>
+        <a href="#" class="has-submenu" style="white-space: nowrap;">Exhibitions &#x25BE;</a>
         <ul class="submenu">
           <li><a href="biennale.html">Biennale</a></li>
           <li><a href="dowry.html">Dowry</a></li>
@@ -106,7 +107,7 @@
    </footer>
   
   <!-- Link to your external JavaScript file -->
-
-  <script src="js/scripts-p.js?v=2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer/dist/rich-text-html-renderer.min.js"></script>
+  <script type="module" src="js/scripts.js?v=2"></script>
 </body>
 </html>
