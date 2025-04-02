@@ -1,0 +1,10 @@
+{
+  "name": "my-netlify-project",
+  "version": "1.0.0",
+  "dependencies": {
+    "node-fetch": "^3.3.1"
+  },
+  "scripts": {
+    "build": "echo 'No build step required' && exit 0"
+  }
+}
