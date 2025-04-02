@@ -505,7 +505,7 @@ height:auto;}
 
 .lightbox-content img {
   max-width: 100%;
-  max-height: 70vh; /* let the caption have room below */
+  max-height: 80vh; /* let the caption have room below */
   object-fit: contain;
 }
 
