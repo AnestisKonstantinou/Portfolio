@@ -1,175 +1,157 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Existing submenu and mobile navigation code
-  const submenuLinks = document.querySelectorAll(".has-submenu");
-  submenuLinks.forEach(link => {
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      const submenu = link.nextElementSibling;
-      document.querySelectorAll(".submenu").forEach(otherSubmenu => {
-        if (otherSubmenu !== submenu) {
-          otherSubmenu.classList.remove("open-submenu");
-        }
-      });
-      submenu.classList.toggle("open-submenu");
-      console.log("Submenu Toggled:", submenu);
-    });
-  });
-  
-  const hamburgerBtn = document.getElementById("hamburgerBtn");
-  const mobileNav = document.getElementById("mobileNav");
-  if (hamburgerBtn && mobileNav) {
-    hamburgerBtn.addEventListener("click", () => {
-      console.log("Hamburger Clicked 🍔");
-      mobileNav.classList.toggle("open");
-    });
-  } else {
-    console.warn("Hamburger menu or mobile nav not found.");
-  }
-  
-  // Carousel variables and functions
-  let slideIndex = 0;
-  let slides = [];
-  
-  function showSlide(index) {
-    if (slides.length === 0) return;
-    // Wrap index if needed
-    if (index < 0) {
-      slideIndex = slides.length - 1;
-    } else if (index >= slides.length) {
-      slideIndex = 0;
-    } else {
-      slideIndex = index;
-    }
-    slides.forEach(slide => {
-      slide.style.display = "none";
-      slide.classList.remove("active-slide");
-    });
-    slides[slideIndex].style.display = "block";
-    slides[slideIndex].classList.add("active-slide");
-  }
-  
-  window.nextSlide = function() {
-    showSlide(slideIndex + 1);
-  }
-  
-  window.prevSlide = function() {
-    showSlide(slideIndex - 1);
-  }
-  
-  // Fetch gallery from Contentful
+// scripts.js
+import { documentToHtmlString } from "https://cdn.skypack.dev/@contentful/rich-text-html-renderer";
 
-  const entryId = '4oU2dtZPY9gX61G3Q7iGK0'; // Your gallery entry ID
+/* ===========================
+   1) Submenu & Mobile Navigation Toggle
+   =========================== */
+const submenuLinks = document.querySelectorAll(".has-submenu");
+submenuLinks.forEach(link => {
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    const submenu = link.nextElementSibling;
+    document.querySelectorAll(".submenu").forEach(otherSubmenu => {
+      if (otherSubmenu !== submenu) {
+        otherSubmenu.classList.remove("open-submenu");
+      }
+    });
+    submenu.classList.toggle("open-submenu");
+    console.log("Submenu Toggled:", submenu);
+  });
+});
+
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const mobileNav = document.getElementById("mobileNav");
+if (hamburgerBtn && mobileNav) {
+  hamburgerBtn.addEventListener("click", () => {
+    console.log("Hamburger Clicked 🍔");
+    mobileNav.classList.toggle("open");
+  });
+} else {
+  console.warn("Hamburger menu or mobile nav not found.");
+}
+
+/* ===========================
+   2) Fetch Gallery from Contentful & Build Grid
+   =========================== */
+const entryId = '4oU2dtZPY9gX61G3Q7iGK0';
+
 fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}`)
   .then(response => response.json())
   .then(data => {
-      console.log('Contentful Gallery Data:', data);
-      if (data.sys && data.sys.type === 'Entry' && data.fields) {
-        const galleryEntry = data;
-        const titleField = galleryEntry.fields.title || 'Untitled Gallery';
-        const imagesArray = galleryEntry.fields.galleryItem || [];
-  
-        // Insert gallery title
-        const galleryTitleEl = document.getElementById('galleryTitle');
-        if (galleryTitleEl) {
-          galleryTitleEl.textContent = titleField;
-        }
-  
-        // Get gallery container and clear existing content
-        const myGalleryDiv = document.getElementById('myGallery');
-        if (!myGalleryDiv) {
-          console.warn("No element with id 'myGallery' found in the DOM!");
-          return;
-        }
-        
-  
-        if (imagesArray.length === 0) {
-          console.warn("Empty gallery array in fields.galleryItem");
-        } else {
-          // Use a dedicated container for slides
-          let slidesContainer = myGalleryDiv.querySelector('.carousel-slides');
-          if (!slidesContainer) {
-            slidesContainer = document.createElement('div');
-            slidesContainer.className = 'carousel-slides';
-            myGalleryDiv.appendChild(slidesContainer);
-          }
-          slidesContainer.innerHTML = ''; // Clear only the slides container
-  
-          // Helper: Create a carousel slide element given an asset object
-          function createSlide(asset) {
-            const slideDiv = document.createElement('div');
-            slideDiv.className = 'carousel-slide';
-  
-            // Create an image container
-            const imageContainer = document.createElement('div');
-            imageContainer.className = 'carousel-image-container';
-  
-            const imgEl = document.createElement('img');
-            const imageUrl = 'https:' + asset.fields.file.url;
-            imgEl.src = imageUrl;
-            imgEl.alt = asset.fields.title || 'Gallery Image';
-            imageContainer.appendChild(imgEl);
-  
-            // Create caption container (caption below the image)
-            const captionDiv = document.createElement('div');
-            captionDiv.className = 'carousel-caption';
-  
-            const titleEl = document.createElement('h3');
-            titleEl.textContent = asset.fields.title || '';
-            captionDiv.appendChild(titleEl);
-  
-            const descEl = document.createElement('p');
-            // Log asset.fields to check that description is coming through:
-            // console.log(asset.fields);
-            descEl.textContent = asset.fields.description || '';
-            captionDiv.appendChild(descEl);
-  
-            // Append the image container and then the caption to the slide
-            slideDiv.appendChild(imageContainer);
-            slideDiv.appendChild(captionDiv);
-  
-            return slideDiv;
-          }
-  
-          // Process assets: try using data.includes.Asset first…
+    console.log('Resolved Gallery Data:', data);
+
+    // data should look like { title: "...", images: [...] }
+    const { title, images } = data;
+    if (!images || !Array.isArray(images) || images.length === 0) {
+      console.warn("No images returned from function.");
+      return;
+    }
+
+    // Optional: show the gallery title in the page
+    const galleryTitleEl = document.getElementById('galleryTitle');
+    if (galleryTitleEl) {
+      galleryTitleEl.textContent = title;
+    }
+
+    // 2.1) Build the grid of images
+    const gridContainer = document.getElementById('myGrid');
+    if (!gridContainer) {
+      console.warn("No #myGrid container found.");
+      return;
+    }
+    gridContainer.innerHTML = '';
+
+    let currentIndex = 0;
+    const overlay = document.getElementById('lightboxOverlay');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxDescription = document.getElementById('lightboxDescription');
+    const closeBtn = document.getElementById('closeButton');
+    const nextBtn = document.getElementById('nextButton');
+    const prevBtn = document.getElementById('prevButton');
+
+    // Lightbox functions
+    function openLightbox(index) {
+      currentIndex = index;
+      const { url, title, description } = images[currentIndex];
+      if (lightboxImage) lightboxImage.src = url;
+      if (lightboxTitle) lightboxTitle.textContent = title;
+      if (lightboxDescription) lightboxDescription.textContent = description;
+      if (overlay) overlay.classList.add('active');
+    }
+    function closeLightbox() {
+      if (overlay) overlay.classList.remove('active');
+    }
+    function showNext() {
+      currentIndex = (currentIndex + 1) % images.length;
+      openLightbox(currentIndex);
+    }
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      openLightbox(currentIndex);
+    }
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    if (nextBtn) nextBtn.addEventListener('click', showNext);
+    if (prevBtn) prevBtn.addEventListener('click', showPrev);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Create an <img> for each image in "images" array
+    images.forEach((imgObj, index) => {
+      const imgEl = document.createElement('img');
+      imgEl.src = imgObj.url;
+      imgEl.alt = imgObj.title || '';
+      imgEl.style.cursor = 'pointer';
+      imgEl.addEventListener('click', () => {
+        openLightbox(index);
+      });
+      gridContainer.appendChild(imgEl);
+    });
+  })
+  .catch(err => console.error('Error fetching final gallery data:', err));
+/* ===========================
+   3) (Optional) If you have an Article Page
+   =========================== */
+// Check if this page is an article page by looking for .article-title and .article
+if (document.querySelector('.article-title') && document.querySelector('.article')) {
+  // Replace with your actual article entry ID
+  const articleEntryId = 'NI4BpqTDyJM05KsGh6SgF';
+
+  fetch(`/.netlify/functions/contentful-proxy?entryId=${articleEntryId}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.sys && data.fields) {
+        const title = data.fields.title || "Untitled Article";
+        const blogPost = data.fields.blogPost || "";
+        const galleryImages = data.fields.gallery || [];
+
+        // Update title and blog post text
+        const titleEl = document.querySelector('.article-title');
+        const blogPostEl = document.querySelector('.article');
+        if (titleEl) titleEl.textContent = title;
+        if (blogPostEl) blogPostEl.innerHTML = documentToHtmlString(blogPost);
+
+        // If you want to show article images in a gallery
+        const galleryContainer = document.querySelector('.article-gallery');
+        if (galleryContainer && galleryImages.length > 0) {
           if (data.includes && data.includes.Asset) {
-            imagesArray.forEach(imageRef => {
+            galleryImages.forEach(imageRef => {
               const asset = data.includes.Asset.find(a => a.sys.id === imageRef.sys.id);
               if (asset && asset.fields && asset.fields.file) {
-                const slide = createSlide(asset);
-                slidesContainer.appendChild(slide);
+                const imgEl = document.createElement('img');
+                imgEl.src = "https:" + asset.fields.file.url;
+                imgEl.alt = asset.fields.title || "";
+                galleryContainer.appendChild(imgEl);
               }
             });
           } else {
-            // …otherwise, fetch each asset individually
-            const assetPromises = imagesArray.map(imageRef => {
-              const assetUrl = `https://cdn.contentful.com/spaces/${spaceId}/environments/master/assets/${imageRef.sys.id}?access_token=${accessToken}`;
-              return fetch(assetUrl).then(resp => resp.json());
-            });
-            Promise.all(assetPromises)
-              .then(assets => {
-                assets.forEach(asset => {
-                  if (asset.fields && asset.fields.file) {
-                    const slide = createSlide(asset);
-                    slidesContainer.appendChild(slide);
-                  }
-                });
-              })
-              .catch(err => console.error("Error fetching individual assets:", err));
+            console.warn("No data.includes.Asset found for article images.");
           }
         }
       } else {
-        console.warn('No valid entry found in the fetched data.');
+        console.warn("Invalid article entry data:", data);
       }
-  
-      // After a short delay (to allow slides to be appended), initialize carousel slides.
-      setTimeout(() => {
-        slides = document.querySelectorAll('.carousel-slide');
-        if (slides.length > 0) {
-          showSlide(0);
-        } else {
-          console.warn("No slides found for carousel.");
-        }
-      }, 1000);
     })
-    .catch(err => console.error('Error fetching gallery:', err));
-});
+    .catch(err => console.error("Error fetching article:", err));
+}
