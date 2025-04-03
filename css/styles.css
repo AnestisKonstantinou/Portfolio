@@ -554,7 +554,8 @@ height:auto;}
 .news-box {
   border: 1px solid #ccc;
   border-radius:20px;
-	box-shadow:10px 10px black;
+	box-shadow:5px 5px black;
+	width:80%;
   padding: 1rem;
   display: flex; /* image on left, text on right */
   gap: 1rem;
