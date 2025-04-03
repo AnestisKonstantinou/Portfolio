@@ -4,7 +4,7 @@ html, body {
   height: 100%;
   font-family: sans-serif;
 }
-
+h3{margin:0;}
 body {
   /* Use flex layout so the footer can be pinned at the bottom */
   display: flex;
