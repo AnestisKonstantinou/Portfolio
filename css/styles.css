@@ -625,15 +625,7 @@ height:auto;}
 }
 /* Mobile responsiveness:
    On narrower screens, stack the thumbnail on top, excerpt below. */
-@media (max-width: 768px) {
-  .news-box {
-    flex-direction: column;
-  }
-  .news-thumbnail {
-    flex: 0 0 auto; /* no forced 20% */
-    width: 100%;
-  }
-}
+
 /* Media query: on narrower screens, hide sidebar; show hamburger */
 @media (max-width: 768px) {
 	main{ flex: 1;
