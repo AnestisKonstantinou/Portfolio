@@ -677,7 +677,7 @@ display: flex;
   }
    .mobile-nav {
     display: block;
-	width:15vw;
+	width:30vw;
 	max-height:100vh;
 	z-index:400;
 	
@@ -817,5 +817,66 @@ display:none !important;
   }
 	 .article-gallery {
     grid-template-columns: 1fr;
+  }
+}
+/* Mobile adjustments for news boxes and detail view */
+@media (max-width: 768px) {
+  /* Increase container width for mobile */
+  #newsContainer {
+    width: 95%;
+    margin: 2rem auto;
+  }
+  
+  /* For collapsed news boxes, stack content vertically and fix height */
+  .news-box {
+    flex-direction: column;
+    height: 20vh; /* fixed height */
+    overflow: hidden; /* hide overflow if any */
+  }
+  /* Thumbnail now takes the top 40% of the box */
+  .news-thumbnail {
+    width: 100%;
+    height: 40%;
+  }
+  .news-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* Text container takes the remaining 60% */
+  .news-box-text {
+    width: 100%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.5rem;
+  }
+  /* Adjust read-more/back links font size if needed */
+  .read-more-link, .back-link {
+    font-size: 0.9rem;
+  }
+  
+  /* For the expanded detail view on mobile */
+  .news-detail {
+    width: 95%;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+  /* Stack the top row vertically */
+  .detail-top-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .detail-thumbnail {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  .detail-title {
+    width: 100%;
+    text-align: center;
   }
 }
