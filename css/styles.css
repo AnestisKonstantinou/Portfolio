@@ -824,7 +824,7 @@ display:none !important;
     margin: 2rem auto;
   }
   .news-box {
-    flex-direction: column;
+    flex-direction: row;
     height: 20vh;
     overflow: hidden;
   }
