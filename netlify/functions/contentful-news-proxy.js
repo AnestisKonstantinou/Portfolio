@@ -14,7 +14,7 @@ module.exports.handler = async (event, context) => {
     const contentTypeId = 'newsFlash'; 
     // If you named it differently, check your Contentful “Content Model” → “API Identifier”.
 
-    const baseUrl = `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${contentTypeId}&include=2`;
+    const baseUrl = `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${contentTypeId}&include=10&order=-fields.publishDate`;
     const response = await fetch(baseUrl);
     const data = await response.json();
 
