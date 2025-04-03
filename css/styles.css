@@ -845,7 +845,7 @@ display:none !important;
   }
   /* Text container takes the remaining 60% */
   .news-box-text {
-    width: 100%;
+    width: 70%;
     height: 60%;
     display: flex;
     flex-direction: column;
