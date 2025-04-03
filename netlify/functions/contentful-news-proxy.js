@@ -1,21 +1,13 @@
 const fetch = require('node-fetch');
 const { documentToHtmlString } = require('@contentful/rich-text-html-renderer');
 
-/**
- * This function fetches *all* published "News Article" entries from Contentful,
- * and returns an array of simplified objects: 
- * [ {id, title, thumbnailUrl, shortExcerpt, body}, ... ].
- * It converts a Rich Text shortExcerpt field into HTML.
- */
 module.exports.handler = async (event, context) => {
   try {
     const spaceId = process.env.CONTENTFUL_SPACE_ID;
     const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
-    
-    // Content type for your "News Article" (replace with your actual contentTypeId)
-    const contentTypeId = 'newsFlash';
-    
-    // Using include=10 to try to resolve references and ordering by publishDate descending
+    const contentTypeId = 'newsFlash'; // Ensure this matches your Contentful content type API ID
+
+    // Fetch entries of this content type, with a deep include and ordering by publish date descending
     const baseUrl = `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${contentTypeId}&include=10&order=-fields.publishDate`;
     const response = await fetch(baseUrl);
     const data = await response.json();
@@ -29,7 +21,7 @@ module.exports.handler = async (event, context) => {
 
     const resolvedArticles = [];
 
-    // Build a map of assets from data.includes.Asset for quick lookup
+    // Build a map of assets for quick lookup
     const assetMap = new Map();
     if (data.includes && data.includes.Asset) {
       data.includes.Asset.forEach(asset => {
@@ -42,20 +34,19 @@ module.exports.handler = async (event, context) => {
       const fields = entry.fields || {};
 
       const title = fields.title || "Untitled News";
-      
-      // Convert shortExcerpt if it's a Rich Text object
-      let shortExcerptHtml = "";
+
+      // Convert shortExcerpt if it is a Rich Text object
+      let shortExcerpt = "";
       if (fields.shortExcerpt && typeof fields.shortExcerpt === 'object' && fields.shortExcerpt.nodeType) {
-        shortExcerptHtml = documentToHtmlString(fields.shortExcerpt);
-      } else {
-        shortExcerptHtml = fields.shortExcerpt || "";
+        shortExcerpt = documentToHtmlString(fields.shortExcerpt);
+      } else if (typeof fields.shortExcerpt === 'string') {
+        shortExcerpt = fields.shortExcerpt;
       }
 
-      // Full body (unchanged)
       const body = fields.fullBody || "";
-      const articleId = entry.sys.id; // unique ID for toggling
+      const articleId = entry.sys.id;
 
-      // Lookup thumbnail URL from assetMap
+      // Resolve the thumbnail image URL via the asset map
       let thumbnailUrl = "";
       if (fields.thumbnailImage && fields.thumbnailImage.sys) {
         const assetId = fields.thumbnailImage.sys.id;
@@ -68,7 +59,7 @@ module.exports.handler = async (event, context) => {
       resolvedArticles.push({
         id: articleId,
         title,
-        shortExcerpt: shortExcerptHtml,
+        shortExcerpt, // This is now an HTML string if it was rich text
         body,
         thumbnailUrl
       });
