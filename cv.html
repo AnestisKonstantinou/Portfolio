@@ -3,98 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nikos Iosif</title>
-  <!-- Link to your external CSS file -->
+  <title>Nikos Iosif - Article</title>
   <link rel="stylesheet" href="css/styles.css" />
+  
 </head>
 <body>
 
-  <!-- The page-wrapper holds the sidebar + main content in a 90vh container -->
+
+  <!-- The page-wrapper holds the sidebar + main content -->
   <div class="page-wrapper1">
     <!-- Sidebar / Navigation -->
     <aside class="sidebar">
       <div class="artist-name">
-        <a href="index.html"> <img src="images/logo.png"></a>
+        <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
       </div>
       <nav>
         <ul>
           <li>
-            <a class="has-submenu">Selected works &nbsp; &#11167; </a>
+            <a class="has-submenu">Selected works &#11167;</a>
             <ul class="submenu">
-              <li><a href="textile.html">&nbsp; &nbsp; Textile</a></li>
-              <li><a href="paintings.html">&nbsp; &nbsp;Paintings</a></li>
+              <li><a href="textile.html">Textile</a></li>
+              <li><a href="paintings.html">Paintings</a></li>
             </ul>
           </li>
           <li>
-            <a class="has-submenu">Exhibitions &nbsp; &#11167; </a>
+            <a class="has-submenu">Exhibitions &#11167;</a>
             <ul class="submenu">
-              <li><a href="biennale.html">&nbsp; &nbsp;Biennale</a></li>
-              <li><a href="dowry.html">&nbsp; &nbsp;Dowry</a></li>
-              <li><a href="nemo.html">&nbsp; &nbsp;Nemophilist</a></li>
+              <li><a href="biennale.html">Biennale</a></li>
+              <li><a href="dowry.html">Dowry</a></li>
+              <li><a href="nemo.html">Nemophilist</a></li>
             </ul>
           </li>
-		<li><a href="news.html">News</a></li>
-          <li><a href="cv.html"> cv &nbsp; / &nbsp; press </a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="cv.html">cv / press</a></li>
         </ul>
       </nav>
     </aside>
 
-    <!-- Main content area -->
-    <div class="main1">
-	<div class="mobile-logo">
-	<button class="hamburger" id="hamburgerBtn">
-    &#9776; <!-- This is the “three lines” icon in HTML -->
-  </button>
-	<a href="index.html"><img src="images/logo.png"></a></div>
-      <div class="cv-main"><h2>Welcome to My Portfolio</h2>
-      <p>
-        It’s totally normal that DevTools shows different “computed” heights for slides that are hidden vs. the one that’s currently active. Specifically:
-
-Hidden Slides = display: none;
-
-By default, your CSS sets .carousel-slide { display: none; }.
-Elements that are display: none don’t participate in layout, so the browser often reports their dimensions as height: auto; width: auto; (or sometimes 0), because they’re not actually rendered.
-Active Slide = display: block;
-
-The first slide gets .active-slide by JavaScript on page load, making it display: block;.
-The browser calculates and reports that slide’s true height/width. That explains why you see a concrete size for the first slide in DevTools.
-When You Click Next
-
-The JavaScript removes .active-slide from the first slide and adds it to the next slide.
-Then the second slide is display: block; and gets a “real” computed height/width; the first goes back to hidden.
-So at any given time, only one slide is actually “in layout.”
-Does This Cause Cropping?
-If only the active slide is visible, it’s expected the others show “auto” in DevTools. That alone isn’t causing cropping.
-As soon as the second (or third) slide becomes active, it will occupy the same .carousel-container space and size accordingly.
-Why Might the Second/Third Slides Appear Cropped?
-Container’s Fixed Size vs. Image Ratio
-
-Your .carousel-container is width: 60vw; height: 80vh; overflow: hidden;.
-If an image has a wider or taller ratio than 60vw × 80vh, object-fit: contain; should shrink it to fit fully, with letterboxing if needed.
-If you see actual cropping, it may be from other constraints or a mismatch in the code.
-Check Each Image’s Natural Dimensions
-
-For example, if your second image is extremely tall and narrow, it will still be scaled down to fit the container’s 60vw × 80vh.
-If something is overriding object-fit: contain; (like object-fit: cover; or a conflicting CSS rule), you’d see cropping.
-Confirm .active-slide is Applied
-
-Make sure your JS actually calls showSlide(slideIndex) and toggles .active-slide for the second/third slides.
-If the second slide never becomes display: block, you might be seeing some partial or leftover state in DevTools.
-How to Confirm Everything Is Working
-Click the Next Arrow to show the second slide.
-Check DevTools again. The second slide should have .active-slide { display: block; }, and now it should show a real computed height.
-Look at .carousel-container to see if it’s staying at the fixed dimension you set (60vw × 80vh).
-If the image appears cropped, disable overflow: hidden; briefly to see if the image extends beyond the container. If so, it means the container is smaller than the scaled image would prefer. With “contain,” that usually shouldn’t happen – so there might be a conflicting style or a leftover cover somewhere.
-Bottom Line
-Seeing “height: auto” in DevTools for hidden slides is normal. It just indicates that hidden elements aren’t being laid out.
-As long as your slideshow logic sets .active-slide correctly on each image when it’s supposed to be visible, each slide will occupy the same container space in turn.
-If you continue to see cropping, likely the container or overflow rules are clipping the image. Double-check you’ve got object-fit: contain; on the <img> and that your container’s actual runtime size (in DevTools) matches your expectation.
-I hope that clarifies why DevTools shows only the first slide’s size numerically and “auto” for the others – it’s just how display: none; elements work. If you have more specific cropping issues, share a screenshot or check the final computed CSS on the second/third slide once it’s actually active.
-      </p>
-	  </div>
+    <!-- Mobile logo + hamburger -->
+    <div class="mobile-logo">
+      <button class="hamburger" id="hamburgerBtn">&#9776;</button>
+      <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
     </div>
-   </div>
 
+    <!-- Main content area for article -->
+    <div class="main1">
+      <!-- The title of the article -->
+      <div class="article-title"></div>
+      <!-- The blog post content -->
+      <div class="article"></div>
+      <!-- Gallery container for article images (will be populated via JS) -->
+      <div class="article-gallery"></div>
+    </div>
+  </div>
 <div class="mobile-nav" id="mobileNav">
   <nav>
     <ul>
@@ -113,24 +74,29 @@ I hope that clarifies why DevTools shows only the first slide’s size numerical
           <li><a href="nemo.html">Nemophilist</a></li>
         </ul>
       </li>
+	    <li><a href="news.html">News</a></li>
       <li><a href="cv.html">CV / Press</a></li>
     </ul>
   </nav>
 </div>
-
-
-  
-  <!-- Footer at 10% of viewport height, always at bottom -->
-  <footer> 
-  <div class="row"> <b>Nikos Iosif</b> &nbsp; 
-  <a href="https://www.facebook.com/nikos.iosif.9" target="_blank"> <img src="images/facebook.png" class="icon"> </a>
-   <a href="https://www.instagram.com/nickiosif_/" target="_blank"> <img src="images/instagram.png" class="icon"> </a> 
-   <p class="hidding">Studio @ Paparigopoulou 15 </p><a href="https://maps.app.goo.gl/Te84Zco9Kd1Ju8987" target="_blank">  <img src="images/google.jpg" class="icon"></a>
-   <p class="footer-text"> &nbsp;&nbsp;&nbsp; &#169; All rights reserved 2025</p>
-   </div>
-   </footer>
-  
-  <!-- Link to your external JavaScript file -->
-  <script src="js/scripts.js?v=2"></script>
+  <!-- Footer -->
+  <footer>
+    <div class="row">
+      <b>Nikos Iosif</b> &nbsp; &nbsp; 
+      <a href="https://www.facebook.com/nikos.iosif.9" target="_blank">
+        <img src="images/facebook.png" class="icon" alt="Facebook">
+      </a>
+      <a href="https://www.instagram.com/nickiosif_/" target="_blank">
+        <img src="images/instagram.png" class="icon" alt="Instagram">
+      </a>
+      <p class="hidding">Studio @ Paparigopoulou 15</p>
+      <a href="https://maps.app.goo.gl/Te84Zco9Kd1Ju8987" target="_blank">
+        <img src="images/google.jpg" class="icon" alt="Google Maps">
+      </a>
+      <p class="footer-text">&#169; All rights reserved 2025</p>
+    </div>
+  </footer>
+<script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer/dist/rich-text-html-renderer.min.js"></script>
+  <script type="module" src="js/scripts-cv.js?v=2"></script>
 </body>
 </html>
