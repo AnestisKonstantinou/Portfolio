@@ -837,11 +837,12 @@ display:none !important;
     overflow: hidden;
   }
   .news-thumbnail {
-    width: 100%;
+    width: 20%;
     height: 40%;
+	  overflow:hidden;
   }
   .news-box-text {
-    width: 100%;
+    width: 70%;
     height: 60%;
     padding: 0.5rem;
   }
