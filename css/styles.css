@@ -718,7 +718,7 @@ margin-top:3vh;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 300;
+  z-index: 500;
   background-color: #F1F7F7;
   height: 10vh; /* or your desired height */
   padding: 5px 15px;
