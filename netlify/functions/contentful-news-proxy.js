@@ -3,18 +3,19 @@ const { documentToHtmlString } = require('@contentful/rich-text-html-renderer');
 
 /**
  * This function fetches *all* published "News Article" entries from Contentful,
- * and returns an array of simplified objects: [ {id, title, thumbnailUrl, shortExcerpt, body}, ... ].
- * It converts Rich Text in shortExcerpt into HTML.
+ * and returns an array of simplified objects: 
+ * [ {id, title, thumbnailUrl, shortExcerpt, body}, ... ].
+ * It converts a Rich Text shortExcerpt field into HTML.
  */
 module.exports.handler = async (event, context) => {
   try {
     const spaceId = process.env.CONTENTFUL_SPACE_ID;
     const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
     
-    // Content type for your "News Article" (replace with your actual contentTypeId if needed)
-    const contentTypeId = 'newsFlash'; 
-    // Use the API identifier from your Contentful content model.
-
+    // Content type for your "News Article" (replace with your actual contentTypeId)
+    const contentTypeId = 'newsFlash';
+    
+    // Using include=10 to try to resolve references and ordering by publishDate descending
     const baseUrl = `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${contentTypeId}&include=10&order=-fields.publishDate`;
     const response = await fetch(baseUrl);
     const data = await response.json();
@@ -26,10 +27,9 @@ module.exports.handler = async (event, context) => {
       };
     }
 
-    // We want an array of simplified objects
     const resolvedArticles = [];
 
-    // Build a map of assets for quick lookup from data.includes.Asset
+    // Build a map of assets from data.includes.Asset for quick lookup
     const assetMap = new Map();
     if (data.includes && data.includes.Asset) {
       data.includes.Asset.forEach(asset => {
@@ -41,22 +41,21 @@ module.exports.handler = async (event, context) => {
       const entry = data.items[i];
       const fields = entry.fields || {};
 
-      // Extract basics
       const title = fields.title || "Untitled News";
       
       // Convert shortExcerpt if it's a Rich Text object
       let shortExcerptHtml = "";
-      if (typeof fields.shortExcerpt === 'object') {
+      if (fields.shortExcerpt && typeof fields.shortExcerpt === 'object' && fields.shortExcerpt.nodeType) {
         shortExcerptHtml = documentToHtmlString(fields.shortExcerpt);
       } else {
         shortExcerptHtml = fields.shortExcerpt || "";
       }
 
-      // For the full body (if needed, you might also convert it similarly)
+      // Full body (unchanged)
       const body = fields.fullBody || "";
       const articleId = entry.sys.id; // unique ID for toggling
 
-      // If the thumbnail is a direct asset link, we can find it in assetMap
+      // Lookup thumbnail URL from assetMap
       let thumbnailUrl = "";
       if (fields.thumbnailImage && fields.thumbnailImage.sys) {
         const assetId = fields.thumbnailImage.sys.id;
@@ -66,7 +65,6 @@ module.exports.handler = async (event, context) => {
         }
       }
 
-      // Push the final object
       resolvedArticles.push({
         id: articleId,
         title,
