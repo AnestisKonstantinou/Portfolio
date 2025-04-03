@@ -617,7 +617,11 @@ height:auto;}
 }
 
 /* Left side: 20% for the thumbnail */
-
+@media (max-width: 768px) {
+  .read-more-link {
+    display: none;
+  }
+}
 /* Mobile responsiveness:
    On narrower screens, stack the thumbnail on top, excerpt below. */
 @media (max-width: 768px) {
@@ -826,35 +830,19 @@ display:none !important;
     width: 95%;
     margin: 2rem auto;
   }
-  
-  /* For collapsed news boxes, stack content vertically and fix height */
   .news-box {
     flex-direction: column;
-    height: 20vh; /* fixed height */
-    overflow: hidden; /* hide overflow if any */
+    height: 20vh;
+    overflow: hidden;
   }
-  /* Thumbnail now takes the top 40% of the box */
   .news-thumbnail {
-    width: 20%;
+    width: 100%;
     height: 40%;
   }
-  .news-thumbnail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  /* Text container takes the remaining 60% */
   .news-box-text {
-    width: 70%;
+    width: 100%;
     height: 60%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     padding: 0.5rem;
-  }
-  /* Adjust read-more/back links font size if needed */
-  .read-more-link, .back-link {
-    font-size: 0.9rem;
   }
   
   /* For the expanded detail view on mobile */
