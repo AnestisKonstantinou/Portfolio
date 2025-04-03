@@ -116,7 +116,7 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}`)
 // Check if this page is an article page by looking for .article-title and .article
 if (document.querySelector('.article-title') && document.querySelector('.article')) {
   // Replace with your actual article entry ID
-  const articleEntryId = 'Yw0RI5SKuvuMNuSi51lrj';
+  const articleEntryId = '27N1K0F66rYGIIUcePHQq0';
 
   fetch(`/.netlify/functions/contentful-article-proxy?entryId=${articleEntryId}`)
     .then(response => response.json())
