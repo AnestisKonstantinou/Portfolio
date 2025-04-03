@@ -42,7 +42,7 @@ module.exports.handler = async (event, context) => {
 
       // Extract basics
       const title = fields.title || "Untitled News";
-      const excerpt = fields.shortExcerpt || "";
+      const shortExcerpt = fields.shortExcerpt || "";
       const body = fields.fullBody || "";
       const articleId = entry.sys.id; // unique ID for toggling
 
