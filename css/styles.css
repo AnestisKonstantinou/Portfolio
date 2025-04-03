@@ -551,7 +551,7 @@ height:auto;}
 }
 
 .news-box {
-  width: 100%;      /* fills the parent container (#newsContainer) which is 80% of viewport */
+  width: 80%;      /* fills the parent container (#newsContainer) which is 80% of viewport */
   height: 20vh;     /* fixed height */
   margin: 0 auto;   /* centers the box within its container */
   border: 1px solid #ccc;
