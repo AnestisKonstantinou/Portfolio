@@ -545,7 +545,8 @@ height:auto;}
 #newsContainer {
   display: flex;
   flex-direction: column;
-	margin:auto;
+	width:80%;
+	margin: 0 auto;
   gap: 2rem; /* space between each news box */
   margin-top: 2rem;
 }
@@ -555,7 +556,7 @@ height:auto;}
   border: 1px solid #ccc;
   border-radius:20px;
 	box-shadow:5px 5px black;
-	width:80%;
+	
   padding: 1rem;
   display: flex; /* image on left, text on right */
   gap: 1rem;
