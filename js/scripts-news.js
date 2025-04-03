@@ -37,7 +37,7 @@ fetch('/.netlify/functions/contentful-news-proxy')
       return;
     }
     renderNewsList(articles);
-    // Initialize Fitty on all text containers after rendering
+    // Initialize Fitty on the text containers for dynamic font scaling
     fitty('.news-box-text', {
       minSize: 12,
       maxSize: 36,
@@ -56,67 +56,80 @@ function renderNewsList(articles) {
   container.innerHTML = '';
 
   articles.forEach(article => {
-    // Create the wrapper “box” div
+    // Create the wrapper "box" div (collapsed by default)
     const boxDiv = document.createElement('div');
-    boxDiv.className = 'news-box collapsed'; // start in collapsed mode
+    boxDiv.className = 'news-box collapsed';
 
-    // Build the collapsed layout
-    // Left side: thumbnail (20% width)
+    // Collapsed Layout:
+    // Left side: Thumbnail (20% width)
     const thumbnailDiv = document.createElement('div');
     thumbnailDiv.className = 'news-thumbnail';
     const img = document.createElement('img');
     img.src = article.thumbnailUrl;
     thumbnailDiv.appendChild(img);
 
-    // Right side: text excerpt (wrap text in its own container for Fitty)
+    // Right side: Text excerpt wrapped for Fitty scaling
     const textDiv = document.createElement('div');
     textDiv.className = 'news-box-text';
     const titleEl = document.createElement('h3');
     titleEl.textContent = article.title;
     const excerptEl = document.createElement('p');
-    // Use innerHTML so any HTML from shortExcerpt is rendered
-    excerptEl.innerHTML = article.shortExcerpt;
+    excerptEl.innerHTML = article.shortExcerpt; // rendered as HTML
     textDiv.appendChild(titleEl);
     textDiv.appendChild(excerptEl);
 
-    // “Read More” button
+    // "Read More" button
     const readMoreBtn = document.createElement('button');
     readMoreBtn.textContent = 'Read More';
     textDiv.appendChild(readMoreBtn);
 
-    // Add the two sides to the box
+    // Add collapsed layout elements to box
     boxDiv.appendChild(thumbnailDiv);
     boxDiv.appendChild(textDiv);
 
-    // Build the expanded layout (hidden by default)
+    // Expanded Layout:
     const expandedDiv = document.createElement('div');
     expandedDiv.className = 'news-expanded';
+    
+    // Create a top row container for image and title
+    const topRow = document.createElement('div');
+    topRow.className = 'expanded-top-row';
+    
     const bigImg = document.createElement('img');
-    bigImg.src = article.thumbnailUrl; // same image, but in expanded view
+    bigImg.src = article.thumbnailUrl; // image on the left
+    
+    const titleContainer = document.createElement('div');
+    titleContainer.className = 'expanded-title';
     const bigTitle = document.createElement('h2');
     bigTitle.textContent = article.title;
+    titleContainer.appendChild(bigTitle);
+    
+    topRow.appendChild(bigImg);
+    topRow.appendChild(titleContainer);
+    
+    // Create a container for the full article body
+    const bodyContainer = document.createElement('div');
+    bodyContainer.className = 'expanded-body';
     let fullBodyHTML = '';
     if (typeof article.body === 'object') {
       fullBodyHTML = documentToHtmlString(article.body);
     } else {
       fullBodyHTML = `<p>${article.body}</p>`;
     }
-    const bodyContainer = document.createElement('div');
     bodyContainer.innerHTML = fullBodyHTML;
 
-    // “Less” button
+    // "Less" button to collapse back
     const lessBtn = document.createElement('button');
     lessBtn.textContent = 'Less';
 
-    // Append expanded elements to expandedDiv
-    expandedDiv.appendChild(bigImg);
-    expandedDiv.appendChild(bigTitle);
+    // Assemble the expanded layout
+    expandedDiv.appendChild(topRow);
     expandedDiv.appendChild(bodyContainer);
     expandedDiv.appendChild(lessBtn);
     expandedDiv.style.display = 'none'; // hide initially
     boxDiv.appendChild(expandedDiv);
 
-    // Hook up readMoreBtn and lessBtn actions
+    // Event listeners for toggling expanded/collapsed views
     readMoreBtn.addEventListener('click', () => {
       boxDiv.classList.remove('collapsed');
       thumbnailDiv.style.display = 'none';
@@ -131,7 +144,7 @@ function renderNewsList(articles) {
       expandedDiv.style.display = 'none';
     });
 
-    // Append the news box to the container
+    // Append the fully built box to the container
     container.appendChild(boxDiv);
   });
 }
