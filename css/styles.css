@@ -542,86 +542,78 @@ height:auto;}
   font-size: 2rem;
   cursor: pointer;
 }
+/* Style for the read more and back links as plain blue text */
+.read-more-link, .back-link {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* News list container remains fixed width and centered */
 #newsContainer {
+  width: 80%;
+  margin: 2rem auto;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin: 2rem auto;
-  width: 80%;
 }
 
+/* Fixed-height news box (collapsed view) */
 .news-box {
   width: 100%;
-  height: 20vh;      /* fixed height */
-  margin: 0 auto;
+  height: 20vh; /* fixed height */
   border: 1px solid #ccc;
   border-radius: 20px;
   box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
   padding: 1rem;
   display: flex;
   gap: 1rem;
-  overflow: hidden;  /* ensure nothing overflows */
+  overflow: hidden;
 }
 
+/* Left side: thumbnail */
 .news-thumbnail {
   flex: 0 0 20%;
 }
-
 .news-thumbnail img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
+/* Right side: text excerpt */
 .news-box-text {
-  flex: 1; /* takes the remaining 80% */
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* Allow Fitty to adjust the font size */
 }
 
-.news-box button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-}
-
-/* Expanded news box layout */
-.news-expanded {
-  display: flex;
-  flex-direction: column;
+/* Expanded view detail container */
+.news-detail {
+  width: 100%;
   padding: 1rem;
   box-sizing: border-box;
-  height: 100%;
-  overflow-y: auto;
 }
-
-/* Top row for expanded view: image on left and title on right */
-.expanded-top-row {
+.detail-top-row {
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
-  width: 100%;
 }
-
-.expanded-top-row img {
-  width: 20%;            /* Image takes 20% of the width */
-  max-height: 100%;      /* Prevent image from stretching too tall */
+.detail-thumbnail {
+  width: 20%;
   object-fit: cover;
 }
-
-.expanded-title {
+.detail-title {
   flex: 1;
   display: flex;
   align-items: center;
 }
-
-.expanded-body {
+.detail-body {
   font-size: 1rem;
   line-height: 1.4;
   margin-bottom: 1rem;
-  width: 100%;
 }
 
 /* Left side: 20% for the thumbnail */
