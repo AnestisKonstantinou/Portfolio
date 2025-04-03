@@ -1,6 +1,6 @@
 import { documentToHtmlString } from "https://cdn.skypack.dev/@contentful/rich-text-html-renderer";
 
-// --- Submenu & Mobile Nav logic (unchanged) ---
+// --- Submenu & Mobile Nav logic ---
 const submenuLinks = document.querySelectorAll(".has-submenu");
 submenuLinks.forEach(link => {
   link.addEventListener("click", (event) => {
@@ -12,7 +12,6 @@ submenuLinks.forEach(link => {
       }
     });
     submenu.classList.toggle("open-submenu");
-    console.log("Submenu Toggled:", submenu);
   });
 });
 
@@ -20,7 +19,6 @@ const hamburgerBtn = document.getElementById("hamburgerBtn");
 const mobileNav = document.getElementById("mobileNav");
 if (hamburgerBtn && mobileNav) {
   hamburgerBtn.addEventListener("click", () => {
-    console.log("Hamburger Clicked 🍔");
     mobileNav.classList.toggle("open");
   });
 } else {
@@ -39,6 +37,9 @@ function renderNewsList(articles) {
   }
   container.innerHTML = ''; // Clear any existing content
 
+  // Determine if we're in mobile view (viewport 768px or narrower)
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
   articles.forEach(article => {
     // Create a fixed-height news box (collapsed view)
     const boxDiv = document.createElement('div');
@@ -51,17 +52,17 @@ function renderNewsList(articles) {
     img.src = article.thumbnailUrl;
     thumbnailDiv.appendChild(img);
 
-    // Right side: text excerpt
+    // Right side: text excerpt wrapped for potential Fitty scaling
     const textDiv = document.createElement('div');
     textDiv.className = 'news-box-text';
     const titleEl = document.createElement('h3');
     titleEl.textContent = article.title;
     const excerptEl = document.createElement('p');
-    excerptEl.innerHTML = article.shortExcerpt; // Render HTML from rich text
+    excerptEl.innerHTML = article.shortExcerpt;
     textDiv.appendChild(titleEl);
     textDiv.appendChild(excerptEl);
 
-    // "Read More" link styled as plain blue text (hyperlink)
+    // "Read More" link for desktop view
     const readMoreLink = document.createElement('a');
     readMoreLink.href = "#";
     readMoreLink.className = 'read-more-link';
@@ -73,11 +74,20 @@ function renderNewsList(articles) {
     boxDiv.appendChild(textDiv);
     container.appendChild(boxDiv);
 
-    // Attach event listener to the "Read More" link to show detail view
-    readMoreLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      renderNewsDetail(article, articles);
-    });
+    if (isMobile) {
+      // On mobile, hide the read-more link and make the entire box clickable
+      readMoreLink.style.display = 'none';
+      boxDiv.style.cursor = 'pointer';
+      boxDiv.addEventListener('click', () => {
+        renderNewsDetail(article, articles);
+      });
+    } else {
+      // On desktop, attach click event only to the read-more link
+      readMoreLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        renderNewsDetail(article, articles);
+      });
+    }
   });
 
   // Initialize Fitty on the text containers to scale text dynamically
@@ -137,7 +147,7 @@ function renderNewsDetail(article, articles) {
   detailDiv.appendChild(backLink);
   container.appendChild(detailDiv);
 
-  // Attach event listener for "Back"
+  // Attach event listener for "Back" link
   backLink.addEventListener('click', (e) => {
     e.preventDefault();
     renderNewsList(articles);
