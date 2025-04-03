@@ -835,7 +835,7 @@ display:none !important;
   }
   /* Thumbnail now takes the top 40% of the box */
   .news-thumbnail {
-    width: 100%;
+    width: 20%;
     height: 40%;
   }
   .news-thumbnail img {
