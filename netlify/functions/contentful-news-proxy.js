@@ -62,7 +62,7 @@ module.exports.handler = async (event, context) => {
       resolvedArticles.push({
         id: articleId,
         title,
-        excerpt,
+        shortExcerpt,
         body,
         thumbnailUrl
       });
