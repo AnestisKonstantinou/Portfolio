@@ -1,9 +1,10 @@
 const fetch = require('node-fetch');
+const { documentToHtmlString } = require('@contentful/rich-text-html-renderer');
 
 /**
  * This function fetches *all* published "News Article" entries from Contentful,
- * and returns an array of simplified objects: [ {id, title, thumbnailUrl, excerpt, body}, ... ].
- * We do a fallback if includes.Asset is missing for the thumbnail.
+ * and returns an array of simplified objects: [ {id, title, thumbnailUrl, shortExcerpt, body}, ... ].
+ * It converts Rich Text in shortExcerpt into HTML.
  */
 module.exports.handler = async (event, context) => {
   try {
@@ -12,7 +13,7 @@ module.exports.handler = async (event, context) => {
     
     // Content type for your "News Article" (replace with your actual contentTypeId if needed)
     const contentTypeId = 'newsFlash'; 
-    // If you named it differently, check your Contentful “Content Model” → “API Identifier”.
+    // Use the API identifier from your Contentful content model.
 
     const baseUrl = `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${contentTypeId}&include=10&order=-fields.publishDate`;
     const response = await fetch(baseUrl);
@@ -42,7 +43,16 @@ module.exports.handler = async (event, context) => {
 
       // Extract basics
       const title = fields.title || "Untitled News";
-      const shortExcerpt = fields.shortExcerpt || "";
+      
+      // Convert shortExcerpt if it's a Rich Text object
+      let shortExcerptHtml = "";
+      if (typeof fields.shortExcerpt === 'object') {
+        shortExcerptHtml = documentToHtmlString(fields.shortExcerpt);
+      } else {
+        shortExcerptHtml = fields.shortExcerpt || "";
+      }
+
+      // For the full body (if needed, you might also convert it similarly)
       const body = fields.fullBody || "";
       const articleId = entry.sys.id; // unique ID for toggling
 
@@ -53,16 +63,14 @@ module.exports.handler = async (event, context) => {
         const asset = assetMap.get(assetId);
         if (asset && asset.fields && asset.fields.file) {
           thumbnailUrl = "https:" + asset.fields.file.url;
-        } else {
-          // fallback fetch if needed, or leave as empty string
         }
       }
 
-      // push the final object
+      // Push the final object
       resolvedArticles.push({
         id: articleId,
         title,
-        shortExcerpt,
+        shortExcerpt: shortExcerptHtml,
         body,
         thumbnailUrl
       });
