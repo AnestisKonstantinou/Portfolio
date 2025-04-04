@@ -55,18 +55,27 @@ function renderNewsList(articles) {
     // Right side: text excerpt wrapped for potential Fitty scaling
     const textDiv = document.createElement('div');
     textDiv.className = 'news-box-text';
-    const titleEl = document.createElement('h4');
+
+    // Create a container for title and excerpt to keep them at the top
+    const textContainer = document.createElement('div');
+    textContainer.className = 'text-container';
+
+    const titleEl = document.createElement('h3');
     titleEl.textContent = article.title;
     const excerptEl = document.createElement('p');
     excerptEl.innerHTML = article.shortExcerpt;
-    textDiv.appendChild(titleEl);
-    textDiv.appendChild(excerptEl);
+
+    textContainer.appendChild(titleEl);
+    textContainer.appendChild(excerptEl);
 
     // "Read More" link for desktop view
     const readMoreLink = document.createElement('a');
     readMoreLink.href = "#";
     readMoreLink.className = 'read-more-link';
     readMoreLink.textContent = 'Read More';
+
+    // Assemble the text section: first the text container, then the link
+    textDiv.appendChild(textContainer);
     textDiv.appendChild(readMoreLink);
 
     // Assemble the collapsed box
@@ -93,7 +102,7 @@ function renderNewsList(articles) {
   // Initialize Fitty on the text containers to scale text dynamically
   fitty('.news-box-text', {
     minSize: 12,
-    maxSize: 16,
+    maxSize: 36,
     multiLine: true
   });
 }
