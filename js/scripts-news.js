@@ -55,7 +55,7 @@ function renderNewsList(articles) {
     // Right side: text excerpt wrapped for potential Fitty scaling
     const textDiv = document.createElement('div');
     textDiv.className = 'news-box-text';
-    const titleEl = document.createElement('h3');
+    const titleEl = document.createElement('h4');
     titleEl.textContent = article.title;
     const excerptEl = document.createElement('p');
     excerptEl.innerHTML = article.shortExcerpt;
@@ -93,7 +93,7 @@ function renderNewsList(articles) {
   // Initialize Fitty on the text containers to scale text dynamically
   fitty('.news-box-text', {
     minSize: 12,
-    maxSize: 22,
+    maxSize: 16,
     multiLine: true
   });
 }
