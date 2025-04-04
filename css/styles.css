@@ -724,13 +724,12 @@ height:auto;
   }
   .main1{
 	flex: 1;
-	height:auto;
 	justify-content: center;
 	align-items: center;
 	width: 99vw; 
 	overflow-y: auto;            
         height: calc(100vh - 20vh); 
-	margin-top:calc(100vh-10vh);
+	margin-top:10vh;
         align-items: flex-start;  
 	padding-left:1rem;
   }
