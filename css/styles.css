@@ -558,6 +558,10 @@ height:auto;
   -webkit-box-orient: vertical;
   margin: 0;
 }
+.news-box-text a {
+	position:absolute;
+	bottom:5 px;
+}
 
 .news-detail {
   width: 100%;
