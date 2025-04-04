@@ -557,10 +557,7 @@ height:auto;
   -webkit-line-clamp: 2;    
   -webkit-box-orient: vertical;
   margin: 0;
-}
-.news-box-text a {
-	position:absolute;
-	bottom:5 px;
+  margin-bottom:1rem;
 }
 
 .news-detail {
