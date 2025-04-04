@@ -673,6 +673,7 @@ height:auto;
   left: 0;
   width: 100%;
   z-index: 500;	
+  background-color: #F1F7F7; 
   height: 10vh; 
   padding: 5px 15px;
   box-sizing: border-box;
@@ -729,6 +730,7 @@ height:auto;
 	width: 99vw; 
 	overflow-y: auto;            
         height: calc(100vh - 20vh); 
+	margin-top:calc(100vh-10vh);
         align-items: flex-start;  
 	padding-left:1rem;
   }
