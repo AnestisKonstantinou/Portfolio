@@ -60,7 +60,7 @@ function renderNewsList(articles) {
     const textContainer = document.createElement('div');
     textContainer.className = 'text-container';
 
-    const titleEl = document.createElement('h3');
+    const titleEl = document.createElement('h4');
     titleEl.textContent = article.title;
     const excerptEl = document.createElement('p');
     excerptEl.innerHTML = article.shortExcerpt;
