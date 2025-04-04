@@ -101,8 +101,8 @@ function renderNewsList(articles) {
 
   // Initialize Fitty on the text containers to scale text dynamically
   fitty('.news-box-text', {
-    minSize: 12,
-    maxSize: 36,
+    minSize: 6,
+    maxSize: 20,
     multiLine: true
   });
 }
