@@ -35,7 +35,9 @@ if (hamburgerBtn && mobileNav) {
    =========================== */
 const entryId = '4oU2dtZPY9gX61G3Q7iGK0';
 
-fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}`)
+const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en';
+
+fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
   .then(response => response.json())
   .then(data => {
     console.log('Resolved Gallery Data:', data);
