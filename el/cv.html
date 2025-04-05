@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Language" content="el">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Νίκος Ιωσήφ - Βιογραφικό</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  
+</head>
+<body>
+
+  <div class="page-wrapper1">
+    <aside class="sidebar">
+      <div class="artist-name">
+        <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
+      </div>
+      <nav>
+        <ul>
+         <li>
+            <a class="has-submenu">Επιλεγμένα Έργα &nbsp;&#x25BC; </a>
+            <ul class="submenu">
+           <li><a href="/el/textile.html">Textile</a></li>
+              <li><a href="/el/paintings.html">Ζωγραφική</a></li>
+              <li><a href="/el/sculptures.html">Γλυπτά</a></li>
+            </ul>
+          </li>
+          <li>
+            <a class="has-submenu">Εκθέσεις &nbsp; &#x25BC; </a>
+            <ul class="submenu">
+             <li><a href="/el/interior.html">&nbsp; &nbsp;Interior Infinito</a></li>
+	             <li><a href="/el/biennale.html">&nbsp; &nbsp;Contextile Biennale</a></li>     
+               <li><a href="/el/dowry.html">&nbsp; &nbsp;Dowry</a></li>
+               <li><a href="/el/nemo.html">&nbsp; &nbsp;Nemophilist</a></li>
+	             <li><a href="/el/sym.html">&nbsp; &nbsp;Symbiosis XV Biennale</a></li>
+               <li><a href="/el/inner.html">&nbsp; &nbsp;Innercolors</a></li>
+            </ul>
+          </li>
+	  <li><a href="/el/news.html">Δημοσιεύσεις</a></li>
+          <li><a href="/el/cv.html">Βιογραφικό </a></li>
+	  <li><a href="/el/contact.html">Επικοινωνία </a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="mobile-logo">
+      <button class="hamburger" id="hamburgerBtn">&#9776;</button>
+      <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
+    </div>
+
+    <div class="main1">
+      <div class="article-title"></div>
+      <div class="article"></div>
+      <div class="article-gallery"></div>
+    </div>
+  </div>
+<div class="mobile-nav" id="mobileNav">
+  <nav>
+    <ul>
+     <li>
+            <a class="has-submenu">Επιλεγμένα Έργα &nbsp;&#x25BC; </a>
+            <ul class="submenu">
+           <li><a href="/el/textile.html">Textile</a></li>
+              <li><a href="/el/paintings.html">Ζωγραφική</a></li>
+              <li><a href="/el/sculptures.html">Γλυπτά</a></li>
+            </ul>
+          </li>
+          <li>
+            <a class="has-submenu">Εκθέσεις &nbsp; &#x25BC; </a>
+            <ul class="submenu">
+             <li><a href="/el/interior.html">&nbsp; &nbsp;Interior Infinito</a></li>
+	             <li><a href="/el/biennale.html">&nbsp; &nbsp;Contextile Biennale</a></li>     
+               <li><a href="/el/dowry.html">&nbsp; &nbsp;Dowry</a></li>
+               <li><a href="/el/nemo.html">&nbsp; &nbsp;Nemophilist</a></li>
+	             <li><a href="/el/sym.html">&nbsp; &nbsp;Symbiosis XV Biennale</a></li>
+               <li><a href="/el/inner.html">&nbsp; &nbsp;Innercolors</a></li>
+            </ul>
+          </li>
+	  <li><a href="/el/news.html">Δημοσιεύσεις</a></li>
+          <li><a href="/el/cv.html">Βιογραφικό </a></li>
+	  <li><a href="/el/contact.html">Επικοινωνία </a></li>
+    </ul>
+  </nav>
+</div>
+<div class="language-switcher">
+  <a href="#" id="switchToEN">EN</a> | <a href="#" id="switchToEL">EL</a>
+</div>
+
+<script>
+  function switchLanguage(lang) {
+    const currentPath = window.location.pathname;
+    let newPath = currentPath;
+    
+    if (lang === 'en') {
+      // Replace /el/ with /en/ if present, or prepend /en/ if not
+      if (currentPath.startsWith('/el/')) {
+        newPath = currentPath.replace('/el/', '/en/');
+      } else {
+        newPath = '/en' + currentPath;
+      }
+    } else if (lang === 'el') {
+      // Replace /en/ with /el/ if present, or prepend /el/ if not
+      if (currentPath.startsWith('/en/')) {
+        newPath = currentPath.replace('/en/', '/el/');
+      } else {
+        newPath = '/el' + currentPath;
+      }
+    }
+    window.location.pathname = newPath;
+  }
+
+  document.getElementById('switchToEN').addEventListener('click', function(e) {
+    e.preventDefault();
+    switchLanguage('en');
+  });
+
+  document.getElementById('switchToEL').addEventListener('click', function(e) {
+    e.preventDefault();
+    switchLanguage('el');
+  });
+</script>
+  <footer>
+    <div class="row">
+      <b>Νίκος Ιωσήφ</b> &nbsp; &nbsp; 
+      <a href="https://www.facebook.com/nikos.iosif.9" target="_blank">
+        <img src="images/facebook.png" class="icon" alt="Facebook">
+      </a>
+      <a href="https://www.instagram.com/nickiosif_/" target="_blank">
+        <img src="images/instagram.png" class="icon" alt="Instagram">
+      </a>
+      <p class="hidding">Στούντιο @ Παπαρηγοπούλου 15</p>
+      <a href="https://maps.app.goo.gl/Te84Zco9Kd1Ju8987" target="_blank">
+        <img src="images/google.png" class="icon" alt="Google Maps">
+      </a>
+      <p class="footer-text">&#169; All rights reserved 2025</p>
+    </div>
+  </footer>
+<script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer/dist/rich-text-html-renderer.min.js"></script>
+  <script type="module" src="/js/scripts-cv.js?v=2"></script>
+</body>
+</html>
