@@ -649,8 +649,8 @@ height:auto;
   }
    .mobile-nav {
     display: block;
-    width: 80vw;          
-    max-width: none;      
+    width: auto;          
+    max-width: 50vw;      
     max-height: 100vh;
     z-index: 400;
     padding: 1rem;
@@ -704,7 +704,7 @@ height:auto;
   left: 0;
   width: 100%;
   z-index: 500;	
-  background-color: #F1F7F7; 
+  background-color: rgba(221, 211, 211, 0.7); 
   height: 10vh; 
   padding: 5px 15px;
   box-sizing: border-box;
