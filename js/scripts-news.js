@@ -177,8 +177,9 @@ function renderNewsDetail(article, articles) {
 }
 
 
-// --- Fetch all news articles ---
-fetch('/.netlify/functions/contentful-news-proxy')
+const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en';
+
+fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
   .then(resp => resp.json())
   .then(articles => {
     console.log("Fetched articles:", articles);
