@@ -633,10 +633,22 @@ height:auto;
   }
    .mobile-nav {
     display: block;
-    width:30vw;
-    max-height:100vh;
-    z-index:400;
+    width: 80vw;          
+    max-width: none;      
+    max-height: 100vh;
+    z-index: 400;
+    padding: 1rem;
 	
+  }
+.mobile-nav nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: clamp(12px, 3vw, 26px); 
+  }
+.mobile-nav nav li {
+    margin-bottom: 1rem;
+    font-size: clamp(12px, 3vw, 26px);
   }
   .mobile-nav nav{
    margin-top:10vh;
@@ -657,16 +669,15 @@ height:auto;
     margin-top:3vh;	
   }
   
-  .hamburger {
+ .hamburger {
     display: block;
     background: none;
     border: none;
-    font-size: 24px;
+    font-size: 28px;  
     cursor: pointer;
     padding: 5px;
     margin: 0; 
     align-self: center;
-	
   }
 .mobile-logo {
   display: flex;
