@@ -123,7 +123,7 @@ if (document.querySelector('.article-title') && document.querySelector('.article
 
 const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en';
 
-fetch(`/.netlify/functions/contentful-proxy?entryId=${articleEntryId}&locale=${locale}`)
+fetch(`/.netlify/functions/contentful-article-proxy?entryId=${articleEntryId}&locale=${locale}`)
     .then(response => response.json())
     .then(data => {
       if (data.sys && data.fields) {
