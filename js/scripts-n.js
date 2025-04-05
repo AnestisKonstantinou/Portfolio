@@ -130,7 +130,18 @@ if (document.querySelector('.article-title') && document.querySelector('.article
         const titleEl = document.querySelector('.article-title');
         const blogPostEl = document.querySelector('.article');
         if (titleEl) titleEl.textContent = title;
-        if (blogPostEl) blogPostEl.innerHTML = documentToHtmlString(blogPost);
+
+        // Custom options for the Contentful rich text renderer so that hyperlinks open in a new tab
+        const options = {
+          renderNode: {
+            'hyperlink': (node, next) => {
+              const url = node.data.uri;
+              return `<a href="${url}" target="_blank" rel="noopener noreferrer">${next(node.content)}</a>`;
+            }
+          }
+        };
+
+        if (blogPostEl) blogPostEl.innerHTML = documentToHtmlString(blogPost, options);
 
         // If you want to show article images in a gallery
         const galleryContainer = document.querySelector('.article-gallery');
