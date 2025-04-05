@@ -119,7 +119,9 @@ if (document.querySelector('.article-title') && document.querySelector('.article
   // Replace with your actual article entry ID
   const articleEntryId = 'NI4BpqTDyJM05KsGh6SgF';
 
- fetch(`/.netlify/functions/contentful-article-proxy?entryId=${articleEntryId}`)
+const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en';
+
+fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
     .then(response => response.json())
     .then(data => {
       if (data.sys && data.fields) {
