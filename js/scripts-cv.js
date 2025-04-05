@@ -35,7 +35,9 @@ if (hamburgerBtn && mobileNav) {
    =========================== */
 const entryId = '27N1K0F66rYGIIUcePHQq0';
 
-fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}`)
+const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en';
+
+fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
   .then(response => response.json())
   .then(data => {
     console.log('Resolved Gallery Data:', data);
@@ -118,7 +120,9 @@ if (document.querySelector('.article-title') && document.querySelector('.article
   // Replace with your actual article entry ID
   const articleEntryId = '27N1K0F66rYGIIUcePHQq0';
 
- fetch(`/.netlify/functions/contentful-article-proxy?entryId=${articleEntryId}`)
+const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en';
+
+fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
     .then(response => response.json())
     .then(data => {
       if (data.sys && data.fields) {
