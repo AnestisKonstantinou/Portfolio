@@ -137,8 +137,21 @@ function renderNewsDetail(article, articles) {
   const bodyDiv = document.createElement('div');
   bodyDiv.className = 'detail-body';
   let fullBodyHTML = '';
+
+  // Define options to add target="_blank" and rel="noopener noreferrer"
+  // for any hyperlinks rendered from Contentful rich text.
+  const options = {
+    renderNode: {
+      'hyperlink': (node, next) => {
+        const url = node.data.uri;
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${next(node.content)}</a>`;
+      }
+    }
+  };
+
+  // Use the custom options if the article body is an object (rich text)
   if (typeof article.body === 'object') {
-    fullBodyHTML = documentToHtmlString(article.body);
+    fullBodyHTML = documentToHtmlString(article.body, options);
   } else {
     fullBodyHTML = `<p>${article.body}</p>`;
   }
@@ -156,12 +169,13 @@ function renderNewsDetail(article, articles) {
   detailDiv.appendChild(backLink);
   container.appendChild(detailDiv);
 
-  // Attach event listener for "Back" link
+  // Attach event listener for the "Back" link to return to the list view
   backLink.addEventListener('click', (e) => {
     e.preventDefault();
     renderNewsList(articles);
   });
 }
+
 
 // --- Fetch all news articles ---
 fetch('/.netlify/functions/contentful-news-proxy')
