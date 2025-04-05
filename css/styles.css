@@ -12,6 +12,18 @@ body {
   background-color:#F1F7F7;  /* Ensure body spans full viewport height */
 }
 
+.language-switcher {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1rem;
+}
+
+.language-switcher a {
+  text-decoration: none;
+  color: #000;
+  margin: 0 5px;
+}
 /* The container that holds sidebar + main content should be 90% of the viewport height */
 .page-wrapper {
   display: flex;
