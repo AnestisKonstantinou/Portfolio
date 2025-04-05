@@ -179,7 +179,7 @@ function renderNewsDetail(article, articles) {
 
 const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en';
 
-fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
+fetch(`/.netlify/functions/contentful-news-proxy?locale=${locale}`)
   .then(resp => resp.json())
   .then(articles => {
     console.log("Fetched articles:", articles);
