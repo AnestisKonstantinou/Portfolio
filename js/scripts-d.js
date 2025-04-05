@@ -1,4 +1,4 @@
-// scripts.js
+// scripts-d.js
 import { documentToHtmlString } from "https://cdn.skypack.dev/@contentful/rich-text-html-renderer";
 
 /* ===========================
@@ -97,7 +97,7 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}`)
       if (e.key === 'Escape') closeLightbox();
     });
 
-    // Create an <img> for each image in "images" array
+    // Create an <img> for each image in the "images" array
     images.forEach((imgObj, index) => {
       const imgEl = document.createElement('img');
       imgEl.src = imgObj.url;
@@ -110,10 +110,11 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}`)
     });
   })
   .catch(err => console.error('Error fetching final gallery data:', err));
+
 /* ===========================
    3) (Optional) If you have an Article Page
    =========================== */
-// Check if this page is an article page by looking for .article-title and .article
+// Check if this page is an article page by looking for .article-title and .article elements
 if (document.querySelector('.article-title') && document.querySelector('.article')) {
   // Replace with your actual article entry ID
   const articleEntryId = '75poUixF1o7MHlOAwD5HDJ';
@@ -130,7 +131,18 @@ if (document.querySelector('.article-title') && document.querySelector('.article
         const titleEl = document.querySelector('.article-title');
         const blogPostEl = document.querySelector('.article');
         if (titleEl) titleEl.textContent = title;
-        if (blogPostEl) blogPostEl.innerHTML = documentToHtmlString(blogPost);
+
+        // Custom options for the Contentful rich text renderer so that hyperlinks open in a new tab
+        const options = {
+          renderNode: {
+            'hyperlink': (node, next) => {
+              const url = node.data.uri;
+              return `<a href="${url}" target="_blank" rel="noopener noreferrer">${next(node.content)}</a>`;
+            }
+          }
+        };
+
+        if (blogPostEl) blogPostEl.innerHTML = documentToHtmlString(blogPost, options);
 
         // If you want to show article images in a gallery
         const galleryContainer = document.querySelector('.article-gallery');
