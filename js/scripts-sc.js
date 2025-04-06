@@ -35,7 +35,7 @@ if (hamburgerBtn && mobileNav) {
    =========================== */
 const entryId = '6w706Y2fCkJSmABXsTPynu';
 
-const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en';
+const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en-US';
 
 fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
   .then(response => response.json())
