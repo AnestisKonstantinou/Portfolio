@@ -35,7 +35,7 @@ if (hamburgerBtn && mobileNav) {
    =========================== */
 const entryId = '27N1K0F66rYGIIUcePHQq0';
 
-const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en';
+const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en-US';
 
 fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
   .then(response => response.json())
@@ -120,7 +120,7 @@ if (document.querySelector('.article-title') && document.querySelector('.article
   // Replace with your actual article entry ID
   const articleEntryId = '27N1K0F66rYGIIUcePHQq0';
 
-const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en';
+const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en-US';
 
 fetch(`/.netlify/functions/contentful-article-proxy?entryId=${articleEntryId}&locale=${locale}`)
     .then(response => response.json())
