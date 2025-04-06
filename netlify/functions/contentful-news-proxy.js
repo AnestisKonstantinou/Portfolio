@@ -7,8 +7,11 @@ module.exports.handler = async (event, context) => {
     const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
     const contentTypeId = 'newsFlash'; // Ensure this matches your Contentful content type API ID
 
-    // Fetch entries of this content type, with a deep include and ordering by publish date descending
-    const baseUrl = `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${contentTypeId}&include=10&order=-fields.publishDate`;
+    // Read the locale from query parameters; default to 'en-US' (or your default) if not provided.
+    const locale = event.queryStringParameters.locale || 'en-US';
+
+    // Append the locale parameter to the API URL
+    const baseUrl = `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${contentTypeId}&include=10&order=-fields.publishDate&locale=${locale}`;
     const response = await fetch(baseUrl);
     const data = await response.json();
 
