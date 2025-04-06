@@ -92,24 +92,23 @@
 <script>
   function switchLanguage(lang) {
     const currentPath = window.location.pathname;
-    let newPath = currentPath;
+    // Regular expression to capture an existing language prefix (if any)
+    const regex = /^\/(en|el)(\/.*)?$/;
+    const match = currentPath.match(regex);
+    let newPath;
     
-    if (lang === 'en') {
-      // Replace /el/ with /en/ if present, or prepend /en/ if not
-      if (currentPath.startsWith('/el/')) {
-        newPath = currentPath.replace('/el/', '/en/');
-      } else {
-        newPath = '/en' + currentPath;
-      }
-    } else if (lang === 'el') {
-      // Replace /en/ with /el/ if present, or prepend /el/ if not
-      if (currentPath.startsWith('/en/')) {
-        newPath = currentPath.replace('/en/', '/el/');
-      } else {
-        newPath = '/el' + currentPath;
-      }
+    if (match) {
+      // If there's already a language prefix, use the same page path
+      newPath = '/' + lang + (match[2] || '/');
+    } else {
+      // Otherwise, simply prepend the desired language prefix
+      newPath = '/' + lang + currentPath;
     }
-    window.location.pathname = newPath;
+    
+    // Only navigate if the new path is different from the current one
+    if (newPath !== currentPath) {
+      window.location.pathname = newPath;
+    }
   }
 
   document.getElementById('switchToEN').addEventListener('click', function(e) {
