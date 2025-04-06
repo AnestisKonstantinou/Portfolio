@@ -628,6 +628,11 @@ height:auto;
   }
 .language-switcher{
 	z-index:1500;
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  font-size: 1rem;
+}
 }
 .caption {
   position: relative; 
