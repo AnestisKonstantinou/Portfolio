@@ -671,10 +671,6 @@ height:auto;
     margin-bottom: 1rem;
     font-size: clamp(12px, 3vw, 26px);
   }
-  .mobile-nav nav{
-   margin-top:10vh;
-	  
-  }
   
  .submenu {
     display:none;
