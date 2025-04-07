@@ -62,6 +62,9 @@ function renderNewsList(articles) {
 
     const titleEl = document.createElement('h4');
     titleEl.textContent = article.title;
+    // Add a unique class for independent Fitty scaling
+    titleEl.className = 'news-title';
+
     const excerptEl = document.createElement('p');
     excerptEl.innerHTML = article.shortExcerpt;
 
@@ -99,11 +102,11 @@ function renderNewsList(articles) {
     }
   });
 
-  // Initialize Fitty on the text containers to scale text dynamically
-  fitty('.news-box-text', {
-    minSize: 6,
+  // Initialize Fitty on the title elements separately
+  fitty('.news-title', {
+    minSize: 4,    // Allow titles to scale down further
     maxSize: 20,
-    multiLine: true
+    multiLine: false
   });
 }
 
@@ -175,7 +178,6 @@ function renderNewsDetail(article, articles) {
     renderNewsList(articles);
   });
 }
-
 
 const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en-US';
 
