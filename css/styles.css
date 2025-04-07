@@ -33,7 +33,7 @@ body {
 
 
 .sidebar {
-  background-color:rgb(221, 211, 211, 0.4);
+  background-color:rgba(221, 211, 211, 0.4);
   width: 30%;
   max-width: 350px;      
   padding: 1rem;
@@ -154,7 +154,7 @@ margin-top: 0.5rem;
 
 footer {
   max-height: 20vh;
-  background-color: rgb(221, 211, 211, 0.4);
+  background-color: rgba(221, 211, 211, 0.4);
   color: black;
   display: flex;
   align-items: center;  
@@ -236,7 +236,7 @@ height:auto;
   border-radius:0 30px 0 0;
   max-width: 300px;
   height: 100vh;
-  background-color:rgb(221, 211, 211, 0.7);
+  background-color:rgba(221, 211, 211, 0.7);
   box-shadow: 2px 0 5px rgba(0,0,0,0.2);
   padding: 1rem;
   transition: transform 0.3s ease;
