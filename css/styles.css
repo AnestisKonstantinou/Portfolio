@@ -705,7 +705,7 @@ height:auto;
   left: 0;
   width: 100%;
   z-index: 500;	
-  background-color: rgba(221, 211, 211, 0.7); 
+  background-color: rgba(221, 211, 211, 1); 
   height: 10vh; 
   padding: 5px 15px;
   box-sizing: border-box;
