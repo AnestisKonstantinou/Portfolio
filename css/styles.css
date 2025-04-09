@@ -650,7 +650,31 @@ form button[type="submit"]:hover {
 input[name="bot-field"] {
   display: none;
 }
-
+ #successPopup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      color: #333;
+      padding: 20px 30px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: none; /* Hidden by default */
+    }
+    /* Optional: Add an overlay background */
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      display: none;
+    }
 
 @media (max-width: 768px) {
  .read-more-link {
