@@ -37,18 +37,6 @@ const entryId = '6w706Y2fCkJSmABXsTPynu';
 
 const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en-US';
 
-/**
- * Optimize the image URL using Contentful's Image API.
- * @param {string} url - The original image URL.
- * @param {number} width - Desired width in pixels.
- * @param {number} height - Desired height in pixels.
- * @returns {string} - The optimized image URL.
- */
-function optimizeImageUrl(url, width, height) {
-  const separator = url.includes('?') ? '&' : '?';
-  return url + separator + `w=${width}&h=${height}&fit=fill`;
-}
-
 fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
   .then(response => response.json())
   .then(data => {
@@ -88,7 +76,7 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`
     function openLightbox(index) {
       currentIndex = index;
       const { url, title, description } = images[currentIndex];
-      if (lightboxImage) lightboxImage.src = url; // Use full resolution here
+      if (lightboxImage) lightboxImage.src = url;
       if (lightboxTitle) lightboxTitle.textContent = title;
       if (lightboxDescription) lightboxDescription.textContent = description;
       if (overlay) overlay.classList.add('active');
@@ -107,28 +95,15 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`
     if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
     if (nextBtn) nextBtn.addEventListener('click', showNext);
     if (prevBtn) prevBtn.addEventListener('click', showPrev);
-
-    // Keyboard navigation for lightbox: arrow keys for next/prev, Escape to close
     document.addEventListener('keydown', (e) => {
-      if (overlay && overlay.classList.contains('active')) {
-        if (e.key === 'Escape') {
-          closeLightbox();
-        } else if (e.key === 'ArrowRight') {
-          showNext();
-        } else if (e.key === 'ArrowLeft') {
-          showPrev();
-        }
-      }
+      if (e.key === 'Escape') closeLightbox();
     });
 
-    // Create an <img> for each image in the "images" array
+    // Create an <img> for each image in "images" array
     images.forEach((imgObj, index) => {
       const imgEl = document.createElement('img');
-      // Use the optimized URL for the grid view
-      const optimizedUrl = optimizeImageUrl(imgObj.url, 400, 300);
-      imgEl.src = optimizedUrl;
+      imgEl.src = imgObj.url;
       imgEl.alt = imgObj.title || '';
-      imgEl.loading = 'lazy';  // Enable native lazy loading
       imgEl.style.cursor = 'pointer';
       imgEl.addEventListener('click', () => {
         openLightbox(index);
