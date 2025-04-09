@@ -51,8 +51,36 @@
     <div class="main1">
       <h2 style="text-align:center;">Contact</h2>
       <div class="text">
-        Please send an email to iosifnikos2@gmail.com
+        Please send an email to iosifnikos2@gmail.com or fill out the form below:
       </div>
+	     <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+    <!-- Hidden input generated automatically upon deploy: -->
+    <input type="hidden" name="form-name" value="contact" />
+    
+    <!-- Honeypot field to help filter bots -->
+    <p style="display: none;">
+      <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+    </p>
+    
+    <p>
+      <label for="name">Your Name:</label>
+      <input type="text" id="name" name="name" required />
+    </p>
+    
+    <p>
+      <label for="email">Your Email:</label>
+      <input type="email" id="email" name="email" required />
+    </p>
+    
+    <p>
+      <label for="message">Your Message:</label>
+      <textarea id="message" name="message" required></textarea>
+    </p>
+    
+    <p>
+      <button type="submit">Send</button>
+    </p>
+  </form>
      
     </div>
   </div>
