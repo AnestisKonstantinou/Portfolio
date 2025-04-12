@@ -95,9 +95,21 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`
     if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
     if (nextBtn) nextBtn.addEventListener('click', showNext);
     if (prevBtn) prevBtn.addEventListener('click', showPrev);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
-    });
+   document.addEventListener('keydown', (e) => {
+  // Only intercept if the overlay is active (lightbox open)
+  if (overlay && overlay.classList.contains('active')) {
+    if (e.key === 'Escape') {
+      closeLightbox();
+      e.preventDefault();
+    } else if (e.key === 'ArrowRight') {
+      showNext();
+      e.preventDefault();
+    } else if (e.key === 'ArrowLeft') {
+      showPrev();
+      e.preventDefault();
+    }
+  }
+});
 
     // Create an <img> for each image in "images" array
     images.forEach((imgObj, index) => {
