@@ -33,7 +33,7 @@ body {
 
 
 .sidebar {
-  background-color:rgba(221, 211, 211, 0.4);
+  background-color:rgba(221, 211, 211, 1);
   width: 30%;
   max-width: 350px;      
   padding: 1rem;
