@@ -67,6 +67,12 @@ function renderNewsList(articles) {
 
     const excerptEl = document.createElement('p');
     excerptEl.innerHTML = article.shortExcerpt;
+    // Process anchor tags in the excerpt so they open in a new tab
+    const links = excerptEl.querySelectorAll('a');
+    links.forEach(link => {
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+    });
 
     textContainer.appendChild(titleEl);
     textContainer.appendChild(excerptEl);
