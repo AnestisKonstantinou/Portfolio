@@ -177,7 +177,7 @@ height:2vw;
 }
 .footer-text {
   text-align: right;
-  font-size: clamp(12px, 3vw, 18px);
+  font-size: clamp(8px, 2vw, 12px);
   margin-left: auto; 
   white-space: nowrap;
 }
