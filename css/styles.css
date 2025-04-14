@@ -580,6 +580,22 @@ height:auto;
   line-height: 1.4;
   margin-bottom: 1rem;
 }
+.cv-gallery {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Optionally, set a max-width if needed: */
+  max-width: 80%;
+  margin: 0 auto 2rem;
+}
+
+/* Optionally override the image behavior if necessary */
+.cv-gallery img {
+  width: auto;
+  max-width: 100%;
+  /* Remove any grid-specific constraints */
+}
+
 /* Container for the form */
 form {
   max-width: 600px;
