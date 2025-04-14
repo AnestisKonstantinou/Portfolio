@@ -56,7 +56,7 @@ body {
 
 .sidebar nav ul {
   list-style: none;
-  margin: 0;
+  margin:3vh;
   padding: 0;
 }
 
@@ -65,7 +65,7 @@ body {
   font-size: 1em;
 }
 .sidebar nav li{
-	cursor:pointer;
+	cursor:default;
 }
 
 .submenu {
@@ -73,7 +73,7 @@ body {
   margin-left: 1rem;  
   list-style: none;   
   padding-left: 1rem;  
-	margin-top:3vh;
+  margin-top:3vh;
 }
 .submenu.open-submenu {
   display: block;
@@ -93,6 +93,7 @@ body {
 .sidebar nav a {
   text-decoration: none;
   color: #333;
+  cursor:pointer;	
 }
 
 
