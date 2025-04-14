@@ -9,7 +9,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color:#F1F7F7;  /* Ensure body spans full viewport height */
+  background-color:#F1F7F7;  
 }
 
 .language-switcher {
@@ -24,7 +24,7 @@ body {
   color: #000;
   margin: 0 5px;
 }
-/* The container that holds sidebar + main content should be 90% of the viewport height */
+
 .page-wrapper {
   display: flex;
   flex: 1;         
@@ -40,8 +40,6 @@ body {
   box-sizing: border-box;
   overflow-y: auto;        
 }
-
-
 
 .artist-name {
   margin-bottom: 1rem;
@@ -80,10 +78,7 @@ body {
   display: block;
   
 }
-.has-submenu:hover + .submenu,
-.submenu:hover {
-  display: block;
-}
+
 .has-submenu::after {
   font-size: 1.0em;
   margin-left: 0.3em;
@@ -93,12 +88,6 @@ body {
 .has-submenu:hover::after {
   transform: rotate(180deg);
 }
-
-.sidebar nav li:hover > .submenu {
-  display: block;
-  margin-top:4vh;
-}
-
 
 .sidebar nav a {
   text-decoration: none;
