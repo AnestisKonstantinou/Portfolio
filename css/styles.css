@@ -695,10 +695,10 @@ input[name="bot-field"] {
   align-items: center;
   justify-content: center;
 }
-.arrow-left {
+.arrow1.arrow-left {
   left: 10px;
 }
-.arrow-right {
+.arrow1.arrow-right {
   right: 10px;
 }
 @media (max-width: 768px) {
