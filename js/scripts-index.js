@@ -30,23 +30,25 @@ if (hamburgerBtn && mobileNav) {
   console.warn("Hamburger menu or mobile nav not found.");
 }
 // Global variable for gallery items and current index
+// Global variables for gallery items and current slide index.
 let galleryItems = [];
 let currentSlideIndex = 0;
 
-// Function to show a slide based on its index
+// Function to update the slideshow with the specified slide index.
 function showSlide(index) {
   if (galleryItems.length === 0) return;
-  // Ensure index is within range (cyclic behavior)
+  // Ensure the index is in range (cyclic behavior).
   currentSlideIndex = (index + galleryItems.length) % galleryItems.length;
   const slideImage = document.getElementById('slide-image');
   const slideTitle = document.getElementById('slide-title');
   const item = galleryItems[currentSlideIndex];
   slideImage.src = item.url;
   slideImage.alt = item.title;
-  slideTitle.textContent = item.title;
+  // Concatenate title and description on the same line.
+  slideTitle.textContent = item.title + ' - ' + item.description;
 }
 
-// Next and previous slide functions
+// Navigation functions.
 function nextSlide() {
   showSlide(currentSlideIndex + 1);
 }
@@ -55,13 +57,12 @@ function prevSlide() {
   showSlide(currentSlideIndex - 1);
 }
 
-// Attach event listeners to the arrow buttons
+// Attach arrow button event listeners.
 document.getElementById('nextSlide').addEventListener('click', nextSlide);
 document.getElementById('prevSlide').addEventListener('click', prevSlide);
 
-// (Optional) Also enable keyboard navigation for the slideshow
+// Optional: enable keyboard navigation.
 document.addEventListener('keydown', (e) => {
-  // You can conditionally require that the slideshow is visible if needed.
   if (e.key === 'ArrowRight') {
     nextSlide();
   } else if (e.key === 'ArrowLeft') {
@@ -69,7 +70,9 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Replace 'YOUR_GALLERY_ENTRY_ID' with your actual entry ID that holds your gallery items.
+// Fetch the gallery data from your Contentful proxy.
+// Replace 'YOUR_GALLERY_ENTRY_ID' with the actual entry ID holding your gallery content.
+// It's assumed each image object includes properties: title, url, and description.
 const galleryEntryId = '1Y1HXZR5YdGX3W8xCa8o5C';
 const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en-US';
 
@@ -77,14 +80,15 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${galleryEntryId}&locale=${l
   .then(response => response.json())
   .then(data => {
     console.log('Resolved Gallery Data:', data);
-    // Assuming the returned object has an "images" array with each image having a title and url.
+    // Ensure the returned data contains an images array.
     if (data && data.images && Array.isArray(data.images)) {
-      // Map the array to use only each item's title and url.
+      // Map each image object to include title, url, and description.
       galleryItems = data.images.map(img => ({
-        title: img.title,  // Title for the individual gallery item.
-        url: img.url       // URL for the image.
+        title: img.title,             // Individual gallery item title.
+        url: img.url,                 // Image URL.
+        description: img.description  // Gallery item description.
       }));
-      // Initialize the slideshow with the first image.
+      // Initialize the slideshow by showing the first image.
       showSlide(0);
     } else {
       console.warn("No gallery items found");
