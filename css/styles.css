@@ -592,7 +592,7 @@ height:auto;
 /* Optionally override the image behavior if necessary */
 .cv-gallery img {
   width: auto;
-  max-width: 100%;
+  max-width: 50%;
   /* Remove any grid-specific constraints */
 }
 
