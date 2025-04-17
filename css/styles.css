@@ -678,6 +678,7 @@ input[name="bot-field"] {
   position: relative;
   max-width: 90%;
   margin: 0 auto;
+	margin-top:5vh;
   overflow: hidden;
   /* Ensure it covers most of the page: */
   height: 80vh;
@@ -946,6 +947,9 @@ input[name="bot-field"] {
    .arrow1{
 	 color:white;
 	}
+   .slideshow-container{
+	   margin-top:10vh;
+   }
 }
 	@media (max-width: 480px) {
   .gallery-grid {
@@ -954,6 +958,9 @@ input[name="bot-field"] {
 	 .article-gallery {
     grid-template-columns: 1fr;
   }
+	 .slideshow-container{
+	   margin-top:10vh;
+   }
 }
   .detail-title {
     width: 100%;
