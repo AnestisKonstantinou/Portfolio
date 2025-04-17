@@ -696,7 +696,6 @@ input[name="bot-field"] {
   max-height: 80vh;
   object-fit: contain;
   display: block;
-  margin: 0 auto;
 }
 
 .arrow1 {
