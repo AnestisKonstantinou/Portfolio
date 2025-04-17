@@ -85,7 +85,7 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${galleryEntryId}&locale=${l
       // Map each image object to include title, url, and description.
     galleryItems = data.images.map(img => ({
   title: img.title,
-  url: `${img.url}?fm=webp&w=800&h=600&fit=fill&q=75`, // 👈 Smart optimization
+  url: `${img.url}?fm=webp&w=800&h=600&q=75`, // 👈 Smart optimization
   description: img.description
 }));
 
