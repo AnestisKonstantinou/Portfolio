@@ -83,11 +83,12 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${galleryEntryId}&locale=${l
     // Ensure the returned data contains an images array.
     if (data && data.images && Array.isArray(data.images)) {
       // Map each image object to include title, url, and description.
-      galleryItems = data.images.map(img => ({
-        title: img.title,             // Individual gallery item title.
-        url: img.url,                 // Image URL.
-        description: img.description  // Gallery item description.
-      }));
+    galleryItems = data.images.map(img => ({
+  title: img.title,
+  url: `${img.url}?fm=webp&w=1200&q=80`, // 👈 Smart optimization
+  description: img.description
+}));
+
       // Initialize the slideshow by showing the first image.
       showSlide(0);
     } else {
