@@ -692,11 +692,8 @@ input[name="bot-field"] {
 }
 #slide-image {
   width: 100%;
-  height: auto;
   max-height: 80vh;
   object-fit: contain;
-  display: block;
-	margin-top:2vh;
 }
 
 .arrow1 {
