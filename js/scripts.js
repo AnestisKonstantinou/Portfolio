@@ -114,6 +114,7 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`
       const imgEl = document.createElement('img');
       imgEl.src = imgObj.url;
       imgEl.alt = imgObj.title || '';
+       imgEl.loading = 'lazy';
       imgEl.style.cursor = 'pointer';
       imgEl.addEventListener('click', () => {
         openLightbox(index);
