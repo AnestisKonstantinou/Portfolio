@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Language" content="el">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://nikosiosif.com/privacy.html" />
+  <title>Πολιτική Απορρήτου | Privacy Policy</title>
+  <meta name="description" content="Πολιτική απορρήτου του ιστότοπου του Νίκου Ιωσήφ. Δείτε πληροφορίες σχετικά με τα cookies, τα δεδομένα και την επικοινωνία." />
+  <link rel="stylesheet" href="/css/styles.css" />
+<!-- Google Consent + GA should already be globally loaded -->
+<script src="/js/consent.js" defer></script>
+
+<!-- GA tracking -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RLSEEJN79B"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-RLSEEJN79B');
+</script>
+  <style>
+    .privacy-container {
+      max-width: 800px;
+      margin: 5vh auto;
+      padding: 2rem;
+      background: #fff;
+      font-family: 'Helvetica Neue', sans-serif;
+      color: #333;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .privacy-container h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    .privacy-container h2 {
+      margin-top: 2rem;
+      font-size: 1.3rem;
+      color: #444;
+    }
+    .privacy-container p {
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="language-switcher">
+  <a href="#" id="switchToEN">EN</a> | <a href="#" id="switchToEL">EL</a>
+</div>
+
+<div class="privacy-container" id="privacyText">
+  <!-- Text will be injected below -->
+</div>
+
+<footer> 
+  <div class="row"> <b>Νίκος Ιωσήφ</b> &nbsp; &nbsp; 
+    <a href="https://www.facebook.com/nikos.iosif.9" target="_blank" rel="noopener noreferrer">
+      <img src="/images/facebook.png" class="icon" alt="Facebook profile of Nikos Iosif">
+    </a>
+    <a href="https://www.instagram.com/nickiosif_/" target="_blank" rel="noopener noreferrer">
+      <img src="/images/instagram.png" class="icon" alt="Instagram profile of Nikos Iosif">
+    </a> 
+    <p class="hidding">Στούντιο @ Παπαρηγοπούλου 15</p>
+    <a href="https://maps.app.goo.gl/Te84Zco9Kd1Ju8987" target="_blank" rel="noopener noreferrer">
+      <img src="/images/google.png" class="icon" alt="Location on Google Maps">
+    </a>
+    <p class="footer-text">&nbsp;&nbsp;&nbsp;&#169; All rights reserved 2025</p>
+  </div>
+</footer>
+
+
+
+<!-- Language Switcher -->
+<script>
+  function switchLanguage(lang) {
+    const currentPath = window.location.pathname;
+    const regex = /^\/(en|el)(\/.*)?$/;
+    const match = currentPath.match(regex);
+    let newPath;
+    
+    if (match) {
+      newPath = '/' + lang + (match[2] || '/');
+    } else {
+      newPath = '/' + lang + currentPath;
+    }
+
+    if (newPath !== currentPath) {
+      window.location.pathname = newPath;
+    }
+  }
+
+  document.getElementById('switchToEN').addEventListener('click', function(e) {
+    e.preventDefault();
+    switchLanguage('en');
+  });
+
+  document.getElementById('switchToEL').addEventListener('click', function(e) {
+    e.preventDefault();
+    switchLanguage('el');
+  });
+</script>
+
+<!-- Inject privacy content based on language -->
+<script>
+  const lang = window.location.pathname.startsWith('/el/') ? 'el' : 'en';
+
+  const content = {
+    el: `
+      <h1>Πολιτική Απορρήτου</h1>
+      <p>Ο παρών ιστότοπος χρησιμοποιεί το Google Analytics για την ανάλυση της επισκεψιμότητας. Δεν συλλέγονται προσωπικά δεδομένα χωρίς τη ρητή συγκατάθεση του επισκέπτη.</p>
+      <h2>Cookies</h2>
+      <p>Χρησιμοποιούμε cookies για την παρακολούθηση επισκεψιμότητας και την καλύτερη απόδοση του ιστότοπου. Έχετε τη δυνατότητα να αποδεχτείτε ή να απορρίψετε τα cookies μέσω του σχετικού banner.</p>
+      <h2>Τρίτα μέρη</h2>
+      <p>Η ανάλυση πραγματοποιείται μέσω του Google Analytics (GA4), το οποίο συμμορφώνεται με τις ισχύουσες πολιτικές απορρήτου. Τα μέσα κοινωνικής δικτύωσης δεν αποθηκεύουν προσωπικά δεδομένα μέσω του ιστότοπου.</p>
+      <h2>Επικοινωνία</h2>
+      <p>Για οποιαδήποτε απορία ή αίτημα σχετικά με τα προσωπικά σας δεδομένα, μπορείτε να επικοινωνήσετε μέσω της σελίδας <a href="/el/contact.html">Επικοινωνία</a>.</p>
+    `,
+    en: `
+      <h1>Privacy Policy</h1>
+      <p>This website uses Google Analytics to measure traffic. No personal data is collected without your explicit consent.</p>
+      <h2>Cookies</h2>
+      <p>We use cookies for traffic analysis and site performance. You may accept or reject them via the cookie banner shown on first visit.</p>
+      <h2>Third Parties</h2>
+      <p>Analytics is provided via Google Analytics (GA4), which complies with current privacy regulations. No personal data is shared with social media platforms through this site.</p>
+      <h2>Contact</h2>
+      <p>For any questions or requests regarding your data, feel free to get in touch through the <a href="/en/contact.html">Contact</a> page.</p>
+    `
+  };
+
+  document.getElementById('privacyText').innerHTML = content[lang];
+</script>
+
+</body>
+</html>
