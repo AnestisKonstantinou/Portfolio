@@ -42,8 +42,19 @@ function showSlide(index) {
   const slideImage = document.getElementById('slide-image');
   const slideTitle = document.getElementById('slide-title');
   const item = galleryItems[currentSlideIndex];
-  slideImage.src = item.url;
-  slideImage.alt = item.title;
+  // Set optimized image for default
+slideImage.src = item.url;
+
+// Set responsive sizes
+slideImage.srcset = `
+  ${item.url.replace('w=1200', 'w=480')} 480w,
+  ${item.url.replace('w=1200', 'w=768')} 768w,
+  ${item.url.replace('w=1200', 'w=1024')} 1024w
+`;
+
+slideImage.sizes = `(max-width: 600px) 100vw, (max-width: 1024px) 90vw, 60vw`;
+slideImage.alt = item.title;
+;
   // Concatenate title and description on the same line.
   slideTitle.textContent = item.title + ' - ' + item.description;
 }
