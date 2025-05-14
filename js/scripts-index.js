@@ -125,9 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // lazy-load the video src only when pop-up opens
     video.src = '/videos/exhibition.mp4';
     video.load();
-     video.play().catch(err => {
+video.play().catch(err => {
   console.warn('Autoplay was prevented:', err);
-  }, 1000);
+});
+
 
   // 2) close handler
   closeBtn.addEventListener('click', () => {
