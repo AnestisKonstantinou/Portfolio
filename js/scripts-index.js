@@ -115,8 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const popup     = document.getElementById('exhibitionPopup');
   const closeBtn  = document.getElementById('closePopup');
   const video     = document.getElementById('popupVideo');
-  const playBtn   = document.getElementById('videoPlayPause');
-  const muteBtn   = document.getElementById('videoMuteUnmute');
+  
 
   // 1) when to show: here we delay 1s after load
   setTimeout(() => {
@@ -135,19 +134,5 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.style.display = 'none';
   });
 
-  // 3) optional custom controls
-  playBtn.addEventListener('click', function() {
-    if (video.paused) {
-      video.play();
-      this.textContent = 'Pause';
-    } else {
-      video.pause();
-      this.textContent = 'Play';
-    }
-  });
 
-  muteBtn.addEventListener('click', function() {
-    video.muted = !video.muted;
-    this.textContent = video.muted ? 'Unmute' : 'Mute';
-  });
 });
