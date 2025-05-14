@@ -1013,18 +1013,6 @@ input[name="bot-field"] {
   cursor: pointer;
 }
 
-/* Custom play/pause and mute/unmute (optional) */
-.video-controls {
-  margin-top: 0.5rem;
-  display: flex;
-  gap: 0.5rem;
-}
-.video-controls button {
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #666;
-  background: none;
-  cursor: pointer;
-}
 
 /* Responsive: stack on mobile */
 @media (max-width: 600px) {
