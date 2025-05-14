@@ -970,7 +970,7 @@ input[name="bot-field"] {
 /* POPUP FOR EXHIBITION */
 #popupOverlay {
   position: fixed;
-  top: 0; left: 0;
+  bottom:10vh; left: 0;
   width: 100vw; height: 100vh;
   background: rgba(0,0,0,0.5);
   display: none;
@@ -980,7 +980,7 @@ input[name="bot-field"] {
 /* Pop-up window */
 #exhibitionPopup {
   position: fixed;
-  bottom:10vh; left: 0;
+  bottom: 10vh; left: 0;
   transform: translate(-50%, -50%);
   background: #fff;
   border-radius: 6px;
