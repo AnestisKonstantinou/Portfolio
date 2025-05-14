@@ -983,7 +983,8 @@ input[name="bot-field"] {
   left: 1rem;          /* or 0 / whatever horizontal inset you like */
   bottom: 10vh;        /* raises it exactly above your 10vh‐tall footer */
   transform: none;     /* cancel the translate(-50%,-50%) centering */
-  width: 300px;        /* pick an appropriate width */
+  width: 400px;  
+	height:400px;/* pick an appropriate width */
   max-width: 90vw;     /* never exceed viewport on small screens */
   /* you can still control height via max-height or let content size it */
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
