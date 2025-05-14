@@ -110,32 +110,30 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${galleryEntryId}&locale=${l
   .catch(error => console.error("Error fetching gallery data:", error));
 
 // POPUP SCRIPT
+// POPUP SCRIPT
 document.addEventListener('DOMContentLoaded', () => {
-  const overlay   = document.getElementById('popupOverlay');
-  const popup     = document.getElementById('exhibitionPopup');
-  const closeBtn  = document.getElementById('closePopup');
-  const video     = document.getElementById('popupVideo');
-  
+  const overlay  = document.getElementById('popupOverlay');
+  const popup    = document.getElementById('exhibitionPopup');
+  const closeBtn = document.getElementById('closePopup');
+  const video    = document.getElementById('popupVideo');
 
-  // 1) when to show: here we delay 1s after load
-  setTimeout(() => {
-    overlay.style.display = 'block';
-    popup.style.display   = 'block';
-
-    // lazy-load the video src only when pop-up opens
-    video.src = '/videos/exhibition.mp4';
-    video.load();
-video.play().catch(err => {
-  console.warn('Autoplay was prevented:', err);
-});
-
-
-  // 2) close handler
+  // 1) Close handler (ready as soon as DOM loads)
   closeBtn.addEventListener('click', () => {
     video.pause();
     popup.style.display   = 'none';
     overlay.style.display = 'none';
   });
 
+  // 2) Show the popup after a 1s delay
+  setTimeout(() => {
+    overlay.style.display = 'block';
+    popup.style.display   = 'block';
 
+    // lazy-load & play the video
+    video.src = '/videos/exhibition.mp4';
+    video.load();
+    video.play().catch(err => {
+      console.warn('Autoplay was prevented:', err);
+    });
+  }, 1000);  // ← this “1000” is the millisecond delay (1s); keep, shorten, or remove as you like
 });
