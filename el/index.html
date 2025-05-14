@@ -160,6 +160,39 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer/dist/rich-text-html-renderer.min.js"></script>
   <script type="module" src="/js/scripts-index.js?v=2"></script>
-		
+	<!--POPUP FOR EXHIBITION -->
+<div id="popupOverlay"></div>
+
+<!-- pop-up container -->
+<div id="exhibitionPopup">
+  <button id="closePopup" class="popup-close">×</button>
+  <div class="popup-content">
+    <!-- Left column: video -->
+    <div class="popup-video">
+      <!-- we’ll assign src via JS to defer loading -->
+      <video id="popupVideo"
+             playsinline
+             preload="metadata"
+             muted
+             autoplay
+             loop
+             controls
+             style="width:100%; height:auto;">
+	      <source src="/videos/exhibition.mp4" type="video/mp4">
+        Your browser doesn’t support <code>&lt;video&gt;</code>.
+      </video>
+    </div>
+
+    <!-- Right column: text -->
+    <div class="popup-text">
+      <h2>“Silent Watching Eyes"</h2>
+	<br><h3>Ατομική έκθεση και εγκαίνια στούντιο</h3>    
+      <p>Σας καλούμε να δούμε μαζί την καλύτερη "θέα" στη πόλη, στην Παπαρηγοπούλου 15, Θεσσαλονίκη. Έναρξη: 22 Μαΐου, 2025  7 μμ.</p>
+	    <br>
+	    <p> Διάρκεια έκθεσης: 22/5/2025 έως 30/5/2025</p><br>
+	    <p>Facebook Εκδήλωση:  <a href="#">facebook.com</a></p>
+    </div>
+  </div>
+</div>	
 </body>
 </html>
