@@ -984,7 +984,7 @@ input[name="bot-field"] {
   bottom: 10vh;        /* raises it exactly above your 10vh‐tall footer */
   transform: none;     /* cancel the translate(-50%,-50%) centering */
   width: 400px;  
-	height:400px;/* pick an appropriate width */
+	height:200px;/* pick an appropriate width */
   max-width: 90vw;     /* never exceed viewport on small screens */
   /* you can still control height via max-height or let content size it */
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -1011,7 +1011,7 @@ input[name="bot-field"] {
 #exhibitionPopup .popup-video video {
   width: 100%;             /* you already have this */
   height: 100%;            /* change from auto → full height */
-  object-fit: contain;     /* or “cover” if you’d rather fill & crop */
+  object-fit: cover;     /* or “cover” if you’d rather fill & crop */
 }
 
 /* Close “×” button */
