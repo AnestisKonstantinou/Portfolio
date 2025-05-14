@@ -159,5 +159,44 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer/dist/rich-text-html-renderer.min.js"></script>
   <script type="module" src="/js/scripts-index.js?v=2"></script>
+	<!--POPUP FOR EXHIBITION -->
+<div id="popupOverlay"></div>
+
+<!-- pop-up container -->
+<div id="exhibitionPopup">
+  <button id="closePopup" class="popup-close">×</button>
+  <div class="popup-content">
+    <!-- Left column: video -->
+    <div class="popup-video">
+      <!-- we’ll assign src via JS to defer loading -->
+      <video id="popupVideo"
+             playsinline
+             preload="metadata"
+             muted
+             autoplay
+             loop
+             controls
+             style="width:100%; height:auto;">
+        Your browser doesn’t support <code>&lt;video&gt;</code>.
+      </video>
+      <!-- optional custom buttons (if you want beyond the native controls) -->
+      <div class="video-controls">
+        <button id="videoPlayPause">Pause</button>
+        <button id="videoMuteUnmute">Unmute</button>
+      </div>
+    </div>
+
+    <!-- Right column: text -->
+    <div class="popup-text">
+      <h2>“Silent Watching Eyes"</h2>
+	<br><h3>Solo Exhibition and Studio Grand Opening</h3>    
+      <p>Join us for the best "view" in the city  at Paparigopoulou 15, Thessaloniki. Opening reception: May 22, 2025  7 PM.</p>
+	    <br>
+	    <p> Exhibition duration: 22/5/2025 to 30/5/2025</p><br>
+	    <p>Facebook Event:  <a href="#">facebook.com</a></p>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
