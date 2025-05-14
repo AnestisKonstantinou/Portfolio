@@ -1026,49 +1026,47 @@ input[name="bot-field"] {
 
 
 @media (max-width: 600px) {
-  /* 1) Make the popup a scrollable column */
+  /* 1) Make the pop-up truly full-screen */
   #exhibitionPopup {
-    width: 90vw;                /* almost full width on phone */
-    max-height: 90vh;           /* leave a little breathing room */
-    overflow-y: auto;           /* enable vertical scroll */
-    padding: 0;                 /* reset if you have side-padding */
-  }
-  #exhibitionPopup .popup-content {
-    display: flex;
-    flex-direction: column;     /* stack video + text vertically */
-    flex-wrap: nowrap;          /* no wrapping needed */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    transform: none;          /* cancel the translate(-50%, -50%) */
+    max-width: none; max-height: none;
+    padding: 0;
+    overflow: hidden;         /* video fills it, text scrolls in its own box */
   }
 
-  /* 2) Give the video most of the height */
+  /* 2) Video fills the entire pop-up */
   #exhibitionPopup .popup-video {
-    flex: 0 0 auto;
-    width: 100%;
-    height: 65vh;               /* adjust as you like (60–75 vh is common) */
-    box-sizing: border-box;
-    padding: 0;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
   }
   #exhibitionPopup .popup-video video {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;        /* or cover if you don’t mind cropping */
+    width: 100%; height: 100%;
+    object-fit: cover;        /* fills & crops to cover the area */
   }
 
-  /* 3) Push the heading inside the video container (optional) */
-  #exhibitionPopup .popup-video h2 {
-    position: absolute;         /* if you want the h2 overlaid on video */
-    bottom: 1rem;
-    left: 1rem;
-    color: #fff;
-    background: rgba(0,0,0,0.4);
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-  }
-
-  /* 4) The text block below the video */
+  /* 3) Text overlay on top of the video */
   #exhibitionPopup .popup-text {
-    flex: 0 0 auto;
+    position: absolute;
+    bottom: 0; left: 0;
     width: 100%;
+    max-height: 40vh;         /* adjust how much vertical space your text takes */
+    overflow-y: auto;         /* scroll if it’s longer than 40% of screen */
+    background: rgba(0,0,0,0.6);
+    color: #fff;
     padding: 1rem;
-    background: #fff;
+    box-sizing: border-box;
+    font-size: 1rem;
+  }
+
+  /* 4) Make sure the close “×” stays on top */
+  #exhibitionPopup .popup-close {
+    z-index: 1002;
+    color: #fff;
+    font-size: 1.75rem;
+    /* you can bump up the hit-area here if needed */
   }
 }
