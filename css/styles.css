@@ -1029,7 +1029,7 @@ input[name="bot-field"] {
   /* 1) Full‐screen, scrollable popup */
   #exhibitionPopup {
     position: fixed;
-    top: 10px; left: 0;
+    top: 0; left: 0;
     width: 100vw;  /* full width */
     height: 100vh; /* full height */
     transform: none;      /* cancel centering translate */
@@ -1037,7 +1037,7 @@ input[name="bot-field"] {
     max-height: none;
     padding: 0;
     overflow-y: auto;     /* allow vertical scroll */
-    z-index: 1001;
+    z-index: 1501;
   }
 
   /* 2) Stack video then text */
