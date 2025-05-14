@@ -980,15 +980,15 @@ input[name="bot-field"] {
 /* Pop-up window */
 #exhibitionPopup {
   position: fixed;
-  top: 50%; left: 50%;
+  top: 40%; left: 0;
   transform: translate(-50%, -50%);
   background: #fff;
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   display: none;
   z-index: 1001;
-  max-width: 90%;
-  width: 800px;
+  width: 350px;
+	height:250px;
 }
 
 /* Two-column layout */
