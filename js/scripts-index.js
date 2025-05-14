@@ -130,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
     popup.style.display   = 'block';
 
     // lazy-load & play the video
-    video.src = '/videos/exhibition.mp4';
     video.load();
     video.play().catch(err => {
       console.warn('Autoplay was prevented:', err);
