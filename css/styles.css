@@ -1015,7 +1015,7 @@ input[name="bot-field"] {
 }
 #exhibitionPopup .popup-text {
   text-align: center;
-  font-size: 0.3rem;      /* shrink font if you need more space */
+  font-size: 0.5rem;      /* shrink font if you need more space */
   line-height: 1.2;
   overflow-wrap: break-word;  /* force-wrap long words/URLs */
 }
