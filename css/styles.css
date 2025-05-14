@@ -1047,7 +1047,13 @@ input[name="bot-field"] {
     flex-wrap: nowrap;
     align-items: stretch;
   }
-
+ #exhibitionPopup .popup-video,
+  #exhibitionPopup .popup-text {
+    flex: 0 0 auto;      /* don’t force half width */
+    width: 100%;         /* each takes full width */
+    max-width: none;     /* undo the 50% cap */
+    box-sizing: border-box;
+  }
   /* 3) Video takes ~70% of viewport height */
   #exhibitionPopup .popup-video {
     flex: 0 0 auto;
@@ -1062,15 +1068,10 @@ input[name="bot-field"] {
   }
 
   /* 4) Text block below, scrolls into view */
-  #exhibitionPopup .popup-text {
-    flex: 0 0 auto;
-    width: 100%;
-    background: #fff;
+ #exhibitionPopup .popup-text {
     padding: 1rem;
-    box-sizing: border-box;
-    color: #333;
-    font-size: 1rem;
-    line-height: 1.4;
+    background: #fff;
+    overflow-y: auto;
   }
 
   /* 5) Ensure close button stays visible */
