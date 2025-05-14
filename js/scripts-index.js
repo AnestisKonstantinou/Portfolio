@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     popup.style.display   = 'block';
 
     // lazy-load the video src only when pop-up opens
-    video.src = '/videos/exhibition.mp4';
+    video.src = '/videos/exhibition.mov';
     video.load();
   }, 1000);
 
