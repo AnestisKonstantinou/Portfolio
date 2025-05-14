@@ -1057,7 +1057,7 @@ input[name="bot-field"] {
   /* 3) Video takes ~70% of viewport height */
   #exhibitionPopup .popup-video {
     flex: 0 0 auto;
-	  margin: 10px;
+    padding:10px;
     width: 100%;
     height: 70vh;         /* adjust between 60–75vh to taste */
     box-sizing: border-box;
