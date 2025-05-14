@@ -994,15 +994,19 @@ input[name="bot-field"] {
 /* Two-column layout */
 #exhibitionPopup .popup-content {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: stretch;  
 }
 .popup-video,
 .popup-text {
-  flex: 1 1 50%;
+  flex: 0 0 50%;
+  max-width:50%;
   box-sizing: border-box;
   padding: 1rem;
-  display:flex;
+}
+#exhibitionPopup .popup-video {
+  position: relative;      /* for absolute children if needed */
+  display: flex;           /* allow child to stretch */
 }
 #exhibitionPopup .popup-video video {
   width: 100%;             /* you already have this */
