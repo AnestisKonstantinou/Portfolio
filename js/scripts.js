@@ -182,46 +182,5 @@ if (document.querySelector('.article-title') && document.querySelector('.article
     })
     .catch(err => console.error("Error fetching article:", err));
 }
-// POPUP SCRIPT
-document.addEventListener('DOMContentLoaded', () => {
-  const overlay   = document.getElementById('popupOverlay');
-  const popup     = document.getElementById('exhibitionPopup');
-  const closeBtn  = document.getElementById('closePopup');
-  const video     = document.getElementById('popupVideo');
-  const playBtn   = document.getElementById('videoPlayPause');
-  const muteBtn   = document.getElementById('videoMuteUnmute');
 
-  // 1) when to show: here we delay 1s after load
-  setTimeout(() => {
-    overlay.style.display = 'block';
-    popup.style.display   = 'block';
-
-    // lazy-load the video src only when pop-up opens
-    video.src = '/videos/exhibition.mp4';
-    video.load();
-  }, 1000);
-
-  // 2) close handler
-  closeBtn.addEventListener('click', () => {
-    video.pause();
-    popup.style.display   = 'none';
-    overlay.style.display = 'none';
-  });
-
-  // 3) optional custom controls
-  playBtn.addEventListener('click', function() {
-    if (video.paused) {
-      video.play();
-      this.textContent = 'Pause';
-    } else {
-      video.pause();
-      this.textContent = 'Play';
-    }
-  });
-
-  muteBtn.addEventListener('click', function() {
-    video.muted = !video.muted;
-    this.textContent = video.muted ? 'Unmute' : 'Mute';
-  });
-});
 
