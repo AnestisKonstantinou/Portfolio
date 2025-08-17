@@ -132,6 +132,18 @@ main {
   margin: auto;
 }
 
+/* smooth streaming + stable layout */
+#myGrid img,
+.gallery img,
+.article-gallery img {
+  content-visibility: auto;
+  contain-intrinsic-size: 400px 300px;
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+/* if most pieces are 4:3, this helps; adjust if needed */
+#myGrid img { aspect-ratio: 4 / 3; }
 
 
 
@@ -1100,5 +1112,6 @@ input[name="bot-field"] {
     text-align: center;
   }
 }
+
 
 
