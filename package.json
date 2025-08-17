@@ -14,11 +14,12 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "posthtml \"*.html\" \"en/**/*.html\" \"el/**/*.html\" -o dist -c posthtml.config.js && cp -r images css js dist/ 2>/dev/null || true"
+    "build": "mkdir -p dist && posthtml \"en/**/*.html\" -o dist -c posthtml.config.js || true && posthtml \"el/**/*.html\" -o dist -c posthtml.config.js || true && posthtml \"*.html\" -o dist -c posthtml.config.js || true && [ -d images ] && cp -r images dist/ || true && [ -d css ] && cp -r css dist/ || true && [ -d js ] && cp -r js dist/ || true"
   },
-  "devDependencies": {
+  "dependencies": {
     "posthtml": "^0.16.6",
     "posthtml-cli": "^0.11.1",
     "posthtml-include": "^1.7.2"
   }
 }
+
