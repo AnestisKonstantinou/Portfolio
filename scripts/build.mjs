@@ -75,7 +75,7 @@ async function main() {
   const processor = posthtml([include({ root: ROOT })]);
 
   // process each page and write to dist preserving relative paths
- or (const rel of pages) {
+for (const rel of pages) {
   const src = path.join(ROOT, rel);
   const out = path.join(OUT, rel);
   const html = await fs.readFile(src, "utf8");
@@ -90,6 +90,7 @@ async function main() {
   await ensureDir(path.dirname(out));
   await fs.writeFile(out, result.html, "utf8");
 }
+
 
   // if there is no root index.html in pages, create one that redirects to /en/
   if (!pages.some(p => p.toLowerCase() === "index.html")) {
