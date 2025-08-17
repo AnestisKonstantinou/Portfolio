@@ -1,62 +1,114 @@
 // /js/partials.js
 (() => {
-  const defaultLang = "en";
-  const m = location.pathname.match(/^\/(en|el)(?:\/|$)/);
-  const currentLang = m ? m[1] : defaultLang;
-  const VERSION = "v1"; // bump when you edit any partials
+  const VERSION = "v1"; // ⬅️ bump this whenever you change any partials
+  const DEFAULT_LANG = "en";
 
-  async function fetchText(url) {
-    const res = await fetch(url, { credentials: "same-origin", cache: "no-cache" });
-    return await res.text();
-  }
+  // Detect language from leading path segment: /en/... or /el/...
+  const match = location.pathname.match(/^\/(en|el)(?:\/|$)/);
+  const currentLang = match ? match[1] : DEFAULT_LANG;
 
-  function cacheKey(url) {
-    return `navPartial:${VERSION}:${currentLang}:${url}`;
-  }
+  const resolveUrl = (raw) => raw.replace("{lang}", currentLang);
+  const storageKey = (url) => `navPartial:${VERSION}:${currentLang}:${url}`;
 
-  function injectHTML(el, html) {
+  // Add a traceable attribute to the root tag of the partial HTML
+  const tagWithMarker = (html, url) => {
+    const trimmed = String(html).trim();
+    // Insert data-injected-from="url" into the first opening tag
+    return trimmed.replace(
+      /^(<\s*[^>\s]+)([^>]*>)/,
+      (_, start, rest) => `${start} data-injected-from="${url}"${rest}`
+    );
+  };
+
+  const injectOuterHTML = (el, html) => {
     el.outerHTML = html;
-  }
+  };
+
+  const fetchText = async (url) => {
+    const res = await fetch(url, { credentials: "same-origin", cache: "no-cache" });
+    if (!res.ok) throw new Error(`Failed to fetch ${url} (${res.status})`);
+    return await res.text();
+  };
 
   async function injectPartials() {
-    const nodes = Array.from(document.querySelectorAll("[data-include]"));
-    const cache = new Map();
+    const placeholders = Array.from(document.querySelectorAll("[data-include]"));
+    if (placeholders.length === 0) return;
 
-    // 1) Try to inject from cache immediately (no layout shift)
-    nodes.forEach(el => {
-      let url = el.getAttribute("data-include").replace("{lang}", currentLang);
-      const key = cacheKey(url);
-      const cached = localStorage.getItem(key);
-      if (cached) {
-        injectHTML(el, cached);
-        cache.set(url, cached);
-      }
+    // Map placeholders -> resolved URLs
+    const entries = placeholders.map((el) => {
+      const raw = el.getAttribute("data-include");
+      const url = resolveUrl(raw);
+      return { el, raw, url };
     });
 
-    // 2) Fetch fresh content and update DOM + cache if changed
-    await Promise.all(nodes.map(async el => {
-      let url = el.getAttribute("data-include").replace("{lang}", currentLang);
-      const key = cacheKey(url);
-      const fresh = await fetchText(url);
-      const existing = cache.get(url);
-      if (fresh && fresh !== existing) {
-        // Replace the *current* placeholder/inserted node
-        const placeholder = document.querySelector(`[data-include="${el.getAttribute("data-include")}"]`) || null;
-        if (placeholder) {
-          injectHTML(placeholder, fresh);
-        } else {
-          // If we already replaced it earlier, replace the most similar node by id/class if you want,
-          // or skip to avoid flicker. Usually not needed if step (1) didn't inject.
-        }
-        localStorage.setItem(key, fresh);
-      } else if (!existing && fresh) {
-        // No cache existed (first visit): inject now
-        injectHTML(el, fresh);
-        localStorage.setItem(key, fresh);
-      }
-    }));
+    let injectedFromCache = false;
 
-    document.dispatchEvent(new CustomEvent("partials:ready", { detail: { lang: currentLang } }));
+    // 1) Instant paint from localStorage cache (if available)
+    for (const { el, url } of entries) {
+      const key = storageKey(url);
+      const cached = localStorage.getItem(key);
+      if (cached) {
+        injectOuterHTML(el, cached);
+        injectedFromCache = true;
+      }
+    }
+
+    if (injectedFromCache) {
+      document.body.classList.add("nav-ready");
+      document.dispatchEvent(
+        new CustomEvent("partials:ready", { detail: { lang: currentLang, source: "cache" } })
+      );
+    }
+
+    // 2) Fetch fresh in parallel, update DOM & cache if changed
+    let updatedAny = false;
+    await Promise.all(
+      entries.map(async ({ el, url }) => {
+        const key = storageKey(url);
+        try {
+          const freshRaw = await fetchText(url);
+          const fresh = tagWithMarker(freshRaw, url);
+          const cached = localStorage.getItem(key);
+
+          if (cached !== fresh) {
+            // Determine where to inject:
+            //  - if placeholder still exists (no cache path), use it
+            //  - else, find the node we previously injected by marker
+            const target =
+              el.isConnected ? el : document.querySelector(`[data-injected-from="${url}"]`);
+            if (target) {
+              injectOuterHTML(target, fresh);
+              updatedAny = true;
+            }
+            localStorage.setItem(key, fresh);
+          } else if (!cached) {
+            // No cache previously; inject now into the placeholder
+            if (el && el.isConnected) {
+              injectOuterHTML(el, fresh);
+            } else {
+              // Fallback: if placeholder was already replaced somehow, replace by marker
+              const t = document.querySelector(`[data-injected-from="${url}"]`);
+              if (t) injectOuterHTML(t, fresh);
+            }
+            localStorage.setItem(key, fresh);
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      })
+    );
+
+    // 3) Announce readiness/updates
+    if (!document.body.classList.contains("nav-ready")) {
+      document.body.classList.add("nav-ready");
+      document.dispatchEvent(
+        new CustomEvent("partials:ready", { detail: { lang: currentLang, source: "network" } })
+      );
+    } else if (updatedAny) {
+      document.dispatchEvent(
+        new CustomEvent("partials:updated", { detail: { lang: currentLang } })
+      );
+    }
   }
 
   // Run ASAP
