@@ -1,4 +1,29 @@
 import { documentToHtmlString } from "https://cdn.skypack.dev/@contentful/rich-text-html-renderer";
+// === Image helpers (Contentful transforms) ===
+const THUMB_WIDTHS = [320, 480, 640, 960, 1280, 1600];
+
+function isContentful(u) {
+  try { return new URL(u).host.includes("images.ctfassets.net"); }
+  catch { return false; }
+}
+
+function withParams(u, params) {
+  const url = new URL(u, location.origin);
+  Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, String(v)));
+  return url.toString();
+}
+
+// Grid thumbnails (good quality, small)
+function thumbUrl(u, w) {
+  return isContentful(u) ? withParams(u, { w, q: 70, fm: "webp" }) : u;
+}
+
+// Lightbox (bigger but still capped)
+function lightboxUrl(u) {
+  const dpr = window.devicePixelRatio || 1;
+  const targetW = Math.min(2048, Math.ceil(window.innerWidth * dpr));
+  return isContentful(u) ? withParams(u, { w: targetW, q: 80, fm: "webp" }) : u;
+}
 
 /* ===========================
    1) Submenu & Mobile Navigation Toggle (partial-safe)
@@ -221,6 +246,7 @@ if (document.querySelector('.article-title') && document.querySelector('.article
     })
     .catch(err => console.error("Error fetching article:", err));
 }
+
 
 
 
