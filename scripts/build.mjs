@@ -75,14 +75,21 @@ async function main() {
   const processor = posthtml([include({ root: ROOT })]);
 
   // process each page and write to dist preserving relative paths
-  for (const rel of pages) {
-    const src = path.join(ROOT, rel);
-    const out = path.join(OUT, rel);
-    const html = await fs.readFile(src, "utf8");
-    const result = await processor.process(html);
-    await ensureDir(path.dirname(out));
-    await fs.writeFile(out, result.html, "utf8");
-  }
+ or (const rel of pages) {
+  const src = path.join(ROOT, rel);
+  const out = path.join(OUT, rel);
+  const html = await fs.readFile(src, "utf8");
+
+  // normalize absolute include paths "/partials/..." -> "partials/..."
+  const normalized = html.replace(
+    /(<include\s+[^>]*\bsrc=["'])\/(partials\/[^"']+)(["'][^>]*>)/gi,
+    '$1$2$3'
+  );
+
+  const result = await processor.process(normalized);
+  await ensureDir(path.dirname(out));
+  await fs.writeFile(out, result.html, "utf8");
+}
 
   // if there is no root index.html in pages, create one that redirects to /en/
   if (!pages.some(p => p.toLowerCase() === "index.html")) {
