@@ -1,15 +1,4 @@
 {
-  "name": "my-netlify-project",
-  "version": "1.0.0",
-  "dependencies": {
-    "node-fetch": "^2.6.x",
-    "@contentful/rich-text-html-renderer": "^17.0.0"
-  },
-  "scripts": {
-    "build": "echo 'No build step required' && exit 0"
-  }
-}
-{
   "name": "portfolio",
   "private": true,
   "version": "1.0.0",
@@ -17,9 +6,10 @@
     "build": "mkdir -p dist && posthtml \"en/**/*.html\" -o dist -c posthtml.config.js || true && posthtml \"el/**/*.html\" -o dist -c posthtml.config.js || true && posthtml \"*.html\" -o dist -c posthtml.config.js || true && [ -d images ] && cp -r images dist/ || true && [ -d css ] && cp -r css dist/ || true && [ -d js ] && cp -r js dist/ || true"
   },
   "dependencies": {
+    "@contentful/rich-text-html-renderer": "^17.0.0",
+    "node-fetch": "^2.6.9",
     "posthtml": "^0.16.6",
     "posthtml-cli": "^0.11.1",
     "posthtml-include": "^1.7.2"
   }
 }
-
