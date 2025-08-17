@@ -3,13 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "mkdir -p dist && posthtml \"en/**/*.html\" -o dist -c posthtml.config.js || true && posthtml \"el/**/*.html\" -o dist -c posthtml.config.js || true && posthtml \"*.html\" -o dist -c posthtml.config.js || true && [ -d images ] && cp -r images dist/ || true && [ -d css ] && cp -r css dist/ || true && [ -d js ] && cp -r js dist/ || true"
+    "build": "node scripts/build.mjs"
   },
   "dependencies": {
     "@contentful/rich-text-html-renderer": "^17.0.0",
     "node-fetch": "^2.6.9",
-    "posthtml": "^0.16.6",
-    "posthtml-cli": "^0.10.0",
-    "posthtml-include": "^1.7.2"
+    "posthtml": "0.16.6",
+    "posthtml-include": "2.0.1"
   }
 }
