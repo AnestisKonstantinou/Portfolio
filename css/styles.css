@@ -18,13 +18,6 @@ body {
   right: 10px;
   font-size: 1rem;
 }
-/* Prevent jump: sidebar has a min-height close to expected content */
-.sidebar { min-height: 200px; }
-
-/* Optional: fade-in effect once ready */
-body.nav-ready .sidebar,
-body.nav-ready .mobile-nav { opacity: 1; transition: opacity .15s; }
-.sidebar, .mobile-nav { opacity: 0; }
 
 .language-switcher a {
   text-decoration: none;
@@ -1107,4 +1100,5 @@ input[name="bot-field"] {
     text-align: center;
   }
 }
+
 

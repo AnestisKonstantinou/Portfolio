@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="el">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Language" content="el">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
 	<link rel="canonical" href="https://nikosiosif.com/page-url" />
-  <title>Nikos Iosif - News</title>
-	<meta name="description" content="Stay updated with Nikos Iosif’s latest exhibitions, projects, and artistic appearances.">
+  <title>Νίκος Ιωσήφ - Larnaca Biennale 2025</title>
+	<meta name="description" content="Συμμετοχή του Νίκου Ιωσήφ στην Biennale 2025 στη Λάρνακα">
 <link rel="prefetch" href="/partials/en/nav-desktop.html" as="fetch" crossorigin="anonymous">
 <link rel="prefetch" href="/partials/en/nav-mobile.html" as="fetch" crossorigin="anonymous">
 <link rel="prefetch" href="/partials/el/nav-desktop.html" as="fetch" crossorigin="anonymous">
 <link rel="prefetch" href="/partials/el/nav-mobile.html" as="fetch" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/styles.css" />
-	<!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RLSEEJN79B"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -25,18 +26,23 @@
 <body>
 
   <div class="page-wrapper1">
-<include src="/partials/en/nav-desktop.html"></include>
+<include src="/partials/el/nav-desktop.html"></include>
+
+
+    <div class="mobile-logo">
+      <button class="hamburger" id="hamburgerBtn">&#9776;</button>
+      <a href="/el/index.html"><img src="/images/logo.png" alt="Logo"></a>
+    </div>
+
     <div class="main1">
-      <div class="mobile-logo">
-	<button class="hamburger" id="hamburgerBtn"> &#9776; </button>
-	<a href="/en/index.html"><img src="/images/logo.png" alt="Logo"></a></div>
-      <h2 style="text-align:center;">News / Press</h2>
-      <div id="newsContainer"></div>
+      <div class="article-title"></div>
+      <div class="article"></div>
+      <div class="article-gallery"></div>
     </div>
   </div>
+<include src="/partials/el/nav-mobile.html"></include>
 
 
-<include src="/partials/en/nav-mobile.html"></include>
   <div class="language-switcher">
   <a href="#" id="switchToEN">EN</a> | <a href="#" id="switchToEL">EL</a>
 </div>
@@ -73,10 +79,9 @@
     switchLanguage('el');
   });
 </script>
-
 <footer> 
   <div class="row">
-     <b>Nikos Iosif</b>&nbsp;&nbsp;
+    <b>Νίκος Ιωσήφ</b>&nbsp;&nbsp;
 
     <a href="https://www.facebook.com/nikos.iosif.9" target="_blank" rel="noopener noreferrer">
       <img src="/images/facebook.png" class="icon" alt="Facebook profile of Nikos Iosif">
@@ -86,9 +91,9 @@
       <img src="/images/instagram.png" class="icon" alt="Instagram profile of Nikos Iosif">
     </a> 
 
-   <p class="hidding">Studio @ Paparigopoulou 15</p>
+    <p class="hidding">Στούντιο @ Παπαρηγοπούλου 15</p>
     
-    <a href="https://maps.app.goo.gl/16E3ozNpLv2mUtsr8" target="_blank" rel="noopener noreferrer">
+     <a href="https://maps.app.goo.gl/16E3ozNpLv2mUtsr8" target="_blank" rel="noopener noreferrer">
       <img src="/images/google.png" class="icon" alt="View Nikos Iosif's studio location on Google Maps">
     </a>
 
@@ -96,8 +101,7 @@
   </div>
 </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fitty/2.3.6/fitty.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer/dist/rich-text-html-renderer.min.js"></script>
-  <script type="module" src="/js/scripts-news.js"></script>
+  <script type="module" src="/js/scripts-bi.js?v=2"></script>
 </body>
 </html>
