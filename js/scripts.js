@@ -94,18 +94,22 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ===========================
-   2) Fetch Gallery from Contentful & Build Grid (optimized)
-   =========================== */
-/* ===========================
-   2) Fetch Gallery from Contentful & Build Grid (optimized)
+   2) Fetch Gallery from Contentful & Build Grid (optimized + fixed batching)
    =========================== */
 const entryId = '522odF81XhwFTDolnZG48m';
 const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en-US';
+
+// Safe scheduler for follow-up batches
+const scheduleBatch = window.requestIdleCallback
+  ? (cb) => window.requestIdleCallback(cb)
+  : (cb) => setTimeout(cb, 0);
 
 fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
   .then(r => r.json())
   .then(data => {
     const { title, images } = data || {};
+    console.log('Gallery items:', Array.isArray(images) ? images.length : 0);
+
     if (!Array.isArray(images) || images.length === 0) {
       console.warn('No images returned from function.');
       return;
@@ -115,7 +119,7 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`
     const galleryTitleEl = document.getElementById('galleryTitle');
     if (galleryTitleEl) galleryTitleEl.textContent = title || '';
 
-    // Container
+    // Container (your page uses #myGrid)
     const gridContainer =
       document.getElementById('myGrid') ||
       document.querySelector('.gallery') ||
@@ -127,7 +131,7 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`
     }
     gridContainer.innerHTML = '';
 
-    // ---- Lightbox wiring (same as before) ----
+    // ---- Lightbox wiring (same structure you had) ----
     let currentIndex = 0;
     const overlay = document.getElementById('lightboxOverlay');
     const lightboxImage = document.getElementById('lightboxImage');
@@ -161,36 +165,39 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`
     });
 
     // ---- Build the grid: responsive thumbs + batching ----
-    const BATCH = 10; // render 10 at a time to keep UI responsive
+    const BATCH = 12; // tweak if you want more/less per wave
 
     function renderBatch(start = 0) {
       const end = Math.min(start + BATCH, images.length);
+
       for (let i = start; i < end; i++) {
         const imgObj = images[i];
         const imgEl = document.createElement('img');
 
+        // a11y / UX
         imgEl.alt = (imgObj.title || '').trim();
         imgEl.style.cursor = 'pointer';
-        imgEl.loading = i < 2 ? 'eager' : 'lazy';
+        imgEl.loading = i < 2 ? 'eager' : 'lazy';     // prioritize first couple
         imgEl.fetchPriority = i < 2 ? 'high' : 'low';
         imgEl.decoding = 'async';
 
-        // Your layout: 3 columns desktop (~26–33vw each), fewer on mobile
+        // Your layout: 3 columns desktop (~30vw), fewer on mobile
         imgEl.sizes = '(max-width: 480px) 100vw, (max-width: 768px) 50vw, 30vw';
 
         // Responsive thumbnails via Contentful
         imgEl.src = thumbUrl(imgObj.url, 640);
         imgEl.srcset = THUMB_WIDTHS.map(w => `${thumbUrl(imgObj.url, w)} ${w}w`).join(', ');
 
-        // Avoid layout jank
+        // Avoid layout jank while images stream in
         imgEl.style.contentVisibility = 'auto';
         imgEl.style.containIntrinsicSize = '400px 300px';
 
         imgEl.addEventListener('click', () => openLightbox(i));
         gridContainer.appendChild(imgEl);
       }
+
       if (end < images.length) {
-        (window.requestIdleCallback || window.setTimeout)(() => renderBatch(end), 0);
+        scheduleBatch(() => renderBatch(end));
       }
     }
 
@@ -257,6 +264,7 @@ if (document.querySelector('.article-title') && document.querySelector('.article
     })
     .catch(err => console.error("Error fetching article:", err));
 }
+
 
 
 
