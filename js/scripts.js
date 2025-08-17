@@ -1,33 +1,72 @@
 import { documentToHtmlString } from "https://cdn.skypack.dev/@contentful/rich-text-html-renderer";
 
 /* ===========================
-   1) Submenu & Mobile Navigation Toggle
+   1) Submenu & Mobile Navigation Toggle (partial-safe)
    =========================== */
-const submenuLinks = document.querySelectorAll(".has-submenu");
-submenuLinks.forEach(link => {
-  link.addEventListener("click", (event) => {
-    event.preventDefault();
-    const submenu = link.nextElementSibling;
-    document.querySelectorAll(".submenu").forEach(otherSubmenu => {
-      if (otherSubmenu !== submenu) {
-        otherSubmenu.classList.remove("open-submenu");
-      }
-    });
-    submenu.classList.toggle("open-submenu");
-    console.log("Submenu Toggled:", submenu);
-  });
-});
+function bindNavHandlers() {
+  // a) Hamburger (mobile)
+  const hamburgerBtn = document.getElementById("hamburgerBtn");
+  const mobileNav = document.getElementById("mobileNav");
+  if (hamburgerBtn && mobileNav) {
+    // Remove any previous inline listener side-effects if needed (noop here because of delegation elsewhere)
+    hamburgerBtn.addEventListener("click", () => {
+      mobileNav.classList.toggle("open");
+    }, { passive: true });
+  } else {
+    console.warn("Hamburger menu or mobile nav not found.");
+  }
 
-const hamburgerBtn = document.getElementById("hamburgerBtn");
-const mobileNav = document.getElementById("mobileNav");
-if (hamburgerBtn && mobileNav) {
-  hamburgerBtn.addEventListener("click", () => {
-    console.log("Hamburger Clicked 🍔");
-    mobileNav.classList.toggle("open");
+  // b) Initialize ARIA on submenu triggers
+  document.querySelectorAll("a.has-submenu").forEach(a => {
+    if (!a.hasAttribute("role")) a.setAttribute("role", "button");
+    if (!a.hasAttribute("aria-expanded")) a.setAttribute("aria-expanded", "false");
   });
-} else {
-  console.warn("Hamburger menu or mobile nav not found.");
+
+  // c) Event delegation for submenu toggling (works for desktop & mobile)
+  //    Uses your existing CSS class: .open-submenu
+  const root = document; // could be narrowed to the sidebar/mobile nav if preferred
+  if (!root.__submenuDelegationBound) {
+    root.__submenuDelegationBound = true;
+    root.addEventListener("click", (e) => {
+      const trigger = e.target.closest("a.has-submenu");
+      if (!trigger) return;
+
+      e.preventDefault();
+      const submenu = trigger.nextElementSibling;
+      if (!submenu || !submenu.classList.contains("submenu")) return;
+
+      // Close other submenus at same level (optional; matches your previous behavior)
+      const parentUl = trigger.closest("ul");
+      if (parentUl) {
+        parentUl.querySelectorAll(":scope > li > .submenu.open-submenu").forEach(other => {
+          if (other !== submenu) other.classList.remove("open-submenu");
+        });
+      }
+
+      const isOpen = submenu.classList.toggle("open-submenu");
+      trigger.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    // Keyboard support (Enter/Space)
+    root.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const trigger = e.target && e.target.closest && e.target.closest("a.has-submenu");
+      if (!trigger) return;
+      e.preventDefault();
+      const submenu = trigger.nextElementSibling;
+      if (!submenu || !submenu.classList.contains("submenu")) return;
+      const isOpen = submenu.classList.toggle("open-submenu");
+      trigger.setAttribute("aria-expanded", String(isOpen));
+    });
+  }
 }
+
+// Run after partials injection; also run once on DOMContentLoaded as a fallback
+document.addEventListener("partials:ready", bindNavHandlers);
+document.addEventListener("DOMContentLoaded", () => {
+  // If nav was already in the DOM (server-rendered or no partials), still bind
+  if (document.querySelector("a.has-submenu")) bindNavHandlers();
+});
 
 /* ===========================
    2) Fetch Gallery from Contentful & Build Grid
@@ -182,5 +221,6 @@ if (document.querySelector('.article-title') && document.querySelector('.article
     })
     .catch(err => console.error("Error fetching article:", err));
 }
+
 
 
