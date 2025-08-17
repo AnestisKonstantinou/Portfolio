@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Language" content="el">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
+	<link rel="canonical" href="https://nikosiosif.com/page-url" />
+  <title>NIkos Iosif - Larnaca Bienalle 2025</title>
+	<meta name="description" content="Group exhibition participation of Nikos Iosif in Larnaca's 2025 Bienalle">
+<link rel="prefetch" href="/partials/en/nav-desktop.html" as="fetch" crossorigin="anonymous">
+<link rel="prefetch" href="/partials/en/nav-mobile.html" as="fetch" crossorigin="anonymous">
+<link rel="prefetch" href="/partials/el/nav-desktop.html" as="fetch" crossorigin="anonymous">
+<link rel="prefetch" href="/partials/el/nav-mobile.html" as="fetch" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/styles.css" />
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RLSEEJN79B"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RLSEEJN79B');
+</script>
+</head>
+<body>
+
+  <div class="page-wrapper1">
+<include src="/partials/en/nav-desktop.html"></include>
+
+    <div class="mobile-logo">
+      <button class="hamburger" id="hamburgerBtn">&#9776;</button>
+      <a href="/el/index.html"><img src="/images/logo.png" alt="Logo"></a>
+    </div>
+
+    <div class="main1">
+      <div class="article-title"></div>
+      <div class="article"></div>
+      <div class="article-gallery"></div>
+    </div>
+  </div>
+<include src="/partials/en/nav-mobile.html"></include>
+
+  <div class="language-switcher">
+  <a href="#" id="switchToEN">EN</a> | <a href="#" id="switchToEL">EL</a>
+</div>
+
+<script>
+  function switchLanguage(lang) {
+    const currentPath = window.location.pathname;
+    // Regular expression to capture an existing language prefix (if any)
+    const regex = /^\/(en|el)(\/.*)?$/;
+    const match = currentPath.match(regex);
+    let newPath;
+    
+    if (match) {
+      // If there's already a language prefix, use the same page path
+      newPath = '/' + lang + (match[2] || '/');
+    } else {
+      // Otherwise, simply prepend the desired language prefix
+      newPath = '/' + lang + currentPath;
+    }
+    
+    // Only navigate if the new path is different from the current one
+    if (newPath !== currentPath) {
+      window.location.pathname = newPath;
+    }
+  }
+
+  document.getElementById('switchToEN').addEventListener('click', function(e) {
+    e.preventDefault();
+    switchLanguage('en');
+  });
+
+  document.getElementById('switchToEL').addEventListener('click', function(e) {
+    e.preventDefault();
+    switchLanguage('el');
+  });
+</script>
+<footer> 
+  <div class="row">
+    <b>Nikos Iosif</b>&nbsp;&nbsp;
+
+    <a href="https://www.facebook.com/nikos.iosif.9" target="_blank" rel="noopener noreferrer">
+      <img src="/images/facebook.png" class="icon" alt="Facebook profile of Nikos Iosif">
+    </a>
+
+    <a href="https://www.instagram.com/nickiosif_/" target="_blank" rel="noopener noreferrer">
+      <img src="/images/instagram.png" class="icon" alt="Instagram profile of Nikos Iosif">
+    </a> 
+
+    <p class="hidding">Studio @ Paparigopoulou 15</p>
+    
+     <a href="https://maps.app.goo.gl/16E3ozNpLv2mUtsr8" target="_blank" rel="noopener noreferrer">
+      <img src="/images/google.png" class="icon" alt="View Nikos Iosif's studio location on Google Maps">
+    </a>
+
+    <p class="footer-text">&nbsp;&nbsp;&nbsp;&#169; All rights reserved 2025</p>
+  </div>
+</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer/dist/rich-text-html-renderer.min.js"></script>
+  <script type="module" src="/js/scripts-bi.js?v=2"></script>
+</body>
+</html>
