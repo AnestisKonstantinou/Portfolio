@@ -9,3 +9,16 @@
     "build": "echo 'No build step required' && exit 0"
   }
 }
+{
+  "name": "portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "posthtml \"*.html\" \"en/**/*.html\" \"el/**/*.html\" -o dist -c posthtml.config.js && cp -r images css js dist/ 2>/dev/null || true"
+  },
+  "devDependencies": {
+    "posthtml": "^0.16.6",
+    "posthtml-cli": "^0.11.1",
+    "posthtml-include": "^1.7.2"
+  }
+}
