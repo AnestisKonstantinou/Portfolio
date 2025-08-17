@@ -94,37 +94,63 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ===========================
-   2) Fetch Gallery from Contentful & Build Grid
+   2) Fetch Gallery from Contentful & Build Grid (optimized)
    =========================== */
 const entryId = '522odF81XhwFTDolnZG48m';
 const locale = window.location.pathname.startsWith('/el/') ? 'el' : 'en-US';
 
-fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
-  .then(response => response.json())
-  .then(data => {
-    console.log('Resolved Gallery Data:', data);
+// ---- helpers for responsive thumbnails (Contentful) ----
+const THUMB_WIDTHS = [320, 480, 640, 960, 1280, 1600];
 
-    // data should look like { title: "...", images: [...] }
-    const { title, images } = data;
-    if (!images || !Array.isArray(images) || images.length === 0) {
-      console.warn("No images returned from function.");
+function isContentful(u) {
+  try { return new URL(u).host.includes('images.ctfassets.net'); }
+  catch { return false; }
+}
+
+function withParams(u, params) {
+  const url = new URL(u, location.origin);
+  Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, String(v)));
+  return url.toString();
+}
+
+// Grid thumbnails (small, modern)
+function thumbUrl(u, w) {
+  return isContentful(u) ? withParams(u, { w, q: 70, fm: 'webp' }) : u;
+}
+
+// Lightbox image (bigger but still capped; scales to screen DPR)
+function lightboxUrl(u) {
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  const targetW = Math.min(2048, Math.ceil(window.innerWidth * dpr));
+  return isContentful(u) ? withParams(u, { w: targetW, q: 80, fm: 'webp' }) : u;
+}
+
+fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
+  .then(r => r.json())
+  .then(data => {
+    const { title, images } = data || {};
+    if (!Array.isArray(images) || images.length === 0) {
+      console.warn('No images returned from function.');
       return;
     }
 
-    // Optional: show the gallery title in the page
+    // Optional: page title
     const galleryTitleEl = document.getElementById('galleryTitle');
-    if (galleryTitleEl) {
-      galleryTitleEl.textContent = title;
-    }
+    if (galleryTitleEl) galleryTitleEl.textContent = title || '';
 
-    // 2.1) Build the grid of images
-    const gridContainer = document.getElementById('myGrid');
+    // Container (your page uses #myGrid)
+    const gridContainer =
+      document.getElementById('myGrid') ||
+      document.querySelector('.gallery') ||
+      document.querySelector('.article-gallery');
+
     if (!gridContainer) {
-      console.warn("No #myGrid container found.");
+      console.warn('No gallery container found.');
       return;
     }
     gridContainer.innerHTML = '';
 
+    // ---- Lightbox wiring (kept identical) ----
     let currentIndex = 0;
     const overlay = document.getElementById('lightboxOverlay');
     const lightboxImage = document.getElementById('lightboxImage');
@@ -134,59 +160,70 @@ fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`
     const nextBtn = document.getElementById('nextButton');
     const prevBtn = document.getElementById('prevButton');
 
-    // Lightbox functions
     function openLightbox(index) {
       currentIndex = index;
       const { url, title, description } = images[currentIndex];
-      if (lightboxImage) lightboxImage.src = url;
-      if (lightboxTitle) lightboxTitle.textContent = title;
-      if (lightboxDescription) lightboxDescription.textContent = description;
+      if (lightboxImage) lightboxImage.src = lightboxUrl(url); // ⬅️ scaled big image
+      if (lightboxTitle) lightboxTitle.textContent = title || '';
+      if (lightboxDescription) lightboxDescription.textContent = description || '';
       if (overlay) overlay.classList.add('active');
     }
-    function closeLightbox() {
-      if (overlay) overlay.classList.remove('active');
-    }
-    function showNext() {
-      currentIndex = (currentIndex + 1) % images.length;
-      openLightbox(currentIndex);
-    }
-    function showPrev() {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      openLightbox(currentIndex);
-    }
+    function closeLightbox() { if (overlay) overlay.classList.remove('active'); }
+    function showNext() { currentIndex = (currentIndex + 1) % images.length; openLightbox(currentIndex); }
+    function showPrev() { currentIndex = (currentIndex - 1 + images.length) % images.length; openLightbox(currentIndex); }
+
     if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
     if (nextBtn) nextBtn.addEventListener('click', showNext);
     if (prevBtn) prevBtn.addEventListener('click', showPrev);
     document.addEventListener('keydown', (e) => {
-  // Only intercept if the overlay is active (lightbox open)
-  if (overlay && overlay.classList.contains('active')) {
-    if (e.key === 'Escape') {
-      closeLightbox();
-      e.preventDefault();
-    } else if (e.key === 'ArrowRight') {
-      showNext();
-      e.preventDefault();
-    } else if (e.key === 'ArrowLeft') {
-      showPrev();
-      e.preventDefault();
-    }
-  }
-});
-
-    // Create an <img> for each image in "images" array
-    images.forEach((imgObj, index) => {
-      const imgEl = document.createElement('img');
-      imgEl.src = imgObj.url;
-      imgEl.alt = imgObj.title || '';
-       imgEl.loading = 'lazy';
-      imgEl.style.cursor = 'pointer';
-      imgEl.addEventListener('click', () => {
-        openLightbox(index);
-      });
-      gridContainer.appendChild(imgEl);
+      if (overlay && overlay.classList.contains('active')) {
+        if (e.key === 'Escape') { closeLightbox(); e.preventDefault(); }
+        else if (e.key === 'ArrowRight') { showNext(); e.preventDefault(); }
+        else if (e.key === 'ArrowLeft') { showPrev(); e.preventDefault(); }
+      }
     });
+
+    // ---- Build the grid: responsive thumbs + batching ----
+    const BATCH = 10; // render 10 at a time to keep UI responsive
+
+    function renderBatch(start = 0) {
+      const end = Math.min(start + BATCH, images.length);
+
+      for (let i = start; i < end; i++) {
+        const imgObj = images[i];
+        const imgEl = document.createElement('img');
+
+        // accessibility / UX
+        imgEl.alt = (imgObj.title || '').trim();
+        imgEl.style.cursor = 'pointer';
+        imgEl.loading = i < 2 ? 'eager' : 'lazy';     // prioritize 1-2 first thumbs
+        imgEl.fetchPriority = i < 2 ? 'high' : 'low';
+        imgEl.decoding = 'async';
+
+        // Each column is ~30vw (container 60vw with 2 columns)
+        imgEl.sizes = '(max-width: 768px) 50vw, 30vw';
+
+        // Responsive thumbnails via Contentful
+        imgEl.src = thumbUrl(imgObj.url, 640);
+        imgEl.srcset = THUMB_WIDTHS.map(w => `${thumbUrl(imgObj.url, w)} ${w}w`).join(', ');
+
+        // Avoid layout jank while images stream in
+        imgEl.style.contentVisibility = 'auto';
+        imgEl.style.containIntrinsicSize = '400px 300px';
+
+        imgEl.addEventListener('click', () => openLightbox(i));
+        gridContainer.appendChild(imgEl);
+      }
+
+      if (end < images.length) {
+        (window.requestIdleCallback || window.setTimeout)(() => renderBatch(end), 0);
+      }
+    }
+
+    renderBatch(0);
   })
   .catch(err => console.error('Error fetching final gallery data:', err));
+
 
 /* ===========================
    3) (Optional) If you have an Article Page
@@ -246,6 +283,7 @@ if (document.querySelector('.article-title') && document.querySelector('.article
     })
     .catch(err => console.error("Error fetching article:", err));
 }
+
 
 
 
