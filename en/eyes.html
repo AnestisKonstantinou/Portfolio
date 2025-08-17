@@ -7,7 +7,10 @@
 	<link rel="canonical" href="https://nikosiosif.com/page-url" />
   <title>Nikos Iosif - Silent Watching eyes</title>
 	<meta name="description" content="‘Silent eyes’ project by Nikos Iosif – a multi-medium expression blending myth, identity, and solitude.">
-
+<link rel="prefetch" href="/partials/en/nav-desktop.html" as="fetch" crossorigin="anonymous">
+<link rel="prefetch" href="/partials/en/nav-mobile.html" as="fetch" crossorigin="anonymous">
+<link rel="prefetch" href="/partials/el/nav-desktop.html" as="fetch" crossorigin="anonymous">
+<link rel="prefetch" href="/partials/el/nav-mobile.html" as="fetch" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/styles.css" />
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RLSEEJN79B"></script>
@@ -22,38 +25,7 @@
 <body>
 
   <div class="page-wrapper1">
-    <aside class="sidebar">
-      <div class="artist-name">
-        <a href="/en/index.html"><img src="/images/logo.png" alt="Logo"></a>
-      </div>
-      <nav>
-        <ul>
-           <li>
-            <a class="has-submenu">Selected works &nbsp;&#x25BC; </a>
-            <ul class="submenu">
-           <li><a href="/en/textile.html">Textile</a></li>
-              <li><a href="/en/paintings.html">Paintings</a></li>
-              <li><a href="/en/sculptures.html">Sculptures</a></li>
-            </ul>
-          </li>
-          <li>
-            <a class="has-submenu">Exhibitions &nbsp; &#x25BC; </a>
-            <ul class="submenu">
-              <li><a href="/en/eyes.html">&nbsp; &nbsp;Silent Watching Eyes</a></li>
-             <li><a href="/en/interior.html">&nbsp; &nbsp;Interior Infinito</a></li>
-	             <li><a href="/en/biennale.html">&nbsp; &nbsp;Contextile Biennale</a></li>     
-               <li><a href="/en/dowry.html">&nbsp; &nbsp;Dowry</a></li>
-               <li><a href="/en/nemo.html">&nbsp; &nbsp;Nemophilist</a></li>
-	             <li><a href="/en/sym.html">&nbsp; &nbsp;Symbiosis XV Biennale</a></li>
-               <li><a href="/en/inner.html">&nbsp; &nbsp;Innercolors</a></li>
-            </ul>
-          </li>
-	  <li><a href="/en/news.html">News &nbsp; / &nbsp;Press</a></li>
-          <li><a href="/en/cv.html"> Bio </a></li>
-	  <li><a href="/en/contact.html">Contact </a></li>
-        </ul>
-      </nav>
-    </aside>
+  <div data-include="/partials/{lang}/nav-desktop.html"></div>
 
     <div class="mobile-logo">
       <button class="hamburger" id="hamburgerBtn">&#9776;</button>
@@ -66,35 +38,7 @@
       <div class="article-gallery"></div>
     </div>
   </div>
-<div class="mobile-nav" id="mobileNav">
-  <nav>
-    <ul>
-       <li>
-            <a class="has-submenu">Selected works &nbsp;&#x25BC; </a>
-            <ul class="submenu">
-           <li><a href="/en/textile.html">Textile</a></li>
-              <li><a href="/en/paintings.html">Paintings</a></li>
-              <li><a href="/en/sculptures.html">Sculptures</a></li>
-            </ul>
-          </li>
-          <li>
-            <a class="has-submenu">Exhibitions &nbsp; &#x25BC; </a>
-            <ul class="submenu">
-              <li><a href="/en/eyes.html">&nbsp; &nbsp;Silent Watching Eyes</a></li>
-             <li><a href="/en/interior.html">&nbsp; &nbsp;Interior Infinito</a></li>
-	             <li><a href="/en/biennale.html">&nbsp; &nbsp;Contextile Biennale</a></li>     
-               <li><a href="/en/dowry.html">&nbsp; &nbsp;Dowry</a></li>
-               <li><a href="/en/nemo.html">&nbsp; &nbsp;Nemophilist</a></li>
-	             <li><a href="/en/sym.html">&nbsp; &nbsp;Symbiosis XV Biennale</a></li>
-               <li><a href="/en/inner.html">&nbsp; &nbsp;Innercolors</a></li>
-            </ul>
-          </li>
-	  <li><a href="/en/news.html">News &nbsp; / &nbsp;Press</a></li>
-          <li><a href="/en/cv.html"> Bio </a></li>
-	  <li><a href="/en/contact.html">Contact </a></li>
-    </ul>
-  </nav>
-</div>
+<div data-include="/partials/{lang}/nav-mobile.html"></div>
   <div class="language-switcher">
   <a href="#" id="switchToEN">EN</a> | <a href="#" id="switchToEL">EL</a>
 </div>
@@ -152,7 +96,7 @@
     <p class="footer-text">&nbsp;&nbsp;&nbsp;&#169; All rights reserved 2025</p>
   </div>
 </footer>
-
+<script defer src="/js/partials.js?v=2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@contentful/rich-text-html-renderer/dist/rich-text-html-renderer.min.js"></script>
   <script type="module" src="/js/scripts-e.js?v=2"></script>
 </body>
