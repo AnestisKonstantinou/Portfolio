@@ -266,6 +266,7 @@ document.addEventListener("DOMContentLoaded", bindNavHandlers);
   const container = document.getElementById("slideshow-container");
   const imgEl     = document.getElementById("slide-image");
   const titleEl   = document.getElementById("slide-title");
+  const descEl  = document.getElementById("slide-description");
   const prevBtn   = document.getElementById("prevSlide");
   const nextBtn   = document.getElementById("nextSlide");
   if (!container || !imgEl || !titleEl || !prevBtn || !nextBtn) return;
@@ -294,6 +295,7 @@ document.addEventListener("DOMContentLoaded", bindNavHandlers);
     imgEl.src = preview;
     imgEl.alt = (item.title || "").trim();
     titleEl.textContent = item.title || "";
+     if (descEl) descEl.textContent = item.description || "";
 
     // upgrade to original when ready
     const hi = new Image();
@@ -462,4 +464,5 @@ document.addEventListener("DOMContentLoaded", bindNavHandlers);
     console.error("Error fetching article:", err);
   }
 })();
+
 
