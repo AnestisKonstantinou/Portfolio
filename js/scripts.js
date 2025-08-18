@@ -39,19 +39,22 @@ const scheduleBatch = ("requestIdleCallback" in window)
 
 // Normalize path to map keys (no .html, no trailing slash)
 function normalizePath(p) {
-  return p
-    .replace(/\/index\.html$/i, "")
-    .replace(/\.html$/i, "")
-    .replace(/\/$/, "");
+  let s = p.replace(/\/index\.html$/i, "").replace(/\.html$/i, "");
+  if (s.length > 1 && s.endsWith("/")) s = s.slice(0, -1);
+  return s || "/"; // keep root as "/"
 }
-
 // Locale detection for your URL scheme
 const LOCALE = location.pathname.startsWith("/el/") ? "el" : "en-US";
 
 /* =========================================
    1) Page → Entry ID maps (fill these)
    ========================================= */
-
+const HOME_IDS = {};
+function mapHome(enId, elId = enId) {
+  HOME_IDS["/en"] = enId;
+  HOME_IDS["/el"] = elId;
+  HOME_IDS["/"]   = enId; // root defaults to EN
+}
 // Central maps: path -> entryId
 const GALLERY_IDS = {};
 const ARTICLE_IDS = {};
@@ -65,10 +68,10 @@ function mapPair(map, slug, enId, elId = enId) {
 /* ===========================
    REGISTER YOUR PAGES HERE
    =========================== */
-
+//Home page
+mapHome("1Y1HXZR5YdGX3W8xCa8o5C");
 // Galleries 
 mapPair(GALLERY_IDS, "textile", "522odF81XhwFTDolnZG48m");
-mapPair(GALLERY_IDS, "index", "1Y1HXZR5YdGX3W8xCa8o5C");
 mapPair(GALLERY_IDS, "sculptures", "6w706Y2fCkJSmABXsTPynu");
 mapPair(GALLERY_IDS, "paintings", "4oU2dtZPY9gX61G3Q7iGK0");
 
@@ -253,6 +256,78 @@ document.addEventListener("DOMContentLoaded", bindNavHandlers);
 })();
 
 /* =========================================
+   Home page slideshow (uses #slideshow-container)
+   ========================================= */
+(function initHomeSlideshow() {
+  const pathKey = normalizePath(location.pathname);
+  const entryId = HOME_IDS[pathKey];
+  if (!entryId) return; // not a configured home page
+
+  const container = document.getElementById("slideshow-container");
+  const imgEl     = document.getElementById("slide-image");
+  const titleEl   = document.getElementById("slide-title");
+  const prevBtn   = document.getElementById("prevSlide");
+  const nextBtn   = document.getElementById("nextSlide");
+  if (!container || !imgEl || !titleEl || !prevBtn || !nextBtn) return;
+
+  const locale = LOCALE;
+  let images = [];
+  let idx = 0;
+
+  fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
+    .then(r => r.json())
+    .then(data => {
+      images = Array.isArray(data?.images) ? data.images : [];
+      if (!images.length) return;
+      // Start on first slide
+      show(idx);
+    })
+    .catch(err => console.error("Home slideshow fetch error:", err));
+
+  function show(i) {
+    if (!images.length) return;
+    idx = (i + images.length) % images.length;
+    const item = images[idx];
+    const { preview, full } = lightboxUrls(item.url);
+
+    // fast preview
+    imgEl.src = preview;
+    imgEl.alt = (item.title || "").trim();
+    titleEl.textContent = item.title || "";
+
+    // upgrade to original when ready
+    const hi = new Image();
+    hi.onload = () => {
+      // still on the same slide?
+      if (images[idx]?.url === item.url) imgEl.src = full;
+    };
+    hi.src = full;
+
+    // prefetch neighbors (preview only)
+    prefetchPreview((idx + 1) % images.length);
+    prefetchPreview((idx - 1 + images.length) % images.length);
+  }
+
+  function prefetchPreview(i) {
+    const u = images[i]?.url;
+    if (!u) return;
+    const p = lightboxUrls(u).preview;
+    const probe = new Image();
+    probe.decoding = "async";
+    probe.src = p;
+  }
+
+  prevBtn.addEventListener("click", () => show(idx - 1));
+  nextBtn.addEventListener("click", () => show(idx + 1));
+
+  // Optional: keyboard support on home too
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft")  { show(idx - 1); }
+    if (e.key === "ArrowRight") { show(idx + 1); }
+  });
+})();
+
+/* =========================================
    4) Article pages (dynamic import + optimized images)
    ========================================= */
 (async function initArticle() {
@@ -387,3 +462,4 @@ document.addEventListener("DOMContentLoaded", bindNavHandlers);
     console.error("Error fetching article:", err);
   }
 })();
+
