@@ -98,8 +98,8 @@ function mapPair(map, slug, enId, elId = enId) {
 //Home page
 mapHome("1Y1HXZR5YdGX3W8xCa8o5C");
 // Available Artworks page (slideshow)
-HOME_IDS["/en/available-artworks"] = "69XVOhTAfTUz4dTwHXZHOv";
-HOME_IDS["/el/available-artworks"] = "69XVOhTAfTUz4dTwHXZHOv";
+HOME_IDS["/en/available"] = "69XVOhTAfTUz4dTwHXZHOv";
+HOME_IDS["/el/available"] = "69XVOhTAfTUz4dTwHXZHOv";
 // Galleries 
 mapPair(GALLERY_IDS, "textile", "522odF81XhwFTDolnZG48m");
 mapPair(GALLERY_IDS, "sculptures", "6w706Y2fCkJSmABXsTPynu");
@@ -463,4 +463,5 @@ function bindNavHandlers() {
 document.addEventListener("DOMContentLoaded", () => {
   bindNavHandlers();
 });
+
 
