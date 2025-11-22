@@ -16,45 +16,72 @@ function withParams(u, params) {
   return url.toString();
 }
 
-// Grid thumbnails (small, modern)
-function thumbUrl(u, w) {
-  return isContentful(u) ? withParams(u, { w, q: 70, fm: "webp" }) : u;
+// Returns a good thumbnail URL + a full-size URL.
+function lightboxUrls(originalUrl) {
+  if (!originalUrl || !isContentful(originalUrl)) {
+    return { preview: originalUrl, full: originalUrl };
+  }
+
+  // Simple heuristic: pick a 960px wide thumb by default
+  const thumbWidth = 960;
+  const preview = withParams(originalUrl, {
+    w: thumbWidth,
+    fm: "jpg",
+    q: 65,
+  });
+  const full = withParams(originalUrl, {
+    fm: "jpg",
+    q: 80,
+  });
+  return { preview, full };
 }
 
-// Lightbox: fast preview → then swap to original
-function lightboxUrls(u) {
-  if (!isContentful(u)) return { preview: u, full: u };
-  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-  const previewW = Math.ceil(Math.min(2400, window.innerWidth * dpr)); // sharp preview
-  return {
-    preview: withParams(u, { w: previewW, q: 80, fm: "webp" }),
-    full: u // original (no params)
-  };
+// Lazy-load helper: schedule a batch of work
+function scheduleBatch(fn) {
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(fn, { timeout: 200 });
+  } else {
+    setTimeout(fn, 16);
+  }
 }
-
-// Keep UI responsive when adding many nodes
-const scheduleBatch = ("requestIdleCallback" in window)
-  ? (cb) => window.requestIdleCallback(cb)
-  : (cb) => setTimeout(cb, 0);
-
-// Normalize path to map keys (no .html, no trailing slash)
-function normalizePath(p) {
-  let s = p.replace(/\/index\.html$/i, "").replace(/\.html$/i, "");
-  if (s.length > 1 && s.endsWith("/")) s = s.slice(0, -1);
-  return s || "/"; // keep root as "/"
-}
-// Locale detection for your URL scheme
-const LOCALE = location.pathname.startsWith("/el/") ? "el" : "en-US";
 
 /* =========================================
-   1) Page → Entry ID maps (fill these)
+   1) Locale detection + path mapping
    ========================================= */
+const SUPPORTED_LOCALES = ["en", "el"];
+
+function detectLocale() {
+  const segments = location.pathname.split("/").filter(Boolean);
+  const first = segments[0];
+  if (SUPPORTED_LOCALES.includes(first)) return first;
+  return "en"; // default
+}
+const LOCALE = detectLocale();
+
+// Normalizes path for config maps
+function normalizePath(pathname) {
+  let path = pathname.split("?")[0].split("#")[0]; // remove query/hash
+  // Remove trailing slash except root
+  if (path.length > 1 && path.endsWith("/")) path = path.slice(0, -1);
+  return path;
+}
+
+// Example: "/en/textile" vs "/el/textile"
+
+// Homes: root "/" + "/en" + "/el"
 const HOME_IDS = {};
 function mapHome(enId, elId = enId) {
   HOME_IDS["/en"] = enId;
   HOME_IDS["/el"] = elId;
   HOME_IDS["/"]   = enId; // root defaults to EN
 }
+// Extra slideshow-style pages (e.g., Available Artworks)
+const EXTRA_SLIDESHOW_IDS = {};
+function mapSlideshow(slug, enId, elId = enId) {
+  EXTRA_SLIDESHOW_IDS[`/en/${slug}`] = enId;
+  EXTRA_SLIDESHOW_IDS[`/el/${slug}`] = elId;
+}
+
 // Central maps: path -> entryId
 const GALLERY_IDS = {};
 const ARTICLE_IDS = {};
@@ -70,6 +97,8 @@ function mapPair(map, slug, enId, elId = enId) {
    =========================== */
 //Home page
 mapHome("1Y1HXZR5YdGX3W8xCa8o5C");
+// Available Artworks page (slideshow)
+mapSlideshow("available-artworks", "69XVOhTAfTUz4dTwHXZHOv");
 // Galleries 
 mapPair(GALLERY_IDS, "textile", "522odF81XhwFTDolnZG48m");
 mapPair(GALLERY_IDS, "sculptures", "6w706Y2fCkJSmABXsTPynu");
@@ -100,13 +129,7 @@ function bindNavHandlers() {
     }, { passive: true });
   }
 
-  // ARIA prep for submenu triggers
-  document.querySelectorAll("a.has-submenu").forEach(a => {
-    if (!a.hasAttribute("role")) a.setAttribute("role", "button");
-    if (!a.hasAttribute("aria-expanded")) a.setAttribute("aria-expanded", "false");
-  });
-
-  // Delegated toggle (works for desktop + mobile nav)
+  // Desktop submenus: use event delegation, do not attach multiple times.
   if (!document.__submenuDelegationBound) {
     document.__submenuDelegationBound = true;
 
@@ -121,133 +144,153 @@ function bindNavHandlers() {
       // Close siblings
       const parentUl = trigger.closest("ul");
       if (parentUl) {
-        parentUl.querySelectorAll(":scope > li > .submenu.open-submenu").forEach(other => {
-          if (other !== submenu) other.classList.remove("open-submenu");
+        parentUl.querySelectorAll(":scope > li > .submenu.open").forEach((el) => {
+          if (el !== submenu) el.classList.remove("open");
         });
       }
 
-      const isOpen = submenu.classList.toggle("open-submenu");
-      trigger.setAttribute("aria-expanded", String(isOpen));
-    });
-
-    // Keyboard support
-    document.addEventListener("keydown", (e) => {
-      if (e.key !== "Enter" && e.key !== " ") return;
-      const trigger = e.target.closest?.("a.has-submenu");
-      if (!trigger) return;
-      e.preventDefault();
-
-      const submenu = trigger.nextElementSibling;
-      if (!submenu || !submenu.classList.contains("submenu")) return;
-
-      const isOpen = submenu.classList.toggle("open-submenu");
-      trigger.setAttribute("aria-expanded", String(isOpen));
-    });
+      submenu.classList.toggle("open");
+    }, { passive: false });
   }
 }
-document.addEventListener("DOMContentLoaded", bindNavHandlers);
 
 /* =========================================
-   3) Gallery pages
+   3) Gallery pages (grid of images)
    ========================================= */
 (function initGallery() {
   const pathKey = normalizePath(location.pathname);
   const entryId = GALLERY_IDS[pathKey];
-  if (!entryId) return; // not a gallery page
+  if (!entryId) return; // not a configured gallery page
 
-  const gridContainer =
-    document.getElementById("myGrid") ||
-    document.querySelector(".gallery") ||
-    document.querySelector(".gallery-grid") ||
-    document.querySelector(".article-gallery");
-  if (!gridContainer) return;
+  const gridContainer = document.getElementById("gallery-grid");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  const lightboxTitle = document.getElementById("lightbox-title");
+  const lightboxDesc = document.getElementById("lightbox-desc");
+  const lightboxCloseBtn = document.getElementById("lightbox-close");
+  const lightboxPrevBtn = document.getElementById("lightbox-prev");
+  const lightboxNextBtn = document.getElementById("lightbox-next");
+
+  if (!gridContainer || !lightbox || !lightboxImg) {
+    console.warn("Gallery container or lightbox elements missing.");
+    return;
+  }
+
+  let images = [];
+  let currentIndex = -1;
+
+  function openLightbox(index) {
+    if (index < 0 || index >= images.length) return;
+    currentIndex = index;
+    const item = images[index];
+    const { full } = lightboxUrls(item.url);
+
+    lightboxImg.src = full;
+    lightboxImg.alt = item.title || "";
+    if (lightboxTitle) lightboxTitle.textContent = item.title || "";
+    if (lightboxDesc) lightboxDesc.textContent = item.description || "";
+
+    lightbox.setAttribute("aria-hidden", "false");
+    lightbox.classList.add("open");
+  }
+
+  function closeLightbox() {
+    lightbox.setAttribute("aria-hidden", "true");
+    lightbox.classList.remove("open");
+    currentIndex = -1;
+  }
+
+  function showNext(delta) {
+    if (currentIndex < 0) return;
+    const newIndex = (currentIndex + delta + images.length) % images.length;
+    openLightbox(newIndex);
+  }
+
+  // Close on background click
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  // Close button
+  if (lightboxCloseBtn) {
+    lightboxCloseBtn.addEventListener("click", () => {
+      closeLightbox();
+    }, { passive: true });
+  }
+
+  if (lightboxPrevBtn) {
+    lightboxPrevBtn.addEventListener("click", () => {
+      showNext(-1);
+    }, { passive: true });
+  }
+
+  if (lightboxNextBtn) {
+    lightboxNextBtn.addEventListener("click", () => {
+      showNext(1);
+    }, { passive: true });
+  }
+
+  // Keyboard navigation when lightbox is open
+  document.addEventListener("keydown", (e) => {
+    if (!lightbox.classList.contains("open")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowRight") showNext(1);
+    if (e.key === "ArrowLeft") showNext(-1);
+  });
 
   const locale = LOCALE;
 
   fetch(`/.netlify/functions/contentful-proxy?entryId=${entryId}&locale=${locale}`)
     .then(r => r.json())
     .then(data => {
-      const { title, images } = data || {};
-      if (!Array.isArray(images) || images.length === 0) {
-        console.warn("No images returned from function.");
-        return;
-      }
+      images = Array.isArray(data?.images) ? data.images : [];
+      if (!images.length) return;
 
-      const galleryTitleEl = document.getElementById("galleryTitle");
-      if (galleryTitleEl) galleryTitleEl.textContent = title || "";
-
-      // Lightbox elements (shared overlay)
-      let currentIndex = 0;
-      const overlay = document.getElementById("lightboxOverlay");
-      const lightboxImage = document.getElementById("lightboxImage");
-      const lightboxTitle = document.getElementById("lightboxTitle");
-      const lightboxDescription = document.getElementById("lightboxDescription");
-      const closeBtn = document.getElementById("closeButton");
-      const nextBtn = document.getElementById("nextButton");
-      const prevBtn = document.getElementById("prevButton");
-
-      function openLightbox(index) {
-        currentIndex = index;
-        const { url, title, description } = images[currentIndex];
-        const { preview, full } = lightboxUrls(url);
-
-        if (lightboxImage) {
-          lightboxImage.src = preview;
-          const hi = new Image();
-          hi.onload = () => {
-            if (images[currentIndex]?.url === url) lightboxImage.src = full;
-          };
-          hi.src = full;
-        }
-        if (lightboxTitle)       lightboxTitle.textContent = title || "";
-        if (lightboxDescription) lightboxDescription.textContent = description || "";
-        overlay?.classList.add("active");
-      }
-      function closeLightbox() { overlay?.classList.remove("active"); }
-      function showNext() { currentIndex = (currentIndex + 1) % images.length; openLightbox(currentIndex); }
-      function showPrev() { currentIndex = (currentIndex - 1 + images.length) % images.length; openLightbox(currentIndex); }
-
-      closeBtn?.addEventListener("click", closeLightbox);
-      nextBtn?.addEventListener("click", showNext);
-      prevBtn?.addEventListener("click", showPrev);
-      document.addEventListener("keydown", (e) => {
-        if (overlay && overlay.classList.contains("active")) {
-          if (e.key === "Escape") { closeLightbox(); e.preventDefault(); }
-          else if (e.key === "ArrowRight") { showNext(); e.preventDefault(); }
-          else if (e.key === "ArrowLeft") { showPrev(); e.preventDefault(); }
-        }
-      });
-
-      // Build thumbnails in batches
       gridContainer.innerHTML = "";
-      const BATCH = 12;
 
-      function renderBatch(start = 0) {
-        const end = Math.min(start + BATCH, images.length);
-        for (let i = start; i < end; i++) {
-          const imgObj = images[i];
+      // Render in batches to avoid jank
+      const BATCH_SIZE = 24;
+
+      function renderBatch(startIndex) {
+        const end = Math.min(startIndex + BATCH_SIZE, images.length);
+        for (let i = startIndex; i < end; i++) {
+          const item = images[i];
+          const { preview } = lightboxUrls(item.url);
+
           const imgEl = document.createElement("img");
+          imgEl.loading = "lazy";
+          imgEl.src = preview;
+          imgEl.alt = item.title || "";
+          imgEl.className = "gallery-item";
 
-          imgEl.alt = (imgObj.title || "").trim();
-          imgEl.style.cursor = overlay && lightboxImage ? "pointer" : "default";
-          imgEl.loading = i < 2 ? "eager" : "lazy";
-          imgEl.fetchPriority = i < 2 ? "high" : "low";
-          imgEl.decoding = "async";
-          imgEl.sizes = "(max-width: 480px) 100vw, (max-width: 768px) 50vw, 30vw";
+          imgEl.addEventListener("click", () => openLightbox(i), { passive: true });
 
-          imgEl.src = thumbUrl(imgObj.url, 640);
-          imgEl.srcset = THUMB_WIDTHS.map(w => `${thumbUrl(imgObj.url, w)} ${w}w`).join(", ");
+          // Titles and descriptions
+          const wrapper = document.createElement("div");
+          wrapper.className = "gallery-item-wrapper";
+          wrapper.appendChild(imgEl);
 
-          imgEl.style.contentVisibility = "auto";
-          imgEl.style.containIntrinsicSize = "400px 300px";
-
-          if (overlay && lightboxImage) {
-            imgEl.addEventListener("click", () => openLightbox(i));
+          if (item.title) {
+            const captionTitle = document.createElement("p");
+            captionTitle.className = "gallery-item-title";
+            captionTitle.textContent = item.title;
+            wrapper.appendChild(captionTitle);
           }
 
-          gridContainer.appendChild(imgEl);
+          if (item.description) {
+            const captionDesc = document.createElement("p");
+            captionDesc.className = "gallery-item-desc";
+            captionDesc.textContent = item.description;
+            wrapper.appendChild(captionDesc);
+          }
+
+          gridContainer.appendChild(wrapper);
         }
-        if (end < images.length) scheduleBatch(() => renderBatch(end));
+        if (end < images.length) {
+          scheduleBatch(() => renderBatch(end));
+        }
       }
 
       renderBatch(0);
@@ -260,7 +303,7 @@ document.addEventListener("DOMContentLoaded", bindNavHandlers);
    ========================================= */
 (function initHomeSlideshow() {
   const pathKey = normalizePath(location.pathname);
-  const entryId = HOME_IDS[pathKey];
+  const entryId = HOME_IDS[pathKey] || EXTRA_SLIDESHOW_IDS[pathKey];
   if (!entryId) return; // not a configured home page
 
   const container = document.getElementById("slideshow-container");
@@ -304,23 +347,10 @@ document.addEventListener("DOMContentLoaded", bindNavHandlers);
       if (images[idx]?.url === item.url) imgEl.src = full;
     };
     hi.src = full;
-
-    // prefetch neighbors (preview only)
-    prefetchPreview((idx + 1) % images.length);
-    prefetchPreview((idx - 1 + images.length) % images.length);
   }
 
-  function prefetchPreview(i) {
-    const u = images[i]?.url;
-    if (!u) return;
-    const p = lightboxUrls(u).preview;
-    const probe = new Image();
-    probe.decoding = "async";
-    probe.src = p;
-  }
-
-  prevBtn.addEventListener("click", () => show(idx - 1));
-  nextBtn.addEventListener("click", () => show(idx + 1));
+  prevBtn.addEventListener("click", () => show(idx - 1), { passive: true });
+  nextBtn.addEventListener("click", () => show(idx + 1), { passive: true });
 
   // Optional: keyboard support on home too
   document.addEventListener("keydown", (e) => {
@@ -337,123 +367,84 @@ document.addEventListener("DOMContentLoaded", bindNavHandlers);
   const entryId = ARTICLE_IDS[pathKey];
   if (!entryId) return; // not an article page
 
-  const titleEl = document.querySelector(".article-title");
-  const bodyEl  = document.querySelector(".article");
-  if (!titleEl || !bodyEl) return;
-
   const locale = LOCALE;
+  const articleTitleEl   = document.getElementById("article-title");
+  const articleBodyEl    = document.getElementById("article-body");
+  const articleDateEl    = document.getElementById("article-date");
+  const articleHeroImgEl = document.getElementById("article-hero-img");
+  const articleGalleryEl = document.getElementById("article-gallery");
 
-  // Load Contentful rich-text renderer only on article pages
-  const { documentToHtmlString } = await import(
-    "https://cdn.skypack.dev/@contentful/rich-text-html-renderer@17"
-  );
+  if (!articleTitleEl || !articleBodyEl) {
+    console.warn("Article container elements missing.");
+    return;
+  }
 
   try {
-    const res  = await fetch(`/.netlify/functions/contentful-article-proxy?entryId=${entryId}&locale=${locale}`);
+    const res = await fetch(`/.netlify/functions/contentful-article?entryId=${entryId}&locale=${locale}`);
     const data = await res.json();
-    if (!(data && data.sys && data.fields)) {
-      console.warn("Invalid article entry data:", data);
-      return;
+
+    const {
+      title,
+      bodyHtml,
+      date,
+      heroImage,
+      images: articleImages = [],
+    } = data || {};
+
+    articleTitleEl.textContent = title || "";
+    articleBodyEl.innerHTML = bodyHtml || "";
+
+    if (articleDateEl && date) {
+      articleDateEl.textContent = date;
     }
 
-    // Render text
-    const options = {
-      renderNode: {
-        hyperlink: (node, next) => {
-          const url = node.data?.uri || "#";
-          return `<a href="${url}" target="_blank" rel="noopener noreferrer">${next(node.content)}</a>`;
+    if (articleHeroImgEl && heroImage?.url) {
+      const { preview, full } = lightboxUrls(heroImage.url);
+      articleHeroImgEl.src = preview;
+      articleHeroImgEl.alt = heroImage.title || title || "";
+      const hi = new Image();
+      hi.onload = () => {
+        if (articleHeroImgEl.src === preview) {
+          articleHeroImgEl.src = full;
         }
-      }
-    };
-    titleEl.textContent = data.fields.title || "";
-    bodyEl.innerHTML    = documentToHtmlString(data.fields.blogPost || "", options);
+      };
+      hi.src = full;
+    }
 
-    // Build article gallery if present
-    const galleryContainer = document.querySelector(".article-gallery");
-    const refs   = data.fields.gallery || [];
-    const assets = data.includes?.Asset || [];
+    if (articleGalleryEl && articleImages.length) {
+      articleGalleryEl.innerHTML = "";
 
-    if (galleryContainer && refs.length) {
-      galleryContainer.innerHTML = "";
+      // Simple gallery rendering, similar batch approach
+      const BATCH_SIZE = 24;
 
-      const articleImages = [];
-      refs.forEach(ref => {
-        const asset = assets.find(a => a.sys.id === ref.sys.id);
-        if (!asset?.fields?.file?.url) return;
-        const raw = "https:" + asset.fields.file.url;
-        articleImages.push({
-          url: raw,
-          title: asset.fields.title || "",
-          description: asset.fields.description || ""
-        });
-      });
-
-      // Reuse global lightbox overlay
-      const overlay            = document.getElementById("lightboxOverlay");
-      const lightboxImage      = document.getElementById("lightboxImage");
-      const lightboxTitle      = document.getElementById("lightboxTitle");
-      const lightboxDescription= document.getElementById("lightboxDescription");
-      const closeBtn           = document.getElementById("closeButton");
-      const nextBtn            = document.getElementById("nextButton");
-      const prevBtn            = document.getElementById("prevButton");
-
-      let currentIdx = 0;
-      function openArticleLightbox(i) {
-        currentIdx = i;
-        const { url, title, description } = articleImages[currentIdx];
-        const { preview, full } = lightboxUrls(url);
-
-        if (lightboxImage) {
-          lightboxImage.src = preview;
-          const hi = new Image();
-          hi.onload = () => {
-            if (articleImages[currentIdx]?.url === url) lightboxImage.src = full;
-          };
-          hi.src = full;
-        }
-        if (lightboxTitle)       lightboxTitle.textContent = title;
-        if (lightboxDescription) lightboxDescription.textContent = description;
-        overlay?.classList.add("active");
-      }
-      function closeLightbox() { overlay?.classList.remove("active"); }
-      function showNext() { currentIdx = (currentIdx + 1) % articleImages.length; openArticleLightbox(currentIdx); }
-      function showPrev() { currentIdx = (currentIdx - 1 + articleImages.length) % articleImages.length; openArticleLightbox(currentIdx); }
-
-      closeBtn?.addEventListener("click", closeLightbox);
-      nextBtn?.addEventListener("click", showNext);
-      prevBtn?.addEventListener("click", showPrev);
-      document.addEventListener("keydown", (e) => {
-        if (overlay && overlay.classList.contains("active")) {
-          if (e.key === "Escape") { closeLightbox(); e.preventDefault(); }
-          else if (e.key === "ArrowRight") { showNext(); e.preventDefault(); }
-          else if (e.key === "ArrowLeft") { showPrev(); e.preventDefault(); }
-        }
-      });
-
-      const BATCH = 10;
-      function renderBatch(start = 0) {
-        const end = Math.min(start + BATCH, articleImages.length);
+      function renderBatch(start) {
+        const end = Math.min(start + BATCH_SIZE, articleImages.length);
         for (let i = start; i < end; i++) {
-          const imgObj = articleImages[i];
+          const item = articleImages[i];
+          const { preview, full } = lightboxUrls(item.url);
+
           const img = document.createElement("img");
+          img.loading = "lazy";
+          img.src = preview;
+          img.alt = item.title || "";
+          img.className = "article-gallery-item";
 
-          img.alt = (imgObj.title || "").trim();
-          img.loading = i < 2 ? "eager" : "lazy";
-          img.fetchPriority = i < 2 ? "high" : "low";
-          img.decoding = "async";
-          img.sizes = "(max-width: 768px) 100vw, 40vw";
-          img.src = thumbUrl(imgObj.url, 640);
-          img.srcset = THUMB_WIDTHS.map(w => `${thumbUrl(imgObj.url, w)} ${w}w`).join(", ");
+          img.addEventListener("click", () => {
+            // Reuse lightbox if available
+            const lb = document.getElementById("lightbox");
+            const lbImg = document.getElementById("lightbox-img");
+            const lbTitle = document.getElementById("lightbox-title");
+            const lbDesc = document.getElementById("lightbox-desc");
+            if (!lb || !lbImg) return;
+            lbImg.src = full;
+            lbImg.alt = item.title || "";
+            if (lbTitle) lbTitle.textContent = item.title || "";
+            if (lbDesc) lbDesc.textContent = item.description || "";
+            lb.setAttribute("aria-hidden", "false");
+            lb.classList.add("open");
+          }, { passive: true });
 
-          img.style.contentVisibility = "auto";
-          img.style.containIntrinsicSize = "400px 300px";
-
-          if (overlay && lightboxImage) {
-            img.style.cursor = "pointer";
-            img.addEventListener("click", () => openArticleLightbox(i));
-          }
-
-          galleryContainer.appendChild(img);
+          articleGalleryEl.appendChild(img);
         }
         if (end < articleImages.length) scheduleBatch(() => renderBatch(end));
       }
@@ -465,4 +456,9 @@ document.addEventListener("DOMContentLoaded", bindNavHandlers);
   }
 })();
 
-
+/* =========================================
+   5) On DOMContentLoaded, bind nav & other stuff
+   ========================================= */
+document.addEventListener("DOMContentLoaded", () => {
+  bindNavHandlers();
+});
