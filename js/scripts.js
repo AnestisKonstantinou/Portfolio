@@ -66,8 +66,6 @@ function normalizePath(pathname) {
   return path;
 }
 
-// Example: "/en/textile" vs "/el/textile"
-
 // Homes: root "/" + "/en" + "/el"
 const HOME_IDS = {};
 function mapHome(enId, elId = enId) {
@@ -75,6 +73,7 @@ function mapHome(enId, elId = enId) {
   HOME_IDS["/el"] = elId;
   HOME_IDS["/"]   = enId; // root defaults to EN
 }
+
 // Extra slideshow-style pages (e.g., Available Artworks)
 const EXTRA_SLIDESHOW_IDS = {};
 function mapSlideshow(slug, enId, elId = enId) {
@@ -95,28 +94,37 @@ function mapPair(map, slug, enId, elId = enId) {
 /* ===========================
    REGISTER YOUR PAGES HERE
    =========================== */
-//Home page
+// Home page
 mapHome("1Y1HXZR5YdGX3W8xCa8o5C");
-// Available Artworks page (slideshow)
-HOME_IDS["/en/available"] = "69XVOhTAfTUz4dTwHXZHOv";
-HOME_IDS["/el/available"] = "69XVOhTAfTUz4dTwHXZHOv";
-// Galleries 
-mapPair(GALLERY_IDS, "textile", "522odF81XhwFTDolnZG48m");
-mapPair(GALLERY_IDS, "sculptures", "6w706Y2fCkJSmABXsTPynu");
-mapPair(GALLERY_IDS, "paintings", "4oU2dtZPY9gX61G3Q7iGK0");
 
+// Available Artworks page (slideshow)
+//
+// We map all likely variants so it works whether you use
+// /available.html, /available, /en/available.html, etc.
+const AVAILABLE_ID = "69XVOhTAfTUz4dTwHXZHOv";
+HOME_IDS["/available.html"]      = AVAILABLE_ID;
+HOME_IDS["/available"]           = AVAILABLE_ID;
+HOME_IDS["/en/available.html"]   = AVAILABLE_ID;
+HOME_IDS["/en/available"]        = AVAILABLE_ID;
+HOME_IDS["/el/available.html"]   = AVAILABLE_ID;
+HOME_IDS["/el/available"]        = AVAILABLE_ID;
+
+// Galleries 
+mapPair(GALLERY_IDS, "textile",    "522odF81XhwFTDolnZG48m");
+mapPair(GALLERY_IDS, "sculptures", "6w706Y2fCkJSmABXsTPynu");
+mapPair(GALLERY_IDS, "paintings",  "4oU2dtZPY9gX61G3Q7iGK0");
 
 // Articles 
-mapPair(ARTICLE_IDS, "larnaca", "ZPjn3EbIvSO1SogWi029J"); 
-mapPair(ARTICLE_IDS, "thedro", "36dlJUaYhxaa2PQ7bCDS7a");
-mapPair(ARTICLE_IDS, "eyes", "3RKgj0xekKd08d09eeUtYL");
-mapPair(ARTICLE_IDS, "cv", "27N1K0F66rYGIIUcePHQq0");
-mapPair(ARTICLE_IDS, "inner", "7aq5i14B40stz4g74rbj5t");
-mapPair(ARTICLE_IDS, "nemo", "Yw0RI5SKuvuMNuSi51lrj");
-mapPair(ARTICLE_IDS, "dowry", "75poUixF1o7MHlOAwD5HDJ");
-mapPair(ARTICLE_IDS, "interior", "25AcvMDWLw0aiSTcc7L7um");
-mapPair(ARTICLE_IDS, "sym", "5BOc0b0A2WiiOj6JrBxj1J");
-mapPair(ARTICLE_IDS, "biennale", "NI4BpqTDyJM05KsGh6SgF");
+mapPair(ARTICLE_IDS, "larnaca",   "ZPjn3EbIvSO1SogWi029J"); 
+mapPair(ARTICLE_IDS, "thedro",    "36dlJUaYhxaa2PQ7bCDS7a");
+mapPair(ARTICLE_IDS, "eyes",      "3RKgj0xekKd08d09eeUtYL");
+mapPair(ARTICLE_IDS, "cv",        "27N1K0F66rYGIIUcePHQq0");
+mapPair(ARTICLE_IDS, "inner",     "7aq5i14B40stz4g74rbj5t");
+mapPair(ARTICLE_IDS, "nemo",      "Yw0RI5SKuvuMNuSi51lrj");
+mapPair(ARTICLE_IDS, "dowry",     "75poUixF1o7MHlOAwD5HDJ");
+mapPair(ARTICLE_IDS, "interior",  "25AcvMDWLw0aiSTcc7L7um");
+mapPair(ARTICLE_IDS, "sym",       "5BOc0b0A2WiiOj6JrBxj1J");
+mapPair(ARTICLE_IDS, "biennale",  "NI4BpqTDyJM05KsGh6SgF");
 
 /* =========================================
    2) Nav: hamburger + submenus (delegated)
@@ -305,12 +313,12 @@ function bindNavHandlers() {
 (function initHomeSlideshow() {
   const pathKey = normalizePath(location.pathname);
   const entryId = HOME_IDS[pathKey] || EXTRA_SLIDESHOW_IDS[pathKey];
-  if (!entryId) return; // not a configured home page
+  if (!entryId) return; // not a configured home page or slideshow page
 
   const container = document.getElementById("slideshow-container");
   const imgEl     = document.getElementById("slide-image");
   const titleEl   = document.getElementById("slide-title");
-  const descEl  = document.getElementById("slide-description");
+  const descEl    = document.getElementById("slide-description");
   const prevBtn   = document.getElementById("prevSlide");
   const nextBtn   = document.getElementById("nextSlide");
   if (!container || !imgEl || !titleEl || !prevBtn || !nextBtn) return;
@@ -339,7 +347,7 @@ function bindNavHandlers() {
     imgEl.src = preview;
     imgEl.alt = (item.title || "").trim();
     titleEl.textContent = item.title || "";
-     if (descEl) descEl.textContent = item.description || "";
+    if (descEl) descEl.textContent = item.description || "";
 
     // upgrade to original when ready
     const hi = new Image();
@@ -463,5 +471,3 @@ function bindNavHandlers() {
 document.addEventListener("DOMContentLoaded", () => {
   bindNavHandlers();
 });
-
-
