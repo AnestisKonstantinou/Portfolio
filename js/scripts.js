@@ -171,14 +171,15 @@ function bindNavHandlers() {
   const entryId = GALLERY_IDS[pathKey];
   if (!entryId) return; // not a configured gallery page
 
-  const gridContainer = document.getElementById("gallery-grid");
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img");
-  const lightboxTitle = document.getElementById("lightbox-title");
-  const lightboxDesc = document.getElementById("lightbox-desc");
-  const lightboxCloseBtn = document.getElementById("lightbox-close");
-  const lightboxPrevBtn = document.getElementById("lightbox-prev");
-  const lightboxNextBtn = document.getElementById("lightbox-next");
+  // IDs updated to match your HTML
+  const gridContainer = document.getElementById("myGrid");
+  const lightbox = document.getElementById("lightboxOverlay");
+  const lightboxImg = document.getElementById("lightboxImage");
+  const lightboxTitle = document.getElementById("lightboxTitle");
+  const lightboxDesc = document.getElementById("lightboxDescription");
+  const lightboxCloseBtn = document.getElementById("closeButton");
+  const lightboxPrevBtn = document.getElementById("prevButton");
+  const lightboxNextBtn = document.getElementById("nextButton");
 
   if (!gridContainer || !lightbox || !lightboxImg) {
     console.warn("Gallery container or lightbox elements missing.");
@@ -439,11 +440,11 @@ function bindNavHandlers() {
           img.className = "article-gallery-item";
 
           img.addEventListener("click", () => {
-            // Reuse lightbox if available
-            const lb = document.getElementById("lightbox");
-            const lbImg = document.getElementById("lightbox-img");
-            const lbTitle = document.getElementById("lightbox-title");
-            const lbDesc = document.getElementById("lightbox-desc");
+            // Reuse lightbox using your HTML IDs
+            const lb = document.getElementById("lightboxOverlay");
+            const lbImg = document.getElementById("lightboxImage");
+            const lbTitle = document.getElementById("lightboxTitle");
+            const lbDesc = document.getElementById("lightboxDescription");
             if (!lb || !lbImg) return;
             lbImg.src = full;
             lbImg.alt = item.title || "";
