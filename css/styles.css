@@ -1166,5 +1166,23 @@ input[name="bot-field"] {
     font-size: 0.95rem;
   }
 }
+.archive-year {
+  margin-bottom: 3rem;
+}
 
+.archive-year-heading {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+}
+
+.archive-year-heading h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
 
