@@ -1135,6 +1135,129 @@ input[name="bot-field"] {
   color: #000;
 }
 
+/* New Layout 2026 CSS */
 
+.exhititle {
+  font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 3rem;
+  letter-spacing: 0.03em;
+}
+
+.exhigrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+/* CARD */
+.exhi-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  background: #f7f5f1;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.exhi-card:hover,
+.exhi-card:focus-visible {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+/* TITLE LAYER */
+.exhi-card-title {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  text-align: center;
+  background: #f7f5f1;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+
+.exhi-card-title span {
+  font-size: 1rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  max-width: 85%;
+}
+
+/* POSTER LAYER */
+.exhi-card-poster {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  transform: translateX(-24px);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+  background: #eaeaea;
+}
+
+.exhi-card-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* HOVER / FOCUS ANIMATION */
+.exhi-card:hover .exhi-card-title,
+.exhi-card:focus-visible .exhi-card-title {
+  opacity: 0;
+  transform: translateX(24px);
+}
+
+.exhi-card:hover .exhi-card-poster,
+.exhi-card:focus-visible .exhi-card-poster {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ACCESSIBILITY */
+.exhi-card:focus-visible {
+  outline: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 980px) {
+  .exhigrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .main1 {
+    padding: 3rem 1.2rem 4rem;
+  }
+
+  .exhigrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .exhi-card {
+    aspect-ratio: 5 / 3.4;
+  }
+
+  .exhi-card-title span {
+    font-size: 0.95rem;
+  }
+}
 
 
