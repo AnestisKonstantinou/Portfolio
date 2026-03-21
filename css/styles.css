@@ -979,139 +979,7 @@ input[name="bot-field"] {
     text-align: center;
   }
 }
-/* POPUP FOR EXHIBITION */
-#popupOverlay {
-  position: fixed;
-  bottom:10vh; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  z-index: 1000;
-}
 
-/* POPUP FOR EXHIBITION */
-#popupOverlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  z-index: 1000;
-}
-
-/* Pop-up window */
-#exhibitionPopup {
-  position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  display: none;
-  z-index: 1001;
-  max-width: 90%;
-  width: 800px;
-}
-
-/* Two-column layout */
-#exhibitionPopup .popup-content {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: stretch;  
-}
-.popup-video,
-.popup-text {
-  flex: 0 0 50%;
-  max-width:50%;
-  box-sizing: border-box;
-  padding: 1rem;
-}
-#exhibitionPopup .popup-video {
-  position: relative;      /* for absolute children if needed */
-  display: flex;           /* allow child to stretch */
-}
-#exhibitionPopup .popup-video video {
-  width: 100%;             /* you already have this */
-  height: 100%;            /* change from auto → full height */
-  object-fit: contain;     /* or “cover” if you’d rather fill & crop */
-}
-
-/* Close “×” button */
-.popup-close {
-  position: absolute;
-  top: 0.5rem; right: 0.5rem;
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-
-@media (max-width: 600px) {
-  /* 1) Full‐screen, scrollable popup */
-  #exhibitionPopup {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;  /* full width */
-    height: 100vh; /* full height */
-    transform: none;      /* cancel centering translate */
-    max-width: none;
-    max-height: none;
-    padding: 0;
-    overflow-y: auto;     /* allow vertical scroll */
-    z-index: 1501;
-  }
-
-  /* 2) Stack video then text */
-  #exhibitionPopup .popup-content {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: stretch;
-  }
- #exhibitionPopup .popup-video,
-  #exhibitionPopup .popup-text {
-    flex: 0 0 auto;      /* don’t force half width */
-    width: 100%;         /* each takes full width */
-    max-width: none;     /* undo the 50% cap */
-    box-sizing: border-box;
-  }
-  /* 3) Video takes ~70% of viewport height */
-  #exhibitionPopup .popup-video {
-    flex: 0 0 auto;
-	  padding-top:40px;
-    width: 100%;
-    height: 70vh;         /* adjust between 60–75vh to taste */
-    box-sizing: border-box;
-  }
-  #exhibitionPopup .popup-video video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;    /* fill & crop */
-  }
-
-  /* 4) Text block below, scrolls into view */
- #exhibitionPopup .popup-text {
-    padding: 1rem;
-    background: #fff;
-    overflow-y: auto;
-  }
-
-  /* 5) Ensure close button stays visible */
-  #exhibitionPopup .popup-close {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    z-index: 1002;
-    font-size: 1.75rem;
-    color: #fff;
-    background: rgba(0,0,0,0.4); /* optional dark circle behind “×” */
-    border-radius: 50%;
-    width: 2rem; height: 2rem;
-    line-height: 1.6rem;
-    text-align: center;
-  }
-}
 .available-contact-wrapper {
   text-align: center;
   margin: 1.5rem 0 2.5rem;
@@ -1150,7 +1018,6 @@ input[name="bot-field"] {
   box-sizing: border-box;
   overflow-y: auto;
   padding: 2rem 2rem;
-	width:100%;
 	
 }
 .main2-inner {
