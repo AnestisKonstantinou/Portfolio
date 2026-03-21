@@ -170,6 +170,13 @@ footer {
 max-width: 2vw;
 height:2vw;
 }
+.footer-left {
+	margin-right:auto;
+	display:flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap:0.15rem;
+}
 .footer-right {
   margin-left: auto;
   display: flex;
