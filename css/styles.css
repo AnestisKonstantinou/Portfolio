@@ -171,10 +171,11 @@ max-width: 2vw;
 height:2vw;
 }
 .footer-left {
+	max-width:30vw;
 	margin-right:auto;
 	display:flex;
 	flex-direction: column;
-	align-items: flex-start;
+	align-items: center;
 	gap:0.15rem;
 }
 .footer-links{
