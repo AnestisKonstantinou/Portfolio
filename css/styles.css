@@ -177,6 +177,12 @@ height:2vw;
 	align-items: flex-start;
 	gap:0.15rem;
 }
+.footer-links{
+	display:flex;
+	flex-direction:row;
+	align-items:center;
+	gap:1.3rem;
+}
 .footer-right {
   margin-left: auto;
   display: flex;
