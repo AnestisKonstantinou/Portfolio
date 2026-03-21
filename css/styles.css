@@ -171,18 +171,22 @@ max-width: 2vw;
 height:2vw;
 }
 .footer-left {
-	max-width:30vw;
-	margin-right:auto;
-	display:flex;
-	flex-direction: column;
-	align-items: center;
-	gap:0.15rem;
+	 width: 30%;
+  max-width: 350px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.3rem;
 }
 .footer-links{
-	display:flex;
+	display: flex;
 	flex-direction:row;
-	align-items:center;
-	gap:1.3rem;
+  justify-content: center;
+  align-items: center;
+  gap: 1.3rem;
 }
 .footer-right {
   margin-left: auto;
@@ -202,12 +206,7 @@ height:2vw;
   text-decoration: underline;
 }
 
-.footer-text {
-  text-align: right;
-  font-size: clamp(8px, 2vw, 12px);
-  margin: 0;
-  white-space: nowrap;
-}
+
 
 .mobile-logo {
 	display:none;
