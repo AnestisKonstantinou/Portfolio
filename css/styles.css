@@ -1006,14 +1006,15 @@ input[name="bot-field"] {
 /* New Layout 2026 CSS */
 
 .page-wrapper-ex{
-	display: flex;
-  flex-grow: 1;
-  min-height: 80vh;
-  height: auto;
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
 }
 .main2{
   flex: 1;
   min-width: 0;
+	 min-height: 0;
   display: block;
   box-sizing: border-box;
   overflow-y: auto;
