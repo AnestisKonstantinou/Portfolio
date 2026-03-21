@@ -170,10 +170,28 @@ footer {
 max-width: 2vw;
 height:2vw;
 }
+.footer-right {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+.footer-link {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
 .footer-text {
   text-align: right;
   font-size: clamp(8px, 2vw, 12px);
-  margin-left: auto; 
+  margin: 0;
   white-space: nowrap;
 }
 
