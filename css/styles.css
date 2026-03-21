@@ -1136,6 +1136,13 @@ input[name="bot-field"] {
 }
 
 /* New Layout 2026 CSS */
+
+.page-wrapper-ex{
+	display: flex;
+  flex-grow: 1;
+  min-height: 80vh;
+  height: auto;
+}
 .main2{
   flex: 1;
   min-width: 0;
@@ -1144,6 +1151,11 @@ input[name="bot-field"] {
   overflow-y: auto;
   padding: 2rem 2rem;
 	
+}
+.main2-inner {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 .exhititle {
@@ -1155,8 +1167,8 @@ input[name="bot-field"] {
 }
 
 .exhigrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+ display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
   align-items: stretch;
 }
