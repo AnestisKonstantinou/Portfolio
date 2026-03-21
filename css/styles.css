@@ -1009,11 +1009,12 @@ input[name="bot-field"] {
   display: flex;
   flex: 1 1 auto;
   min-height: 0;
+	height:90vh;
   width: 100%;
 }
 .main2{
   flex: 1;
-  min-width: 65vw;
+  min-width: 70%;
 	 min-height: 0;
   display: block;
   box-sizing: border-box;
