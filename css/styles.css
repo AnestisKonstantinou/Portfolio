@@ -1013,7 +1013,7 @@ input[name="bot-field"] {
 }
 .main2{
   flex: 1;
-  min-width: 0;
+  min-width: 65vw;
 	 min-height: 0;
   display: block;
   box-sizing: border-box;
