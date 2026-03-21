@@ -1185,4 +1185,9 @@ input[name="bot-field"] {
   font-weight: 400;
   letter-spacing: 0.04em;
 }
-
+.exhigrid-archive{
+	display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 340px));
+  gap: 1.5rem;
+  justify-content: start;
+}
