@@ -191,9 +191,15 @@ height:2vw;
 .footer-right {
   margin-left: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-end;
   
+}
+.b2b{
+	flex-direction:column;
+}
+.yfeos{
+	flex-direction: column;
 }
 .footer-link {
   text-decoration: none;
