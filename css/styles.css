@@ -197,10 +197,30 @@ height:2vw;
   
 }
 .b2b{
-	flex-direction:column;
+	display: flex;
+  flex-direction: column;
+  
+  /* This aligns the link and the p tag horizontally in the center of the div */
+  align-items: center; 
+  
+  /* This ensures the text inside the <p> or <a> tag itself is centered */
+  text-align: center; 
+  
+  /* Optional: gives the column a specific width or lets it grow so centering is visible */
+  flex: 1;
 }
 .yfeos{
-	flex-direction: column;
+	display: flex;
+  flex-direction: column;
+  
+  /* This aligns the link and the p tag horizontally in the center of the div */
+  align-items: center; 
+  
+  /* This ensures the text inside the <p> or <a> tag itself is centered */
+  text-align: center; 
+  
+  /* Optional: gives the column a specific width or lets it grow so centering is visible */
+  flex: 1;
 }
 .footer-link {
   text-decoration: none;
