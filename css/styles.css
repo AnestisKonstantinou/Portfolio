@@ -202,8 +202,8 @@ height:2vw;
   white-space: nowrap;
 }
 .footer-text{
-	margin-top:0 important!;
-	margin-bottom:0 important!;
+	margin-block-start: 0; 
+  margin-bottom: 0;
 }
 .footer-link:hover {
   text-decoration: underline;
