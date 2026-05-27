@@ -221,6 +221,7 @@ height:2vw;
   
   /* Optional: gives the column a specific width or lets it grow so centering is visible */
   flex: 1;
+text-wrap: nowrap;
 }
 .footer-link {
   text-decoration: none;
