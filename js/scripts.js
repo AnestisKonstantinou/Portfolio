@@ -77,6 +77,7 @@ mapPair(GALLERY_IDS, "paintings", "4oU2dtZPY9gX61G3Q7iGK0");
 
 
 // Articles 
+mapPair(ARTICLE_IDS, "heads", "C9sQMCN9aGRoRihEpduhD");
 mapPair(ARTICLE_IDS, "liakada", "C9sQMCN9aGRoRihEpduhD");
 mapPair(ARTICLE_IDS, "timeless", "3tsiE4pskXWBHUj3f1G9qw");
 mapPair(ARTICLE_IDS, "larnaca", "ZPjn3EbIvSO1SogWi029J"); 
